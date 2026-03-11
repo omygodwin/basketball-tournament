@@ -61,6 +61,8 @@ export default function InstallBanner({ aboveBottomNav }) {
   if (!show) return null;
 
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isSafari = isIOS && /Safari/i.test(navigator.userAgent) && !/CriOS|FxiOS|OPiOS|EdgiOS/i.test(navigator.userAgent);
+  const isAndroid = /Android/i.test(navigator.userAgent);
 
   return (
     <>
@@ -145,9 +147,9 @@ export default function InstallBanner({ aboveBottomNav }) {
 
               <hr className="border-navy-700" />
 
-              {isIOS ? (
+              {isSafari ? (
                 <>
-                  <p className="font-semibold text-white">How to install (iPhone/iPad):</p>
+                  <p className="font-semibold text-white">How to install (Safari):</p>
                   <ol className="list-decimal list-inside space-y-1 text-gray-400">
                     <li>
                       Tap the <strong className="text-white">Share</strong> button{' '}
@@ -159,15 +161,40 @@ export default function InstallBanner({ aboveBottomNav }) {
                     <li>Scroll down and tap <strong className="text-white">Add to Home Screen</strong></li>
                     <li>Tap <strong className="text-white">Add</strong> in the top right</li>
                   </ol>
-                  <p className="text-yellow-400/80 text-xs mt-1">Note: Must use Safari. Chrome/Firefox on iOS don&apos;t support Add to Home Screen.</p>
                 </>
-              ) : (
+              ) : isIOS ? (
+                <>
+                  <p className="font-semibold text-white">How to install (iPhone/iPad):</p>
+                  <p className="text-gray-400">Adding to your home screen requires Safari on iOS. Here&apos;s how:</p>
+                  <ol className="list-decimal list-inside space-y-1 text-gray-400">
+                    <li>Copy this page&apos;s URL (tap the address bar, then <strong className="text-white">Copy</strong>)</li>
+                    <li>Open <strong className="text-white">Safari</strong> and paste the URL</li>
+                    <li>
+                      Tap the <strong className="text-white">Share</strong> button{' '}
+                      <svg className="inline-block w-4 h-4 text-white align-text-bottom" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v12m0-12l-4 4m4-4l4 4" />
+                      </svg>
+                      {' '}at the bottom
+                    </li>
+                    <li>Tap <strong className="text-white">Add to Home Screen</strong></li>
+                  </ol>
+                  <p className="text-yellow-400/80 text-xs mt-1">You&apos;re currently using a non-Safari browser. Add to Home Screen is only available in Safari on iOS.</p>
+                </>
+              ) : isAndroid ? (
                 <>
                   <p className="font-semibold text-white">How to install (Android):</p>
                   <ol className="list-decimal list-inside space-y-1 text-gray-400">
                     <li>Tap the <strong className="text-white">menu</strong> (three dots) in your browser</li>
                     <li>Tap <strong className="text-white">Add to Home screen</strong> or <strong className="text-white">Install app</strong></li>
                     <li>Tap <strong className="text-white">Install</strong></li>
+                  </ol>
+                </>
+              ) : (
+                <>
+                  <p className="font-semibold text-white">How to install:</p>
+                  <ol className="list-decimal list-inside space-y-1 text-gray-400">
+                    <li>Tap the <strong className="text-white">menu</strong> in your browser</li>
+                    <li>Look for <strong className="text-white">Add to Home screen</strong> or <strong className="text-white">Install app</strong></li>
                   </ol>
                 </>
               )}
