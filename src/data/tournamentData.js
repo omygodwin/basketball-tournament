@@ -290,6 +290,35 @@ export function clearAllResults() {
   localStorage.removeItem(RESULTS_KEY);
 }
 
+export function getDownstreamGameIds(gameId) {
+  // Find all games in any bracket that depend on this game's result
+  const downstream = [];
+  for (const division of divisions) {
+    const bracket = brackets[division];
+    if (!bracket) continue;
+    const allGames = [...bracket.quarterFinals, ...bracket.semiFinals, ...bracket.final];
+    // BFS: find games whose source includes this gameId, then their dependents
+    const queue = [gameId];
+    while (queue.length > 0) {
+      const current = queue.shift();
+      for (const g of allGames) {
+        if (g.source && g.source.includes(current) && !downstream.includes(g.gameId)) {
+          downstream.push(g.gameId);
+          queue.push(g.gameId);
+        }
+      }
+    }
+  }
+  return downstream;
+}
+
+export function clearGameResult(gameId) {
+  const results = getGameResults();
+  const toClear = [gameId, ...getDownstreamGameIds(gameId)];
+  toClear.forEach((id) => delete results[id]);
+  localStorage.setItem(RESULTS_KEY, JSON.stringify(results));
+}
+
 export function clearDivisionResults(division) {
   const results = getGameResults();
   const bracket = brackets[division];

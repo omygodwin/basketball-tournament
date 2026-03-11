@@ -11,7 +11,7 @@ import { checkAndNotifyNewResults, saveNotifiedResults } from './utils/notificat
 const logoUrl = import.meta.env.BASE_URL + 'covenant-logo.png';
 
 export default function TournamentApp() {
-  const [view, setView] = useState('home');
+  const [view, setView] = useState(() => getSelectedChild() ? 'central' : 'home');
   const [selectedChild, setSelectedChild] = useState(getSelectedChild());
   const [allChildren, setAllChildren] = useState(getSelectedChildren());
   const [activeChildIdx, setActiveChildIdx] = useState(getActiveChildIndex());

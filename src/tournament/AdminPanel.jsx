@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ADMIN_PIN, divisions, getBracket, getGameResults, saveGameResult, clearAllResults, clearDivisionResults, brackets } from '../data/tournamentData';
+import { ADMIN_PIN, divisions, getBracket, getGameResults, saveGameResult, clearGameResult, clearAllResults, clearDivisionResults, brackets } from '../data/tournamentData';
 import BracketDisplay from './BracketDisplay';
 import ScoreEntryModal from './components/ScoreEntryModal';
 
@@ -43,6 +43,12 @@ export default function AdminPanel({ onBack }) {
 
   function handleScoreSave(gameId, s1, s2, winner) {
     saveGameResult(gameId, s1, s2, winner);
+    setGameResults(getGameResults());
+    setScoreGame(null);
+  }
+
+  function handleClearGame(gameId) {
+    clearGameResult(gameId);
     setGameResults(getGameResults());
     setScoreGame(null);
   }
@@ -162,6 +168,7 @@ export default function AdminPanel({ onBack }) {
           game={scoreGame}
           gameResults={gameResults}
           onSave={handleScoreSave}
+          onClear={handleClearGame}
           onClose={() => setScoreGame(null)}
         />
       )}
