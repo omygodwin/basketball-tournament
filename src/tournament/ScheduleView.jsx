@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { schedule, courts, teams, getGameResults } from '../data/tournamentData';
 import GameCard from './components/GameCard';
-import CourtKey from './components/CourtKey';
 
 export default function ScheduleView({ filterDivision, selectedChild, onTeamClick, onGameClick }) {
   const [filterTeam, setFilterTeam] = useState('');
@@ -101,7 +100,6 @@ export default function ScheduleView({ filterDivision, selectedChild, onTeamClic
         );
       })}
 
-      <CourtKey />
     </div>
   );
 }

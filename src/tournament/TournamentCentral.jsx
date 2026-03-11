@@ -11,7 +11,7 @@ import SearchOverlay from './components/SearchOverlay';
 import ChildSheet from './components/ChildSheet';
 import MatchupModal from './components/MatchupModal';
 import InstallBanner from './components/InstallBanner';
-import { divisions, getBracket, getGameResults } from '../data/tournamentData';
+import { divisions, getBracket, getGameResults, courts } from '../data/tournamentData';
 
 export default function TournamentCentral({
   selectedChild,
@@ -28,6 +28,7 @@ export default function TournamentCentral({
   const [gameResults, setGameResults] = useState(getGameResults());
   const [showSearch, setShowSearch] = useState(false);
   const [showChildSheet, setShowChildSheet] = useState(false);
+  const [showCourtKey, setShowCourtKey] = useState(false);
   const [subFilter, setSubFilter] = useState({
     brackets: selectedChild ? selectedChild.division : divisions[0],
     schedule: 'all',
@@ -103,6 +104,7 @@ export default function TournamentCentral({
         onBack={onBack}
         onSearchOpen={() => setShowSearch(true)}
         onChildOpen={() => setShowChildSheet(true)}
+        onCourtKeyOpen={activeTab === 'schedule' ? () => setShowCourtKey(true) : undefined}
         selectedChild={selectedChild}
       />
 
@@ -185,6 +187,27 @@ export default function TournamentCentral({
           onTeamClick={handleTeamClick}
           selectedChild={selectedChild}
         />
+      )}
+
+      {showCourtKey && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-4" onClick={() => setShowCourtKey(false)}>
+          <div className="bg-navy-900 rounded-xl border border-navy-700 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-4 pt-4 pb-2">
+              <h3 className="text-lg font-bold text-green-400">Court Locations</h3>
+              <button onClick={() => setShowCourtKey(false)} className="text-gray-400 hover:text-white text-xl leading-none">&times;</button>
+            </div>
+            <div className="px-4 pb-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {courts.map((court) => (
+                <div key={court.id} className="flex items-start gap-2 text-sm">
+                  <span className="bg-green-600 text-white font-bold px-2 py-0.5 rounded text-xs whitespace-nowrap">
+                    {court.name}
+                  </span>
+                  <span className="text-gray-300">{court.location}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
 
       <InstallBanner aboveBottomNav />
