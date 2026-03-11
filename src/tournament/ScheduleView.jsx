@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { schedule, courts, teams, divisions, getGameResults } from '../data/tournamentData';
+import { schedule, courts, teams, getGameResults } from '../data/tournamentData';
 import GameCard from './components/GameCard';
 import CourtKey from './components/CourtKey';
 
-export default function ScheduleView({ selectedChild, onTeamClick, onGameClick }) {
+export default function ScheduleView({ filterDivision, selectedChild, onTeamClick, onGameClick }) {
   const [filterTeam, setFilterTeam] = useState('');
-  const [filterDivision, setFilterDivision] = useState('');
   const [gameResults, setGameResults] = useState(getGameResults());
 
   useEffect(() => {
@@ -61,17 +60,9 @@ export default function ScheduleView({ selectedChild, onTeamClick, onGameClick }
       )}
 
       <div className="flex items-center gap-3 mb-4 flex-wrap">
-        <h3 className="text-lg font-bold text-white">Full Tournament Schedule</h3>
-        <select
-          value={filterDivision}
-          onChange={(e) => setFilterDivision(e.target.value)}
-          className="bg-navy-700 text-white border border-navy-600 rounded-lg px-3 py-1.5 text-sm focus:border-green-500 focus:outline-none"
-        >
-          <option value="">All Divisions</option>
-          {divisions.map((div) => (
-            <option key={div} value={div}>{div}</option>
-          ))}
-        </select>
+        <h3 className="text-lg font-bold text-white">
+          {filterDivision ? `${filterDivision} Schedule` : 'Full Tournament Schedule'}
+        </h3>
         <select
           value={filterTeam}
           onChange={(e) => setFilterTeam(e.target.value)}

@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import BracketsView from './BracketsView';
 import ScheduleView from './ScheduleView';
 import TeamsView from './TeamsView';
 import TeamPage from './TeamPage';
 import ResultsView from './ResultsView';
-import ChildSwitcher from './components/ChildSwitcher';
+import TopBar from './components/TopBar';
+import SubTabs from './components/SubTabs';
+import BottomNav from './components/BottomNav';
+import SearchOverlay from './components/SearchOverlay';
+import ChildSheet from './components/ChildSheet';
 import MatchupModal from './components/MatchupModal';
 import InstallBanner from './components/InstallBanner';
 import { divisions, getBracket, getGameResults } from '../data/tournamentData';
-
-const logoUrl = import.meta.env.BASE_URL + 'covenant-logo.png';
 
 export default function TournamentCentral({
   selectedChild,
@@ -24,12 +26,25 @@ export default function TournamentCentral({
   const [matchupGame, setMatchupGame] = useState(null);
   const [focusTeam, setFocusTeam] = useState(null);
   const [gameResults, setGameResults] = useState(getGameResults());
+  const [showSearch, setShowSearch] = useState(false);
+  const [showChildSheet, setShowChildSheet] = useState(false);
+  const [subFilter, setSubFilter] = useState({
+    brackets: selectedChild ? selectedChild.division : divisions[0],
+    schedule: 'all',
+    teams: 'all',
+  });
 
   useEffect(() => {
     function handleFocus() { setGameResults(getGameResults()); }
     window.addEventListener('focus', handleFocus);
     return () => window.removeEventListener('focus', handleFocus);
   }, []);
+
+  useEffect(() => {
+    if (selectedChild) {
+      setSubFilter((prev) => ({ ...prev, brackets: selectedChild.division }));
+    }
+  }, [selectedChild]);
 
   const hasAnyChampion = divisions.some((div) => {
     const bracket = getBracket(div);
@@ -38,109 +53,70 @@ export default function TournamentCentral({
     return result && result.winner;
   });
 
-  const tabs = [
-    { id: 'brackets', label: 'Brackets' },
-    { id: 'schedule', label: 'Schedule' },
-    { id: 'teams', label: 'Teams' },
-  ];
+  const bottomTabs = useMemo(() => {
+    const tabs = [
+      { id: 'brackets', label: 'Brackets' },
+      { id: 'schedule', label: 'Schedule' },
+      { id: 'teams', label: 'Teams' },
+    ];
+    if (hasAnyChampion) {
+      tabs.push({ id: 'results', label: 'Results' });
+    }
+    if (selectedChild) {
+      tabs.push({ id: 'myteam', label: selectedChild.teamName });
+    }
+    return tabs;
+  }, [hasAnyChampion, selectedChild]);
 
-  if (hasAnyChampion) {
-    tabs.push({ id: 'results', label: 'Results' });
-  }
-
-  if (selectedChild) {
-    tabs.push({ id: 'myteam', label: selectedChild.teamName });
-  }
+  const subTabItems = useMemo(() => {
+    switch (activeTab) {
+      case 'brackets':
+        return divisions.map((d) => ({ id: d, label: d }));
+      case 'schedule':
+        return [{ id: 'all', label: 'All' }, ...divisions.map((d) => ({ id: d, label: d }))];
+      case 'teams':
+        return [{ id: 'all', label: 'All' }, ...divisions.map((d) => ({ id: d, label: d }))];
+      default:
+        return [];
+    }
+  }, [activeTab]);
 
   function handleTeamClick(teamName) {
     setMatchupGame(null);
     setFocusTeam(teamName);
     setActiveTab('teams');
+    setSubFilter((prev) => ({ ...prev, teams: 'all' }));
   }
 
   function handleGameClick(game) {
     setMatchupGame(game);
   }
 
+  function handleTabChange(id) {
+    setActiveTab(id);
+    if (id !== 'teams') setFocusTeam(null);
+  }
+
   return (
     <div className="min-h-screen bg-navy-900 text-white flex flex-col">
-      {/* Sticky header + tabs */}
-      <div className="sticky top-0 z-20 bg-navy-900">
-        {/* Header */}
-        <div className="bg-navy-800 border-b border-navy-700 px-4 py-2">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={onBack}
-                className="text-gray-400 hover:text-white text-sm shrink-0"
-              >
-                &larr; Home
-              </button>
-              <h1 className="text-lg font-bold text-green-400">Tournament Central</h1>
-            </div>
-            {allChildren && allChildren.length > 0 ? (
-              <div className="flex items-center gap-2 mt-1.5">
-                <div className="flex-1 min-w-0">
-                  <ChildSwitcher
-                    children={allChildren}
-                    activeIndex={activeChildIndex}
-                    onSwitch={onChildSwitch}
-                    onClear={onClearChild}
-                    compact
-                  />
-                </div>
-                {allChildren.length < 2 && (
-                  <button
-                    onClick={onAddChild}
-                    className="text-green-400 hover:text-green-300 text-xs border border-green-600 rounded px-2 py-0.5 shrink-0"
-                  >
-                    + Add
-                  </button>
-                )}
-              </div>
-            ) : (
-              <button
-                onClick={onAddChild}
-                className="text-green-400 hover:text-green-300 text-xs mt-1"
-              >
-                Search for your child for quick access to their team &rarr;
-              </button>
-            )}
-          </div>
-        </div>
+      <TopBar
+        onBack={onBack}
+        onSearchOpen={() => setShowSearch(true)}
+        onChildOpen={() => setShowChildSheet(true)}
+        selectedChild={selectedChild}
+      />
 
-        {/* Tab bar */}
-        <div className="bg-navy-800 border-b border-navy-700">
-          <div className="max-w-5xl mx-auto flex overflow-x-auto">
-            {tabs.map((tab) => {
-              const isActive = activeTab === tab.id;
+      <SubTabs
+        items={subTabItems}
+        activeId={subFilter[activeTab]}
+        onChange={(id) => setSubFilter((prev) => ({ ...prev, [activeTab]: id }))}
+        highlightId={selectedChild?.division}
+      />
 
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => {
-                    setActiveTab(tab.id);
-                    if (tab.id !== 'teams') setFocusTeam(null);
-                  }}
-                  className={`flex-1 min-w-0 py-3 text-center font-semibold text-sm transition-colors relative whitespace-nowrap px-2 ${
-                    isActive ? 'text-green-400' : 'text-gray-400 hover:text-gray-200'
-                  }`}
-                >
-                  <span className="truncate block">{tab.label}</span>
-                  {isActive && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-500" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* Tab content */}
-      <div className="max-w-5xl mx-auto p-4 flex-1 w-full">
+      <div className="max-w-5xl mx-auto p-4 flex-1 w-full pb-24">
         {activeTab === 'brackets' && (
           <BracketsView
+            activeDivision={subFilter.brackets}
             selectedChild={selectedChild}
             onTeamClick={handleTeamClick}
             onGameClick={handleGameClick}
@@ -148,6 +124,7 @@ export default function TournamentCentral({
         )}
         {activeTab === 'schedule' && (
           <ScheduleView
+            filterDivision={subFilter.schedule === 'all' ? '' : subFilter.schedule}
             selectedChild={selectedChild}
             onTeamClick={handleTeamClick}
             onGameClick={handleGameClick}
@@ -155,6 +132,7 @@ export default function TournamentCentral({
         )}
         {activeTab === 'teams' && (
           <TeamsView
+            filterDivision={subFilter.teams}
             selectedChild={selectedChild}
             focusTeam={focusTeam}
             onFocusHandled={() => setFocusTeam(null)}
@@ -174,12 +152,32 @@ export default function TournamentCentral({
         )}
       </div>
 
-      {/* Footer with school logo */}
-      <div className="border-t border-navy-700 py-4 px-4 text-center">
-        <img src={logoUrl} alt="The Covenant School" className="h-10 mx-auto opacity-40" />
-      </div>
+      <BottomNav
+        tabs={bottomTabs}
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+      />
 
-      {/* Matchup modal */}
+      <SearchOverlay
+        isOpen={showSearch}
+        onClose={() => setShowSearch(false)}
+        onSelectPlayer={(player) => {
+          setFocusTeam(player.teamName);
+          setActiveTab('teams');
+          setSubFilter((prev) => ({ ...prev, teams: 'all' }));
+        }}
+      />
+
+      <ChildSheet
+        isOpen={showChildSheet}
+        onClose={() => setShowChildSheet(false)}
+        allChildren={allChildren}
+        activeIndex={activeChildIndex}
+        onSwitch={onChildSwitch}
+        onClear={onClearChild}
+        onAddChild={onAddChild}
+      />
+
       {matchupGame && (
         <MatchupModal
           game={matchupGame}

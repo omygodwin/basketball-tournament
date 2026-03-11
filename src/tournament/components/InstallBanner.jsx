@@ -50,7 +50,7 @@ export default function InstallBanner() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-navy-800 border-t border-navy-600 p-4 safe-area-bottom">
+      <div className="fixed bottom-16 left-0 right-0 z-50 bg-navy-800 border-t border-navy-600 p-4">
         <div className="max-w-lg mx-auto flex items-center gap-3">
           <div className="flex-1">
             <p className="text-white font-semibold text-sm">Add to Home Screen</p>

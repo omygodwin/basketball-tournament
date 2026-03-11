@@ -1,15 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { divisions, getTeamsByDivision, isTeamEliminated, getTeamNextGame, getGameResults, courts, teams } from '../data/tournamentData';
+import { divisions, getTeamsByDivision, isTeamEliminated, getTeamNextGame, getGameResults, courts } from '../data/tournamentData';
 
-// Build flat list of all players
-const allPlayers = [];
-teams.forEach((team) => {
-  team.roster.forEach((player) => {
-    allPlayers.push({ name: player, teamName: team.name, division: team.division });
-  });
-});
-
-export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, onGameClick }) {
+export default function TeamsView({ filterDivision, selectedChild, focusTeam, onFocusHandled, onGameClick }) {
   const [expandedTeams, setExpandedTeams] = useState(() => {
     const initial = new Set();
     if (selectedChild) initial.add(selectedChild.teamName);
@@ -18,11 +10,6 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
   const [gameResults, setGameResults] = useState(getGameResults());
   const focusRef = useRef(null);
   const prevFocusTeam = useRef(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [showSearchDrop, setShowSearchDrop] = useState(false);
-  const searchInputRef = useRef(null);
-  const searchDropRef = useRef(null);
 
   useEffect(() => {
     function handleFocus() { setGameResults(getGameResults()); }
@@ -43,42 +30,6 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
     }
   }, [focusTeam, onFocusHandled]);
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (searchDropRef.current && !searchDropRef.current.contains(e.target) &&
-          searchInputRef.current && !searchInputRef.current.contains(e.target)) {
-        setShowSearchDrop(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  function handleSearchChange(e) {
-    const val = e.target.value;
-    setSearchQuery(val);
-    if (val.trim().length < 2) {
-      setSearchResults([]);
-      setShowSearchDrop(false);
-      return;
-    }
-    const lower = val.toLowerCase();
-    const matches = allPlayers.filter((p) => p.name.toLowerCase().includes(lower));
-    setSearchResults(matches);
-    setShowSearchDrop(matches.length > 0);
-  }
-
-  function handleSearchSelect(player) {
-    setSearchQuery('');
-    setShowSearchDrop(false);
-    if (searchInputRef.current) searchInputRef.current.blur();
-    setExpandedTeams((prev) => new Set([...prev, player.teamName]));
-    setTimeout(() => {
-      const el = document.getElementById(`team-card-${player.teamName}`);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 100);
-  }
-
   function toggleTeam(name) {
     setExpandedTeams((prev) => {
       const next = new Set(prev);
@@ -93,7 +44,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
 
   function expandAll() {
     const all = new Set();
-    divisions.forEach((div) => {
+    visibleDivisions.forEach((div) => {
       getTeamsByDivision(div).forEach((t) => all.add(t.name));
     });
     setExpandedTeams(all);
@@ -103,50 +54,22 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
     setExpandedTeams(new Set());
   }
 
+  const visibleDivisions = filterDivision && filterDivision !== 'all'
+    ? divisions.filter((d) => d === filterDivision)
+    : divisions;
+
   const allExpanded = (() => {
     let total = 0;
-    divisions.forEach((div) => { total += getTeamsByDivision(div).length; });
-    return expandedTeams.size >= total;
+    visibleDivisions.forEach((div) => { total += getTeamsByDivision(div).length; });
+    return total > 0 && expandedTeams.size >= total;
   })();
 
   return (
     <div>
-      {/* Player search */}
-      <div className="relative mb-4">
-        <input
-          ref={searchInputRef}
-          type="text"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          onFocus={() => { if (searchResults.length > 0) setShowSearchDrop(true); }}
-          placeholder="Search for a player to find their team..."
-          className="w-full px-3 py-2 rounded-lg bg-navy-700 text-white placeholder-gray-400 border border-navy-600 focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:outline-none text-base"
-        />
-        {showSearchDrop && (
-          <div
-            ref={searchDropRef}
-            className="absolute z-50 w-full mt-1 bg-navy-800 border border-navy-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"
-          >
-            {searchResults.map((player, i) => (
-              <button
-                key={`${player.name}-${player.teamName}`}
-                onClick={() => handleSearchSelect(player)}
-                className={`w-full text-left px-3 py-2 hover:bg-navy-700 transition-colors text-sm ${
-                  i < searchResults.length - 1 ? 'border-b border-navy-700' : ''
-                }`}
-              >
-                <span className="text-white font-medium">{player.name}</span>
-                <span className="text-gray-400 text-xs ml-2">
-                  — {player.teamName} ({player.division})
-                </span>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-white">All Teams</h3>
+        <h3 className="text-lg font-bold text-white">
+          {filterDivision && filterDivision !== 'all' ? filterDivision : 'All Teams'}
+        </h3>
         <button
           onClick={allExpanded ? collapseAll : expandAll}
           className="text-green-400 hover:text-green-300 text-sm font-medium"
@@ -155,13 +78,15 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
         </button>
       </div>
 
-      {divisions.map((div) => {
+      {visibleDivisions.map((div) => {
         const divTeams = getTeamsByDivision(div);
         if (divTeams.length === 0) return null;
 
         return (
           <div key={div} className="mb-6">
-            <h3 className="text-lg font-bold text-green-400 mb-3">{div}</h3>
+            {visibleDivisions.length > 1 && (
+              <h3 className="text-lg font-bold text-green-400 mb-3">{div}</h3>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {divTeams.sort((a, b) => a.seed - b.seed).map((team) => {
                 const isChildTeam = selectedChild && selectedChild.teamName === team.name && selectedChild.division === team.division;
@@ -201,7 +126,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
                           </span>
                         )}
                       </div>
-                      <span className="text-gray-500 text-sm shrink-0 ml-2">{isExpanded ? '−' : '+'}</span>
+                      <span className="text-gray-500 text-sm shrink-0 ml-2">{isExpanded ? '\u2212' : '+'}</span>
                     </button>
 
                     {nextGame && (

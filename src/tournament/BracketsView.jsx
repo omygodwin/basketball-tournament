@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { divisions, getBracket, getGameResults } from '../data/tournamentData';
+import { getBracket, getGameResults } from '../data/tournamentData';
 import BracketDisplay from './BracketDisplay';
 
-export default function BracketsView({ selectedChild, onTeamClick, onGameClick }) {
-  const defaultDiv = selectedChild ? selectedChild.division : divisions[0];
-  const [activeDivision, setActiveDivision] = useState(defaultDiv);
+export default function BracketsView({ activeDivision, selectedChild, onTeamClick, onGameClick }) {
   const [gameResults, setGameResults] = useState(getGameResults());
 
   useEffect(() => {
@@ -13,30 +11,10 @@ export default function BracketsView({ selectedChild, onTeamClick, onGameClick }
     return () => window.removeEventListener('focus', handleFocus);
   }, []);
 
-  useEffect(() => {
-    if (selectedChild) setActiveDivision(selectedChild.division);
-  }, [selectedChild]);
-
   const bracket = getBracket(activeDivision);
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2 mb-4">
-        {divisions.map((div) => (
-          <button
-            key={div}
-            onClick={() => setActiveDivision(div)}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              activeDivision === div
-                ? 'bg-green-600 text-white'
-                : 'bg-navy-700 text-gray-300 hover:bg-navy-600'
-            } ${selectedChild && selectedChild.division === div ? 'ring-2 ring-green-400' : ''}`}
-          >
-            {div}
-          </button>
-        ))}
-      </div>
-
       <h3 className="text-xl font-bold text-white mb-2">{activeDivision} Bracket</h3>
 
       {bracket ? (
