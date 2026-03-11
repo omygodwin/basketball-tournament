@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ADMIN_PIN, divisions, getBracket, getGameResults, saveGameResult, clearGameResult, clearAllResults, clearDivisionResults, brackets } from '../data/tournamentData';
+import { useState } from 'react';
+import { ADMIN_PIN, divisions, getBracket, getGameResults, useGameResults, saveGameResult, clearGameResult, clearAllResults, clearDivisionResults, brackets } from '../data/tournamentData';
 import BracketDisplay from './BracketDisplay';
 import ScoreEntryModal from './components/ScoreEntryModal';
 
@@ -20,16 +20,10 @@ export default function AdminPanel({ onBack }) {
   const [pin, setPin] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
   const [pinError, setPinError] = useState(false);
-  const [gameResults, setGameResults] = useState(getGameResults());
+  const gameResults = useGameResults();
   const [activeDivision, setActiveDivision] = useState(divisions[0]);
   const [scoreGame, setScoreGame] = useState(null);
   const [showClearConfirm, setShowClearConfirm] = useState(null);
-
-  useEffect(() => {
-    function handleFocus() { setGameResults(getGameResults()); }
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, []);
 
   function handlePinSubmit(e) {
     e.preventDefault();
@@ -43,13 +37,11 @@ export default function AdminPanel({ onBack }) {
 
   function handleScoreSave(gameId, s1, s2, winner) {
     saveGameResult(gameId, s1, s2, winner);
-    setGameResults(getGameResults());
     setScoreGame(null);
   }
 
   function handleClearGame(gameId) {
     clearGameResult(gameId);
-    setGameResults(getGameResults());
     setScoreGame(null);
   }
 
@@ -59,7 +51,6 @@ export default function AdminPanel({ onBack }) {
     } else {
       clearDivisionResults(activeDivision);
     }
-    setGameResults(getGameResults());
     setShowClearConfirm(null);
   }
 

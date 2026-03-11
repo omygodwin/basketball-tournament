@@ -134,8 +134,8 @@ function showNotification(title, body) {
     } else {
       new Notification(title, {
         body,
-        icon: import.meta.env.BASE_URL + 'basketball-icon-192.png',
-        badge: import.meta.env.BASE_URL + 'basketball-icon-192.png',
+        icon: import.meta.env.BASE_URL + 'covenant-icon-192.png',
+        badge: import.meta.env.BASE_URL + 'covenant-icon-192.png',
       });
     }
   } catch {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { divisions, getTeamsByDivision, isTeamEliminated, getTeamNextGame, getGameResults, courts } from '../data/tournamentData';
+import { divisions, getTeamsByDivision, isTeamEliminated, getTeamNextGame, useGameResults, courts } from '../data/tournamentData';
 
 export default function TeamsView({ filterDivision, selectedChild, focusTeam, onFocusHandled, onGameClick }) {
   const [expandedTeams, setExpandedTeams] = useState(() => {
@@ -7,15 +7,9 @@ export default function TeamsView({ filterDivision, selectedChild, focusTeam, on
     if (selectedChild) initial.add(selectedChild.teamName);
     return initial;
   });
-  const [gameResults, setGameResults] = useState(getGameResults());
+  const gameResults = useGameResults();
   const focusRef = useRef(null);
   const prevFocusTeam = useRef(null);
-
-  useEffect(() => {
-    function handleFocus() { setGameResults(getGameResults()); }
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, []);
 
   useEffect(() => {
     if (focusTeam && focusTeam !== prevFocusTeam.current) {

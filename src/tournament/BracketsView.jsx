@@ -1,15 +1,8 @@
-import { useState, useEffect } from 'react';
-import { getBracket, getGameResults } from '../data/tournamentData';
+import { getBracket, useGameResults } from '../data/tournamentData';
 import BracketDisplay from './BracketDisplay';
 
 export default function BracketsView({ activeDivision, selectedChild, onTeamClick, onGameClick }) {
-  const [gameResults, setGameResults] = useState(getGameResults());
-
-  useEffect(() => {
-    function handleFocus() { setGameResults(getGameResults()); }
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, []);
+  const gameResults = useGameResults();
 
   const bracket = getBracket(activeDivision);
 

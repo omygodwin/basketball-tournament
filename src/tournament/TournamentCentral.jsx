@@ -11,7 +11,7 @@ import SearchOverlay from './components/SearchOverlay';
 import ChildSheet from './components/ChildSheet';
 import MatchupModal from './components/MatchupModal';
 import InstallBanner from './components/InstallBanner';
-import { divisions, getBracket, getGameResults, courts } from '../data/tournamentData';
+import { divisions, getBracket, useGameResults, courts } from '../data/tournamentData';
 
 export default function TournamentCentral({
   selectedChild,
@@ -25,7 +25,7 @@ export default function TournamentCentral({
   const [activeTab, setActiveTab] = useState('brackets');
   const [matchupGame, setMatchupGame] = useState(null);
   const [focusTeam, setFocusTeam] = useState(null);
-  const [gameResults, setGameResults] = useState(getGameResults());
+  const gameResults = useGameResults();
   const [showSearch, setShowSearch] = useState(false);
   const [showChildSheet, setShowChildSheet] = useState(false);
   const [showCourtKey, setShowCourtKey] = useState(false);
@@ -34,12 +34,6 @@ export default function TournamentCentral({
     schedule: 'all',
     teams: 'all',
   });
-
-  useEffect(() => {
-    function handleFocus() { setGameResults(getGameResults()); }
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, []);
 
   useEffect(() => {
     if (selectedChild) {

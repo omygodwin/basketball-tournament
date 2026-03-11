@@ -36,8 +36,8 @@ self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
     self.registration.showNotification(event.data.title, {
       body: event.data.body,
-      icon: '/basketball-tournament/basketball-icon-192.png',
-      badge: '/basketball-tournament/basketball-icon-192.png',
+      icon: '/basketball-tournament/covenant-icon-192.png',
+      badge: '/basketball-tournament/covenant-icon-192.png',
       tag: 'tournament-result',
       renotify: true,
     });

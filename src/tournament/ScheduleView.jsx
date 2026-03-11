@@ -1,16 +1,10 @@
-import { useState, useEffect } from 'react';
-import { schedule, courts, teams, getGameResults } from '../data/tournamentData';
+import { useState } from 'react';
+import { schedule, courts, teams, useGameResults } from '../data/tournamentData';
 import GameCard from './components/GameCard';
 
 export default function ScheduleView({ filterDivision, selectedChild, onTeamClick, onGameClick }) {
   const [filterTeam, setFilterTeam] = useState('');
-  const [gameResults, setGameResults] = useState(getGameResults());
-
-  useEffect(() => {
-    function handleFocus() { setGameResults(getGameResults()); }
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, []);
+  const gameResults = useGameResults();
 
   const teamNames = [...new Set(teams.map((t) => t.name))].sort();
 

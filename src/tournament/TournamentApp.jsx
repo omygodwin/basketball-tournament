@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getSelectedChild, getSelectedChildren, getActiveChildIndex, saveSelectedChild, setActiveChildIndex } from '../data/tournamentData';
+import { getSelectedChild, getSelectedChildren, getActiveChildIndex, saveSelectedChild, setActiveChildIndex, subscribeToResults } from '../data/tournamentData';
 import PlayerSearch from './components/PlayerSearch';
 import ChildSwitcher from './components/ChildSwitcher';
 import TournamentCentral from './TournamentCentral';
@@ -39,25 +39,16 @@ export default function TournamentApp() {
     refreshChildState();
   }
 
-  // Check for new game results and notify on app focus/visibility
+  // Check for new game results and notify in real-time via Firebase subscription
   useEffect(() => {
     // Save initial results snapshot so we don't notify about pre-existing games
     saveNotifiedResults();
 
-    function handleVisibility() {
-      if (document.visibilityState === 'visible') {
-        checkAndNotifyNewResults();
-      }
-    }
-    function handleFocus() {
+    // Subscribe to real-time results changes — notifications fire instantly
+    const unsub = subscribeToResults(() => {
       checkAndNotifyNewResults();
-    }
-    document.addEventListener('visibilitychange', handleVisibility);
-    window.addEventListener('focus', handleFocus);
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibility);
-      window.removeEventListener('focus', handleFocus);
-    };
+    });
+    return unsub;
   }, []);
 
   if (view === 'central') {

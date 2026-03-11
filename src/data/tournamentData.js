@@ -1,5 +1,7 @@
 // School Basketball Tournament Data
 // All data extracted from tournament bracket images and schedules
+import { useState, useEffect } from 'react';
+import { resultsRef, onValue, set } from './firebase';
 
 export const ADMIN_PIN = "1234";
 
@@ -266,28 +268,80 @@ export function getBracket(division) {
   return brackets[division];
 }
 
-// LocalStorage helpers for game results
+// Game results storage with Firebase sync
 const RESULTS_KEY = "tournament-results";
 const SELECTED_CHILDREN_KEY = "tournament-selected-children";
 const ACTIVE_CHILD_KEY = "tournament-active-child-index";
 
-export function getGameResults() {
+// In-memory cache and subscriber system
+let _results = {};
+const _subscribers = new Set();
+
+function _notifySubscribers() {
+  const snapshot = { ..._results };
+  _subscribers.forEach((cb) => cb(snapshot));
+}
+
+// Initialize: seed from localStorage, then attach Firebase listener
+export function initResultsSync() {
+  // Seed from localStorage for instant load
   try {
     const stored = localStorage.getItem(RESULTS_KEY);
-    return stored ? JSON.parse(stored) : {};
-  } catch {
-    return {};
+    if (stored) _results = JSON.parse(stored);
+  } catch {}
+
+  // Attach Firebase real-time listener
+  if (resultsRef) {
+    onValue(resultsRef, (snapshot) => {
+      const data = snapshot.val();
+      _results = data || {};
+      // Keep localStorage in sync as offline cache
+      localStorage.setItem(RESULTS_KEY, JSON.stringify(_results));
+      _notifySubscribers();
+    });
   }
 }
 
+// Subscribe to results changes — returns unsubscribe function
+export function subscribeToResults(callback) {
+  _subscribers.add(callback);
+  return () => _subscribers.delete(callback);
+}
+
+// React hook for components
+export function useGameResults() {
+  const [results, setResults] = useState(() => ({ ..._results }));
+  useEffect(() => {
+    const unsub = subscribeToResults((r) => setResults(r));
+    return unsub;
+  }, []);
+  return results;
+}
+
+export function getGameResults() {
+  return { ..._results };
+}
+
+function _persistResults() {
+  localStorage.setItem(RESULTS_KEY, JSON.stringify(_results));
+  if (resultsRef) {
+    set(resultsRef, _results).catch((e) => console.error('Firebase write error:', e));
+  }
+  _notifySubscribers();
+}
+
 export function saveGameResult(gameId, score1, score2, winner) {
-  const results = getGameResults();
-  results[gameId] = { score1, score2, winner };
-  localStorage.setItem(RESULTS_KEY, JSON.stringify(results));
+  _results[gameId] = { score1, score2, winner };
+  _persistResults();
 }
 
 export function clearAllResults() {
+  _results = {};
   localStorage.removeItem(RESULTS_KEY);
+  if (resultsRef) {
+    set(resultsRef, null).catch((e) => console.error('Firebase write error:', e));
+  }
+  _notifySubscribers();
 }
 
 export function getDownstreamGameIds(gameId) {
@@ -313,22 +367,20 @@ export function getDownstreamGameIds(gameId) {
 }
 
 export function clearGameResult(gameId) {
-  const results = getGameResults();
   const toClear = [gameId, ...getDownstreamGameIds(gameId)];
-  toClear.forEach((id) => delete results[id]);
-  localStorage.setItem(RESULTS_KEY, JSON.stringify(results));
+  toClear.forEach((id) => delete _results[id]);
+  _persistResults();
 }
 
 export function clearDivisionResults(division) {
-  const results = getGameResults();
   const bracket = brackets[division];
   if (!bracket) return;
   const gameIds = new Set();
   bracket.quarterFinals.forEach((g) => gameIds.add(g.gameId));
   bracket.semiFinals.forEach((g) => gameIds.add(g.gameId));
   bracket.final.forEach((g) => gameIds.add(g.gameId));
-  gameIds.forEach((id) => delete results[id]);
-  localStorage.setItem(RESULTS_KEY, JSON.stringify(results));
+  gameIds.forEach((id) => delete _results[id]);
+  _persistResults();
 }
 
 // Multi-child support

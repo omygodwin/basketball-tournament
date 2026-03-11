@@ -1,15 +1,8 @@
-import { useEffect, useState } from 'react';
-import { getTeamByName, getBracket, schedule, getGameResults, courts } from '../data/tournamentData';
+import { getTeamByName, getBracket, schedule, useGameResults, courts } from '../data/tournamentData';
 import BracketDisplay from './BracketDisplay';
 
 export default function TeamPage({ selectedChild, embedded, onTeamClick, onGameClick, onViewCentral, onBack }) {
-  const [gameResults, setGameResults] = useState(getGameResults());
-
-  useEffect(() => {
-    function handleFocus() { setGameResults(getGameResults()); }
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, []);
+  const gameResults = useGameResults();
 
   if (!selectedChild) return null;
 
