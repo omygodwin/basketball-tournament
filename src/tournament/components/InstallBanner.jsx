@@ -54,7 +54,7 @@ export default function InstallBanner() {
         <div className="max-w-lg mx-auto flex items-center gap-3">
           <div className="flex-1">
             <p className="text-white font-semibold text-sm">Add to Home Screen</p>
-            <p className="text-gray-400 text-xs">Quick access to scores &amp; brackets</p>
+            <p className="text-gray-400 text-xs">Get notifications for game results</p>
           </div>
           <button
             onClick={() => setShowInfo(true)}
@@ -106,11 +106,11 @@ export default function InstallBanner() {
 
               <hr className="border-navy-700" />
 
-              <p className="font-semibold text-white">Stay Updated</p>
+              <p className="font-semibold text-white">Notifications &amp; Updates</p>
               <ul className="list-disc list-inside space-y-1 text-gray-400">
-                <li>Game results are posted shortly after each game ends</li>
-                <li>Open the app to see updated scores, brackets, and your child's next game</li>
-                <li>Select your child for personalized team info and schedule</li>
+                <li><strong className="text-green-400">Enable notifications</strong> to get alerted when your child&apos;s game results are posted</li>
+                <li>Get next game info and schedule updates for your child&apos;s team</li>
+                <li>Select your child for personalized team info</li>
               </ul>
 
               <hr className="border-navy-700" />

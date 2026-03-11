@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getSelectedChild, getSelectedChildren, getActiveChildIndex, saveSelectedChild, setActiveChildIndex } from '../data/tournamentData';
 import PlayerSearch from './components/PlayerSearch';
 import ChildSwitcher from './components/ChildSwitcher';
 import TournamentCentral from './TournamentCentral';
 import AdminPanel from './AdminPanel';
 import InstallBanner from './components/InstallBanner';
+import NotificationPrompt from './components/NotificationPrompt';
+import { checkAndNotifyNewResults, saveNotifiedResults } from './utils/notifications';
 
 const logoUrl = import.meta.env.BASE_URL + 'covenant-logo.png';
 
@@ -36,6 +38,27 @@ export default function TournamentApp() {
     setActiveChildIndex(idx);
     refreshChildState();
   }
+
+  // Check for new game results and notify on app focus/visibility
+  useEffect(() => {
+    // Save initial results snapshot so we don't notify about pre-existing games
+    saveNotifiedResults();
+
+    function handleVisibility() {
+      if (document.visibilityState === 'visible') {
+        checkAndNotifyNewResults();
+      }
+    }
+    function handleFocus() {
+      checkAndNotifyNewResults();
+    }
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleFocus);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, []);
 
   if (view === 'central') {
     return (
@@ -147,6 +170,7 @@ export default function TournamentApp() {
       </div>
 
       <InstallBanner />
+      <NotificationPrompt />
     </div>
   );
 }
