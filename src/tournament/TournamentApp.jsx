@@ -68,7 +68,7 @@ export default function TournamentApp() {
         activeChildIndex={activeChildIdx}
         onChildSwitch={handleChildSwitch}
         onClearChild={handleClearChild}
-        onAddChild={() => setView('home')}
+        onAddChild={handlePlayerSelect}
         onBack={() => setView('home')}
       />
     );

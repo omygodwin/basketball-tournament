@@ -175,7 +175,7 @@ export default function TournamentCentral({
         activeIndex={activeChildIndex}
         onSwitch={onChildSwitch}
         onClear={onClearChild}
-        onAddChild={onAddChild}
+        onSelectChild={onAddChild}
       />
 
       {matchupGame && (
