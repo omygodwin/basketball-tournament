@@ -19,9 +19,27 @@ React 19 PWA for The Covenant School's 3rd Annual 3v3 March Madness basketball t
 ### Key Directories
 - `src/data/tournamentData.js` — All tournament data (teams, brackets, schedules) + localStorage helpers
 - `src/tournament/` — Main view components (TournamentApp, TournamentCentral, AdminPanel, etc.)
-- `src/tournament/components/` — Reusable UI components (PlayerSearch, InstallBanner, etc.)
+- `src/tournament/components/` — Reusable UI components
 - `src/tournament/utils/` — Utility modules (notifications)
 - `public/` — Static assets (icons, manifest.json, sw.js)
+
+### UI Architecture
+ESPN-style mobile-first layout with fixed bottom navigation:
+- **TopBar** — Sticky header: back arrow, school logo, search icon, child selector icon, court key icon (schedule tab only)
+- **SubTabs** — Horizontally scrollable division pills below TopBar, context changes per active tab
+- **BottomNav** — Fixed bottom tab bar with SVG icons (Brackets, Schedule, Teams, + conditional Results/MyTeam)
+- **SearchOverlay** — Full-screen player search from magnifying glass icon
+- **ChildSheet** — Bottom sheet from person icon for managing up to 2 children with inline search
+- **MatchupModal** — Game detail popup when tapping any game card
+- **GameCard** — Reusable game display card used across Schedule, Brackets, TeamPage
+
+Conditional tabs: "Results" appears when any division has a champion. "MyTeam" appears when a child is selected.
+
+### Notifications (PWA)
+- Service worker (`public/sw.js`): network-first caching, cache name `tournament-v1`
+- Notification flow: AdminPanel saves results → checks for changes → sends push via `postMessage` to SW
+- `src/tournament/utils/notifications.js` — Permission checks, result diff detection, team-specific alerts
+- Only prompts for notification permission in standalone (installed) mode
 
 ### Data Layer
 All game results are stored in **localStorage** (no backend):
@@ -38,6 +56,8 @@ Each division has `quarterFinals[]`, `semiFinals[]`, `final[]`. Later rounds use
 Format: `{grade}{gender}-{round}` e.g. `3B-QF1` (3rd Boys Quarter-Final 1), `5G-SF2`, `4B-F`
 
 ## Styling Conventions
+- **Custom CSS**: `.scrollbar-hide` utility in `src/index.css` for hidden horizontal scrollbars
+- **Safe areas**: `env(safe-area-inset-bottom)` and `viewport-fit=cover` for iOS home indicator
 - **Color scheme**: Navy backgrounds (`bg-navy-800`, `bg-navy-900`), green accents (`text-green-400`, `bg-green-600`)
 - **Navy custom colors** defined in Tailwind (navy-600 through navy-900)
 - All text is white/gray on dark backgrounds
