@@ -13,7 +13,7 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
       <div
         className={`flex items-center justify-between px-2 py-1.5 ${
           won ? 'bg-green-900/40' : lost ? 'opacity-50' : ''
-        } ${isHighlighted ? 'ring-1 ring-orange-400 rounded' : ''}`}
+        } ${isHighlighted ? 'ring-1 ring-green-400 rounded' : ''}`}
       >
         <div className="flex items-center gap-1.5 min-w-0 flex-1">
           {seed && <span className="text-gray-500 text-xs font-mono w-4 shrink-0">{seed}</span>}
@@ -49,7 +49,7 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
 
   return (
     <div
-      className="bg-gray-800 border border-gray-600 rounded w-56 overflow-hidden shadow-md cursor-pointer hover:border-gray-500 transition-colors"
+      className="bg-navy-800 border border-navy-600 rounded w-56 overflow-hidden shadow-md cursor-pointer hover:border-navy-600 transition-colors"
       onClick={() => onGameClick && onGameClick(game)}
       title="Click for matchup details"
     >
@@ -59,7 +59,7 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
         hasResult ? result.score1 : null,
         game.team1 && game.team1 !== 'TBD'
       )}
-      <div className="border-t border-gray-600" />
+      <div className="border-t border-navy-600" />
       {teamRow(
         team2, game.seed2, team2Won, hasResult && !team2Won,
         highlightTeam && game.team2 === highlightTeam,
@@ -149,8 +149,8 @@ export default function BracketDisplay({ bracket, highlightTeam, gameResults, on
           <div className="flex-1" />
           {[0, 1].map((i) => (
             <div key={i} className="flex-1 flex flex-col justify-center">
-              <div className="border-t-2 border-r-2 border-gray-600 h-16 rounded-tr-lg" />
-              <div className="border-b-2 border-r-2 border-gray-600 h-16 rounded-br-lg" />
+              <div className="border-t-2 border-r-2 border-navy-600 h-16 rounded-tr-lg" />
+              <div className="border-b-2 border-r-2 border-navy-600 h-16 rounded-br-lg" />
             </div>
           ))}
           <div className="flex-1" />
@@ -173,8 +173,8 @@ export default function BracketDisplay({ bracket, highlightTeam, gameResults, on
 
         {/* Connector lines SF -> F */}
         <div className="flex flex-col justify-center flex-shrink-0 w-8">
-          <div className="border-t-2 border-r-2 border-gray-600 h-20 rounded-tr-lg" />
-          <div className="border-b-2 border-r-2 border-gray-600 h-20 rounded-br-lg" />
+          <div className="border-t-2 border-r-2 border-navy-600 h-20 rounded-tr-lg" />
+          <div className="border-b-2 border-r-2 border-navy-600 h-20 rounded-br-lg" />
         </div>
 
         {/* Final */}
@@ -190,7 +190,7 @@ export default function BracketDisplay({ bracket, highlightTeam, gameResults, on
           {champion && (
             <div className="mt-3 text-center">
               <div className="text-xs text-gray-500 uppercase tracking-wide">Champion</div>
-              <div className="text-orange-400 font-bold text-lg mt-1">{champion}</div>
+              <div className="text-green-400 font-bold text-lg mt-1">{champion}</div>
             </div>
           )}
         </div>

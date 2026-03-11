@@ -41,7 +41,7 @@ export default function ScheduleView({ selectedChild, onTeamClick, onGameClick }
     <div>
       {selectedChild && childGames.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-lg font-bold text-orange-400 mb-3">
+          <h3 className="text-lg font-bold text-green-400 mb-3">
             {selectedChild.playerName}'s Schedule ({selectedChild.teamName})
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -56,7 +56,7 @@ export default function ScheduleView({ selectedChild, onTeamClick, onGameClick }
               />
             ))}
           </div>
-          <hr className="border-gray-700 my-6" />
+          <hr className="border-navy-700 my-6" />
         </div>
       )}
 
@@ -65,7 +65,7 @@ export default function ScheduleView({ selectedChild, onTeamClick, onGameClick }
         <select
           value={filterDivision}
           onChange={(e) => setFilterDivision(e.target.value)}
-          className="bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-1.5 text-sm focus:border-orange-500 focus:outline-none"
+          className="bg-navy-700 text-white border border-navy-600 rounded-lg px-3 py-1.5 text-sm focus:border-green-500 focus:outline-none"
         >
           <option value="">All Divisions</option>
           {divisions.map((div) => (
@@ -75,7 +75,7 @@ export default function ScheduleView({ selectedChild, onTeamClick, onGameClick }
         <select
           value={filterTeam}
           onChange={(e) => setFilterTeam(e.target.value)}
-          className="bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-1.5 text-sm focus:border-orange-500 focus:outline-none"
+          className="bg-navy-700 text-white border border-navy-600 rounded-lg px-3 py-1.5 text-sm focus:border-green-500 focus:outline-none"
         >
           <option value="">All Teams</option>
           {teamNames.map((name) => (
@@ -89,7 +89,7 @@ export default function ScheduleView({ selectedChild, onTeamClick, onGameClick }
         return (
           <div key={courtId} className="mb-6">
             <div className="flex items-center gap-2 mb-3">
-              <span className="bg-orange-600 text-white font-bold px-2 py-0.5 rounded text-sm">
+              <span className="bg-green-600 text-white font-bold px-2 py-0.5 rounded text-sm">
                 Court {courtId}
               </span>
               <span className="text-gray-400 text-sm">{court?.location}</span>

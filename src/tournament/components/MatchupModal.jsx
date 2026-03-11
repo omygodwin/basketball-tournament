@@ -19,7 +19,7 @@ export default function MatchupModal({ game, onClose, onTeamClick, selectedChild
   function renderTeamSection(teamData, teamName, won, lost, score) {
     if (!teamName) {
       return (
-        <div className="flex-1 bg-gray-800 rounded-lg p-4 border border-gray-700">
+        <div className="flex-1 bg-navy-800 rounded-lg p-4 border border-navy-700">
           <div className="text-gray-500 text-lg font-bold text-center">TBD</div>
         </div>
       );
@@ -28,8 +28,8 @@ export default function MatchupModal({ game, onClose, onTeamClick, selectedChild
     const isChildTeam = selectedChild && selectedChild.teamName === teamName;
 
     return (
-      <div className={`flex-1 bg-gray-800 rounded-lg p-4 border ${
-        won ? 'border-green-600' : lost ? 'border-gray-700 opacity-70' : isChildTeam ? 'border-orange-500' : 'border-gray-700'
+      <div className={`flex-1 bg-navy-800 rounded-lg p-4 border ${
+        won ? 'border-green-600' : lost ? 'border-navy-700 opacity-70' : isChildTeam ? 'border-green-500' : 'border-navy-700'
       }`}>
         <div className="flex items-center justify-between mb-3">
           <button
@@ -50,7 +50,7 @@ export default function MatchupModal({ game, onClose, onTeamClick, selectedChild
           <>
             <div className="text-xs text-gray-500 mb-2">
               {teamData.division} &middot; Seed #{teamData.seed}
-              {isChildTeam && <span className="ml-2 text-orange-400">Your Team</span>}
+              {isChildTeam && <span className="ml-2 text-green-400">Your Team</span>}
             </div>
             <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Roster</div>
             <ul className="space-y-0.5">
@@ -59,7 +59,7 @@ export default function MatchupModal({ game, onClose, onTeamClick, selectedChild
                   key={player}
                   className={`text-sm ${
                     selectedChild && selectedChild.playerName === player
-                      ? 'text-orange-400 font-bold'
+                      ? 'text-green-400 font-bold'
                       : 'text-gray-300'
                   }`}
                 >
@@ -79,13 +79,13 @@ export default function MatchupModal({ game, onClose, onTeamClick, selectedChild
   return (
     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div
-        className="bg-gray-900 rounded-xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        className="bg-navy-900 rounded-xl border border-navy-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b border-navy-700">
           <div>
-            <h2 className="text-lg font-bold text-orange-400">Game Matchup</h2>
+            <h2 className="text-lg font-bold text-green-400">Game Matchup</h2>
             <div className="text-sm text-gray-400">
               {game.round || ''}
               {court && <span> &middot; {court.name} ({court.location})</span>}
@@ -102,7 +102,7 @@ export default function MatchupModal({ game, onClose, onTeamClick, selectedChild
 
         {/* Result banner */}
         {hasResult && (
-          <div className="px-4 py-2 bg-green-900/30 border-b border-gray-700 text-center">
+          <div className="px-4 py-2 bg-green-900/30 border-b border-navy-700 text-center">
             <span className="text-green-400 font-bold">
               {result.winner} wins {result.score1} - {result.score2}
             </span>

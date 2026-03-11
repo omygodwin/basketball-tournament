@@ -75,29 +75,29 @@ export default function AdminPanel({ onBack }) {
 
   if (!authenticated) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
-        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 w-full max-w-sm">
+      <div className="min-h-screen bg-navy-900 text-white flex items-center justify-center p-4">
+        <div className="bg-navy-800 rounded-lg p-6 border border-navy-700 w-full max-w-sm">
           <button
             onClick={onBack}
             className="text-gray-400 hover:text-white text-sm mb-4 flex items-center gap-1"
           >
             &larr; Back
           </button>
-          <h2 className="text-xl font-bold text-orange-400 mb-4">Admin Access</h2>
+          <h2 className="text-xl font-bold text-green-400 mb-4">Admin Access</h2>
           <form onSubmit={handlePinSubmit}>
             <input
               type="password"
               value={pin}
               onChange={(e) => { setPin(e.target.value); setPinError(false); }}
               placeholder="Enter PIN"
-              className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-orange-500 focus:outline-none text-lg text-center tracking-widest"
+              className="w-full px-4 py-3 rounded-lg bg-navy-700 text-white border border-navy-600 focus:border-green-500 focus:outline-none text-lg text-center tracking-widest"
               maxLength={6}
               autoFocus
             />
             {pinError && <p className="text-red-400 text-sm mt-2">Incorrect PIN</p>}
             <button
               type="submit"
-              className="w-full mt-4 bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 rounded-lg transition-colors"
+              className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-lg transition-colors"
             >
               Enter
             </button>
@@ -108,8 +108,8 @@ export default function AdminPanel({ onBack }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="bg-gray-800 border-b border-gray-700 px-4 py-3">
+    <div className="min-h-screen bg-navy-900 text-white">
+      <div className="bg-navy-800 border-b border-navy-700 px-4 py-3">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <button
             onClick={onBack}
@@ -117,7 +117,7 @@ export default function AdminPanel({ onBack }) {
           >
             &larr; Back
           </button>
-          <h1 className="text-xl font-bold text-orange-400">Score Entry</h1>
+          <h1 className="text-xl font-bold text-green-400">Score Entry</h1>
           <div className="w-16" />
         </div>
       </div>
@@ -129,12 +129,12 @@ export default function AdminPanel({ onBack }) {
           </div>
         )}
 
-        <form onSubmit={handleSave} className="bg-gray-800 rounded-lg p-4 border border-gray-700 mb-6">
+        <form onSubmit={handleSave} className="bg-navy-800 rounded-lg p-4 border border-navy-700 mb-6">
           <label className="block text-sm text-gray-400 mb-2">Select Game</label>
           <select
             value={selectedGame}
             onChange={(e) => { setSelectedGame(e.target.value); setScore1(''); setScore2(''); }}
-            className="w-full bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 mb-4 focus:border-orange-500 focus:outline-none"
+            className="w-full bg-navy-700 text-white border border-navy-600 rounded-lg px-3 py-2 mb-4 focus:border-green-500 focus:outline-none"
           >
             <option value="">-- Choose a game --</option>
             {allGames.map((game) => {
@@ -161,7 +161,7 @@ export default function AdminPanel({ onBack }) {
                       min="0"
                       value={score1}
                       onChange={(e) => setScore1(e.target.value)}
-                      className="w-full bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 text-center text-xl focus:border-orange-500 focus:outline-none"
+                      className="w-full bg-navy-700 text-white border border-navy-600 rounded-lg px-3 py-2 text-center text-xl focus:border-green-500 focus:outline-none"
                       placeholder="0"
                     />
                   </div>
@@ -173,7 +173,7 @@ export default function AdminPanel({ onBack }) {
                       min="0"
                       value={score2}
                       onChange={(e) => setScore2(e.target.value)}
-                      className="w-full bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 text-center text-xl focus:border-orange-500 focus:outline-none"
+                      className="w-full bg-navy-700 text-white border border-navy-600 rounded-lg px-3 py-2 text-center text-xl focus:border-green-500 focus:outline-none"
                       placeholder="0"
                     />
                   </div>
@@ -181,7 +181,7 @@ export default function AdminPanel({ onBack }) {
                 <button
                   type="submit"
                   disabled={score1 === '' || score2 === ''}
-                  className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold py-2 rounded-lg transition-colors"
+                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-navy-600 disabled:cursor-not-allowed text-white font-bold py-2 rounded-lg transition-colors"
                 >
                   Save Score
                 </button>
@@ -200,14 +200,14 @@ export default function AdminPanel({ onBack }) {
             const game = allGames.find((g) => g.gameId === gameId);
             const { team1, team2 } = game ? resolveTeamName(game) : { team1: '?', team2: '?' };
             return (
-              <div key={gameId} className="bg-gray-800 rounded-lg p-3 border border-gray-700 flex items-center justify-between">
+              <div key={gameId} className="bg-navy-800 rounded-lg p-3 border border-navy-700 flex items-center justify-between">
                 <div>
                   <span className="text-white font-medium">{team1 || 'TBD'}</span>
                   <span className="text-gray-400 mx-2">vs</span>
                   <span className="text-white font-medium">{team2 || 'TBD'}</span>
                   {game && <span className="text-gray-500 text-sm ml-2">({game.division} {game.round})</span>}
                 </div>
-                <div className="text-orange-400 font-bold">{result.score1} - {result.score2}</div>
+                <div className="text-green-400 font-bold">{result.score1} - {result.score2}</div>
               </div>
             );
           })}

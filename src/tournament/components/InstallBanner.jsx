@@ -50,7 +50,7 @@ export default function InstallBanner() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-800 border-t border-orange-600 p-4 safe-area-bottom">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-navy-800 border-t border-navy-600 p-4 safe-area-bottom">
         <div className="max-w-lg mx-auto flex items-center gap-3">
           <div className="flex-1">
             <p className="text-white font-semibold text-sm">Add to Home Screen</p>
@@ -58,21 +58,21 @@ export default function InstallBanner() {
           </div>
           <button
             onClick={() => setShowInfo(true)}
-            className="text-orange-400 hover:text-orange-300 text-xs underline shrink-0"
+            className="text-green-400 hover:text-green-300 text-xs underline shrink-0"
           >
             How?
           </button>
           {deferredPrompt ? (
             <button
               onClick={handleInstall}
-              className="bg-orange-600 hover:bg-orange-700 text-white font-bold px-4 py-2 rounded-lg text-sm shrink-0"
+              className="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-lg text-sm shrink-0"
             >
               Install
             </button>
           ) : (
             <button
               onClick={() => setShowInfo(true)}
-              className="bg-orange-600 hover:bg-orange-700 text-white font-bold px-4 py-2 rounded-lg text-sm shrink-0"
+              className="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-lg text-sm shrink-0"
             >
               Add App
             </button>
@@ -89,11 +89,11 @@ export default function InstallBanner() {
       {showInfo && (
         <div className="fixed inset-0 bg-black/70 z-[60] flex items-end sm:items-center justify-center p-4" onClick={() => setShowInfo(false)}>
           <div
-            className="bg-gray-900 rounded-xl border border-gray-700 w-full max-w-md p-5"
+            className="bg-navy-900 rounded-xl border border-navy-700 w-full max-w-md p-5"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-orange-400">Add to Home Screen</h3>
+              <h3 className="text-lg font-bold text-green-400">Add to Home Screen</h3>
               <button onClick={() => setShowInfo(false)} className="text-gray-400 hover:text-white text-xl">&times;</button>
             </div>
 
@@ -105,7 +105,7 @@ export default function InstallBanner() {
                 <li>Enable notifications to get live game results and score updates</li>
               </ul>
 
-              <hr className="border-gray-700" />
+              <hr className="border-navy-700" />
 
               {isIOS ? (
                 <>
@@ -115,7 +115,7 @@ export default function InstallBanner() {
                     <li>Scroll down and tap <strong className="text-white">Add to Home Screen</strong></li>
                     <li>Tap <strong className="text-white">Add</strong> in the top right</li>
                   </ol>
-                  <hr className="border-gray-700" />
+                  <hr className="border-navy-700" />
                   <p className="font-semibold text-white">Enable notifications:</p>
                   <ol className="list-decimal list-inside space-y-1 text-gray-400">
                     <li>Open the app from your home screen</li>
@@ -131,7 +131,7 @@ export default function InstallBanner() {
                     <li>Tap <strong className="text-white">Add to Home screen</strong> or <strong className="text-white">Install app</strong></li>
                     <li>Tap <strong className="text-white">Install</strong></li>
                   </ol>
-                  <hr className="border-gray-700" />
+                  <hr className="border-navy-700" />
                   <p className="font-semibold text-white">Enable notifications:</p>
                   <ol className="list-decimal list-inside space-y-1 text-gray-400">
                     <li>Open the app from your home screen</li>
@@ -144,7 +144,7 @@ export default function InstallBanner() {
 
             <button
               onClick={() => setShowInfo(false)}
-              className="w-full mt-4 bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 rounded-lg"
+              className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-lg"
             >
               Got it
             </button>

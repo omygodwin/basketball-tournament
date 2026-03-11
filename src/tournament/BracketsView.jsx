@@ -28,9 +28,9 @@ export default function BracketsView({ selectedChild, onTeamClick, onGameClick }
             onClick={() => setActiveDivision(div)}
             className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               activeDivision === div
-                ? 'bg-orange-600 text-white'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-            } ${selectedChild && selectedChild.division === div ? 'ring-2 ring-orange-400' : ''}`}
+                ? 'bg-green-600 text-white'
+                : 'bg-navy-700 text-gray-300 hover:bg-navy-600'
+            } ${selectedChild && selectedChild.division === div ? 'ring-2 ring-green-400' : ''}`}
           >
             {div}
           </button>

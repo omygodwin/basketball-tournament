@@ -6,7 +6,7 @@ import TournamentCentral from './TournamentCentral';
 import AdminPanel from './AdminPanel';
 import InstallBanner from './components/InstallBanner';
 
-// Views: 'home' | 'central' | 'admin'
+const logoUrl = import.meta.env.BASE_URL + 'covenant-logo.png';
 
 export default function TournamentApp() {
   const [view, setView] = useState('home');
@@ -55,14 +55,34 @@ export default function TournamentApp() {
     return <AdminPanel onBack={() => setView('home')} />;
   }
 
-  // Home view
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-lg space-y-8 text-center">
-        {/* Title */}
-        <div>
-          <h1 className="text-4xl font-bold text-orange-400 mb-2">Basketball Tournament</h1>
-          <p className="text-gray-400">Find your child's team, schedule, and live bracket updates</p>
+    <div className="min-h-screen bg-navy-900 text-white flex flex-col items-center p-4">
+      <div className="w-full max-w-lg space-y-6 text-center pt-6 pb-8">
+        {/* School branding */}
+        <div className="space-y-3">
+          <img
+            src={logoUrl}
+            alt="The Covenant School"
+            className="h-20 mx-auto"
+          />
+          <div>
+            <h1 className="text-3xl font-bold text-white tracking-tight">March Madness</h1>
+            <p className="text-green-400 font-semibold text-lg">3rd Annual 3v3 Basketball Tournament</p>
+          </div>
+          <div className="text-gray-300 text-sm space-y-0.5">
+            <p className="font-semibold text-white text-base">Friday, March 13th</p>
+            <p>Grades 3-5 &middot; Starting at 1:00 PM</p>
+            <p>Single-Elimination &middot; Boys &amp; Girls Brackets</p>
+          </div>
+        </div>
+
+        {/* Scripture */}
+        <div className="bg-navy-800 border border-navy-700 rounded-lg px-4 py-3 text-sm">
+          <p className="text-gray-300 italic leading-relaxed">
+            &ldquo;Two are better than one, because they have a good reward for their toil.
+            For if they fall, one will lift up his fellow.&rdquo;
+          </p>
+          <p className="text-green-400 text-xs mt-1.5 font-medium">Ecclesiastes 4:9-10</p>
         </div>
 
         {/* Child banner if already selected */}
@@ -76,7 +96,7 @@ export default function TournamentApp() {
             />
             <button
               onClick={() => setView('central')}
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
             >
               Go to Tournament Central
             </button>
@@ -86,7 +106,7 @@ export default function TournamentApp() {
         {/* Search */}
         <div>
           <p className="text-gray-300 text-sm mb-2">
-            {allChildren.length > 0 ? 'Add another child or search for a different player:' : 'Search for your child\'s name:'}
+            {allChildren.length > 0 ? 'Add another child or search for a different player:' : 'Find your child\'s team, schedule & bracket:'}
           </p>
           <PlayerSearch onSelect={handlePlayerSelect} />
         </div>
@@ -95,11 +115,37 @@ export default function TournamentApp() {
         {allChildren.length === 0 && (
           <button
             onClick={() => setView('central')}
-            className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors border border-gray-600"
+            className="w-full bg-navy-700 hover:bg-navy-600 text-white font-bold py-3 px-6 rounded-lg transition-colors border border-navy-600"
           >
-            Tournament Central
+            Browse Tournament Central
           </button>
         )}
+
+        {/* Tournament info from email */}
+        <div className="bg-navy-800 border border-navy-700 rounded-lg p-4 text-left space-y-3">
+          <h3 className="text-green-400 font-bold text-sm uppercase tracking-wide">Tournament Info</h3>
+          <ul className="text-gray-300 text-sm space-y-2">
+            <li className="flex items-start gap-2">
+              <span className="text-green-400 shrink-0 mt-0.5">&#9679;</span>
+              Friends &amp; families are welcome to attend and cheer!
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-400 shrink-0 mt-0.5">&#9679;</span>
+              Games played both indoors and outdoors
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-400 shrink-0 mt-0.5">&#9679;</span>
+              Visit the <strong className="text-white">Tournament Central</strong> tent for rosters, game info &amp; live bracket updates
+            </li>
+          </ul>
+          <hr className="border-navy-700" />
+          <div>
+            <h4 className="text-gray-400 font-semibold text-xs uppercase tracking-wide mb-1">Dress Code Reminder</h4>
+            <p className="text-gray-400 text-xs">
+              School dress code in effect until 12:45 PM. Coordinating team uniforms are permitted during the tournament only.
+            </p>
+          </div>
+        </div>
 
         {/* Admin link */}
         <button

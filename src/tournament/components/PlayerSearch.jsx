@@ -75,20 +75,20 @@ export default function PlayerSearch({ onSelect }) {
         onKeyDown={handleKeyDown}
         onFocus={() => { if (results.length > 0) setShowDropdown(true); }}
         placeholder="Search for your child's name..."
-        className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:border-orange-500 focus:ring-2 focus:ring-orange-500 focus:outline-none text-lg"
+        className="w-full px-4 py-3 rounded-lg bg-navy-700 text-white placeholder-gray-400 border border-navy-600 focus:border-green-500 focus:ring-2 focus:ring-green-500 focus:outline-none text-lg"
       />
       {showDropdown && (
         <div
           ref={dropdownRef}
-          className="absolute z-50 w-full mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          className="absolute z-50 w-full mt-1 bg-navy-800 border border-navy-600 rounded-lg shadow-lg max-h-60 overflow-y-auto"
         >
           {results.map((player, i) => (
             <button
               key={`${player.name}-${player.teamName}`}
               onClick={() => handleSelect(player)}
-              className={`w-full text-left px-4 py-3 hover:bg-gray-700 transition-colors ${
-                i === highlightIndex ? 'bg-gray-700' : ''
-              } ${i < results.length - 1 ? 'border-b border-gray-700' : ''}`}
+              className={`w-full text-left px-4 py-3 hover:bg-navy-700 transition-colors ${
+                i === highlightIndex ? 'bg-navy-700' : ''
+              } ${i < results.length - 1 ? 'border-b border-navy-700' : ''}`}
             >
               <span className="text-white font-medium">{player.name}</span>
               <span className="text-gray-400 text-sm ml-2">

@@ -66,7 +66,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
         <h3 className="text-lg font-bold text-white">All Teams</h3>
         <button
           onClick={allExpanded ? collapseAll : expandAll}
-          className="text-orange-400 hover:text-orange-300 text-sm font-medium"
+          className="text-green-400 hover:text-green-300 text-sm font-medium"
         >
           {allExpanded ? 'Collapse All Rosters' : 'Expand All Rosters'}
         </button>
@@ -78,7 +78,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
 
         return (
           <div key={div} className="mb-6">
-            <h3 className="text-lg font-bold text-orange-400 mb-3">{div}</h3>
+            <h3 className="text-lg font-bold text-green-400 mb-3">{div}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {divTeams.sort((a, b) => a.seed - b.seed).map((team) => {
                 const isChildTeam = selectedChild && selectedChild.teamName === team.name && selectedChild.division === team.division;
@@ -91,15 +91,15 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
                   <div
                     key={`${team.name}-${team.division}`}
                     ref={isFocused ? focusRef : null}
-                    className={`bg-gray-800 border rounded-lg overflow-hidden transition-all ${
-                      isChildTeam ? 'border-orange-500 ring-2 ring-orange-500/30' :
-                      isFocused ? 'border-orange-400 ring-1 ring-orange-400/30' :
-                      'border-gray-700'
+                    className={`bg-navy-800 border rounded-lg overflow-hidden transition-all ${
+                      isChildTeam ? 'border-green-500 ring-2 ring-green-500/30' :
+                      isFocused ? 'border-green-400 ring-1 ring-green-400/30' :
+                      'border-navy-700'
                     } ${eliminated ? 'opacity-60' : ''}`}
                   >
                     <button
                       onClick={() => toggleTeam(team.name)}
-                      className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-750"
+                      className="w-full flex items-center justify-between p-3 text-left hover:bg-navy-750"
                     >
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <span className="text-gray-500 text-xs font-mono shrink-0">#{team.seed}</span>
@@ -107,7 +107,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
                           {team.name}
                         </span>
                         {isChildTeam && (
-                          <span className="bg-orange-600 text-white text-xs px-1.5 py-0.5 rounded shrink-0">
+                          <span className="bg-green-600 text-white text-xs px-1.5 py-0.5 rounded shrink-0">
                             Your Team
                           </span>
                         )}
@@ -128,7 +128,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
                           if (onGameClick && nextGame.game) onGameClick(nextGame.game);
                         }}
                       >
-                        <span className="text-xs text-gray-400 hover:text-orange-400 transition-colors">
+                        <span className="text-xs text-gray-400 hover:text-green-400 transition-colors">
                           Next: {nextGame.round} vs {nextGame.opponent || 'TBD'}
                           {nextGame.court && (() => {
                             const court = courts.find((c) => c.id === nextGame.court);
@@ -139,7 +139,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
                     )}
 
                     {isExpanded && (
-                      <div className="border-t border-gray-700 px-3 py-2">
+                      <div className="border-t border-navy-700 px-3 py-2">
                         {team.roster.length > 0 ? (
                           <ul className="space-y-1">
                             {team.roster.map((player) => (
@@ -147,7 +147,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
                                 key={player}
                                 className={`text-sm ${
                                   selectedChild && selectedChild.playerName === player
-                                    ? 'text-orange-400 font-bold'
+                                    ? 'text-green-400 font-bold'
                                     : 'text-gray-300'
                                 }`}
                               >

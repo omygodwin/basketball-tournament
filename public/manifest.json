@@ -1,10 +1,10 @@
 {
-  "name": "Basketball Tournament",
-  "short_name": "Tournament",
+  "name": "Covenant School March Madness",
+  "short_name": "March Madness",
   "start_url": "/basketball-tournament/",
   "display": "standalone",
-  "background_color": "#111827",
-  "theme_color": "#1f2937",
+  "background_color": "#0c1524",
+  "theme_color": "#0c1524",
   "orientation": "portrait",
   "icons": [
     {

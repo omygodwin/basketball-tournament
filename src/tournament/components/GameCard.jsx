@@ -21,12 +21,12 @@ export default function GameCard({ game, result, highlightTeam, onTeamClick, onC
 
   return (
     <div
-      className="bg-gray-800 rounded-lg p-3 border border-gray-700 cursor-pointer hover:border-gray-500 transition-colors"
+      className="bg-navy-800 rounded-lg p-3 border border-navy-700 cursor-pointer hover:border-navy-600 transition-colors"
       onClick={onClick}
     >
       <div className="flex items-center justify-between mb-1">
         <span className="text-xs text-gray-500 uppercase tracking-wide">{game.round}</span>
-        <span className="text-xs bg-gray-700 text-gray-300 px-2 py-0.5 rounded">
+        <span className="text-xs bg-navy-700 text-gray-300 px-2 py-0.5 rounded">
           {court ? court.name : `Court ${game.court}`}
         </span>
       </div>
@@ -34,7 +34,7 @@ export default function GameCard({ game, result, highlightTeam, onTeamClick, onC
         <div className="flex-1">
           <div className={`flex items-center justify-between py-1 px-2 rounded ${
             team1Won ? 'bg-green-900/30' : ''
-          } ${team1Highlight ? 'ring-1 ring-orange-500' : ''}`}>
+          } ${team1Highlight ? 'ring-1 ring-green-500' : ''}`}>
             <button
               onClick={(e) => handleTeamClick(e, game.team1)}
               className={`font-medium text-left hover:underline ${
@@ -51,7 +51,7 @@ export default function GameCard({ game, result, highlightTeam, onTeamClick, onC
           </div>
           <div className={`flex items-center justify-between py-1 px-2 rounded ${
             team2Won ? 'bg-green-900/30' : ''
-          } ${team2Highlight ? 'ring-1 ring-orange-500' : ''}`}>
+          } ${team2Highlight ? 'ring-1 ring-green-500' : ''}`}>
             <button
               onClick={(e) => handleTeamClick(e, game.team2)}
               className={`font-medium text-left hover:underline ${
