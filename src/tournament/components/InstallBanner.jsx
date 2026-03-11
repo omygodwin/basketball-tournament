@@ -102,7 +102,15 @@ export default function InstallBanner() {
               <ul className="list-disc list-inside space-y-1 text-gray-400">
                 <li>Creates an icon on your home screen for quick access</li>
                 <li>Opens in full screen like a real app</li>
-                <li>Check back after each game for updated scores and bracket results</li>
+              </ul>
+
+              <hr className="border-navy-700" />
+
+              <p className="font-semibold text-white">Stay Updated</p>
+              <ul className="list-disc list-inside space-y-1 text-gray-400">
+                <li>Game results are posted shortly after each game ends</li>
+                <li>Open the app to see updated scores, brackets, and your child's next game</li>
+                <li>Select your child for personalized team info and schedule</li>
               </ul>
 
               <hr className="border-navy-700" />

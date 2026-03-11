@@ -7,6 +7,7 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
   const team2 = isBye ? 'BYE' : (game.team2 || 'TBD');
   const team1Won = hasResult && result.winner === game.team1;
   const team2Won = hasResult && result.winner === game.team2;
+  const isBoxHighlighted = highlightTeam && (game.team1 === highlightTeam || game.team2 === highlightTeam);
 
   function teamRow(name, seed, won, lost, isHighlighted, score, isReal) {
     return (
@@ -49,7 +50,9 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
 
   return (
     <div
-      className="bg-navy-800 border border-navy-600 rounded w-48 overflow-hidden shadow-md cursor-pointer hover:border-navy-600 transition-colors shrink-0"
+      className={`bg-navy-800 border rounded w-full overflow-hidden shadow-md cursor-pointer transition-colors ${
+        isBoxHighlighted ? 'border-green-500 ring-1 ring-green-500/30' : 'border-navy-600 hover:border-navy-500'
+      }`}
       onClick={() => onGameClick && onGameClick(game)}
       title="Click for matchup details"
     >
@@ -66,25 +69,6 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
         hasResult ? result.score2 : null,
         game.team2 && game.team2 !== 'TBD' && game.team2 !== 'BYE'
       )}
-    </div>
-  );
-}
-
-/* Connector draws lines from two source boxes to one target box */
-function Connector() {
-  return (
-    <div className="flex flex-col w-6 shrink-0 self-stretch">
-      <div className="flex-1 border-b-2 border-r-2 border-navy-600 rounded-br" />
-      <div className="flex-1 border-t-2 border-r-2 border-navy-600 rounded-tr" />
-    </div>
-  );
-}
-
-/* Horizontal line from connector to next round box */
-function HLine() {
-  return (
-    <div className="w-4 shrink-0 flex items-center">
-      <div className="w-full border-t-2 border-navy-600" />
     </div>
   );
 }
@@ -149,41 +133,54 @@ export default function BracketDisplay({ bracket, highlightTeam, gameResults, on
 
   return (
     <div className="w-full overflow-x-auto">
-      <div className="inline-flex items-center py-4 px-2">
-        {/* Labels row */}
-        <div className="flex items-center">
-          {/* QF + Connector + SF pairs */}
-          <div className="flex flex-col gap-8">
-            <div className="text-xs text-gray-500 uppercase tracking-wide text-center">Quarter-Finals</div>
-            {/* Top half: QF1+QF2 → SF1 */}
-            <div className="flex items-center">
-              <div className="flex flex-col gap-3">
-                <MatchupBox game={qf[0]} result={results[qf[0]?.gameId]} {...boxProps} />
-                <MatchupBox game={qf[1]} result={results[qf[1]?.gameId]} {...boxProps} />
-              </div>
-              <Connector />
-              <HLine />
-              <MatchupBox game={sf[0]} result={results[sf[0]?.gameId]} {...boxProps} />
-            </div>
-            {/* Bottom half: QF3+QF4 → SF2 */}
-            <div className="flex items-center">
-              <div className="flex flex-col gap-3">
-                <MatchupBox game={qf[2]} result={results[qf[2]?.gameId]} {...boxProps} />
-                <MatchupBox game={qf[3]} result={results[qf[3]?.gameId]} {...boxProps} />
-              </div>
-              <Connector />
-              <HLine />
-              <MatchupBox game={sf[1]} result={results[sf[1]?.gameId]} {...boxProps} />
-            </div>
+      <div style={{ minWidth: '700px' }} className="px-2 py-4">
+        {/* Round labels - separate row so they don't affect alignment */}
+        <div className="flex mb-2">
+          <div className="w-44 shrink-0 text-xs text-gray-500 uppercase tracking-wide text-center">Quarter-Finals</div>
+          <div className="w-8 shrink-0" />
+          <div className="w-44 shrink-0 text-xs text-gray-500 uppercase tracking-wide text-center">Semi-Finals</div>
+          <div className="w-8 shrink-0" />
+          <div className="w-44 shrink-0 text-xs text-gray-500 uppercase tracking-wide text-center">Final</div>
+        </div>
+
+        {/* Bracket body - fixed height, justify-around aligns boxes perfectly */}
+        <div className="flex" style={{ height: '340px' }}>
+          {/* QF Column: 4 matchups distributed evenly */}
+          <div className="w-44 shrink-0 flex flex-col justify-around">
+            {qf.map((game) => (
+              <MatchupBox key={game.gameId} game={game} result={results[game.gameId]} {...boxProps} />
+            ))}
           </div>
 
-          {/* SF → Final connector */}
-          <Connector />
-          <HLine />
+          {/* QF→SF connectors: two bracket shapes, one per QF pair */}
+          <div className="w-8 shrink-0 flex flex-col">
+            {[0, 1].map((i) => (
+              <div key={i} className="flex-1 flex flex-col">
+                <div className="flex-1" />
+                <div className="flex-1 border-b-2 border-r-2 border-navy-600 rounded-br" />
+                <div className="flex-1 border-t-2 border-r-2 border-navy-600 rounded-tr" />
+                <div className="flex-1" />
+              </div>
+            ))}
+          </div>
 
-          {/* Final */}
-          <div className="flex flex-col items-center">
-            <div className="text-xs text-gray-500 uppercase tracking-wide text-center mb-2">Final</div>
+          {/* SF Column: 2 matchups distributed evenly */}
+          <div className="w-44 shrink-0 flex flex-col justify-around">
+            {sf.map((game) => (
+              <MatchupBox key={game.gameId} game={game} result={results[game.gameId]} {...boxProps} />
+            ))}
+          </div>
+
+          {/* SF→Final connector: single bracket shape */}
+          <div className="w-8 shrink-0 flex flex-col">
+            <div className="flex-1" />
+            <div className="flex-1 border-b-2 border-r-2 border-navy-600 rounded-br" />
+            <div className="flex-1 border-t-2 border-r-2 border-navy-600 rounded-tr" />
+            <div className="flex-1" />
+          </div>
+
+          {/* Final Column */}
+          <div className="w-44 shrink-0 flex flex-col justify-center">
             <MatchupBox game={final[0]} result={results[final[0]?.gameId]} {...boxProps} />
             {champion && (
               <div className="mt-3 text-center">

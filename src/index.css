@@ -1,8 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Prevent pull-to-refresh / overscroll bounce on mobile */
-html, body {
-  overscroll-behavior: none;
-}

@@ -71,6 +71,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
   function handleSearchSelect(player) {
     setSearchQuery('');
     setShowSearchDrop(false);
+    if (searchInputRef.current) searchInputRef.current.blur();
     setExpandedTeams((prev) => new Set([...prev, player.teamName]));
     setTimeout(() => {
       const el = document.getElementById(`team-card-${player.teamName}`);
@@ -119,7 +120,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
           onChange={handleSearchChange}
           onFocus={() => { if (searchResults.length > 0) setShowSearchDrop(true); }}
           placeholder="Search for a player to find their team..."
-          className="w-full px-3 py-2 rounded-lg bg-navy-700 text-white placeholder-gray-400 border border-navy-600 focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:outline-none text-sm"
+          className="w-full px-3 py-2 rounded-lg bg-navy-700 text-white placeholder-gray-400 border border-navy-600 focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:outline-none text-base"
         />
         {showSearchDrop && (
           <div
