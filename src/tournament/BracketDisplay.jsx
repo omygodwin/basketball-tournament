@@ -7,14 +7,13 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
   const team2 = isBye ? 'BYE' : (game.team2 || 'TBD');
   const team1Won = hasResult && result.winner === game.team1;
   const team2Won = hasResult && result.winner === game.team2;
-  const isBoxHighlighted = highlightTeam && (game.team1 === highlightTeam || game.team2 === highlightTeam);
 
   function teamRow(name, seed, won, lost, isHighlighted, score, isReal) {
     return (
       <div
         className={`flex items-center justify-between px-2 py-1.5 ${
           won ? 'bg-green-900/40' : lost ? 'opacity-50' : ''
-        } ${isHighlighted ? 'ring-1 ring-green-400 rounded' : ''}`}
+        } ${isHighlighted ? 'bg-green-900/30 border-l-2 border-green-400' : ''}`}
       >
         <div className="flex items-center gap-1.5 min-w-0 flex-1">
           {seed && <span className="text-gray-500 text-xs font-mono w-4 shrink-0">{seed}</span>}
@@ -50,9 +49,7 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
 
   return (
     <div
-      className={`bg-navy-800 border rounded w-full overflow-hidden shadow-md cursor-pointer transition-colors ${
-        isBoxHighlighted ? 'border-green-500 ring-1 ring-green-500/30' : 'border-navy-600 hover:border-navy-500'
-      }`}
+      className="bg-navy-800 border border-navy-600 rounded w-full overflow-hidden shadow-md cursor-pointer hover:border-navy-500 transition-colors"
       onClick={() => onGameClick && onGameClick(game)}
       title="Click for matchup details"
     >
