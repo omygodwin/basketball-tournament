@@ -10,6 +10,7 @@ function isStandalone() {
 }
 
 const DISMISSED_KEY = 'tournament-install-dismissed';
+const INSTALLED_KEY = 'tournament-app-installed';
 
 export default function InstallBanner({ aboveBottomNav }) {
   const [show, setShow] = useState(false);
@@ -18,16 +19,25 @@ export default function InstallBanner({ aboveBottomNav }) {
 
   useEffect(() => {
     if (!isMobileDevice() || isStandalone()) return;
-    const dismissed = localStorage.getItem(DISMISSED_KEY);
-    if (dismissed) return;
+    if (localStorage.getItem(DISMISSED_KEY)) return;
+    if (localStorage.getItem(INSTALLED_KEY)) return;
     setShow(true);
 
     function handleBeforeInstall(e) {
       e.preventDefault();
       setDeferredPrompt(e);
     }
+    function handleAppInstalled() {
+      localStorage.setItem(INSTALLED_KEY, 'true');
+      setShow(false);
+      setShowInfo(false);
+    }
     window.addEventListener('beforeinstallprompt', handleBeforeInstall);
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+    window.addEventListener('appinstalled', handleAppInstalled);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
   }, []);
 
   function handleDismiss() {
@@ -38,9 +48,13 @@ export default function InstallBanner({ aboveBottomNav }) {
   async function handleInstall() {
     if (deferredPrompt) {
       deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        localStorage.setItem(INSTALLED_KEY, 'true');
+      }
       setDeferredPrompt(null);
       setShow(false);
+      setShowInfo(false);
     }
   }
 
@@ -101,6 +115,19 @@ export default function InstallBanner({ aboveBottomNav }) {
             </div>
 
             <div className="text-gray-300 text-sm space-y-3">
+              {deferredPrompt && (
+                <>
+                  <button
+                    onClick={handleInstall}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-lg"
+                  >
+                    Install Now
+                  </button>
+                  <p className="text-center text-gray-500 text-xs">or follow the manual steps below</p>
+                  <hr className="border-navy-700" />
+                </>
+              )}
+
               <p className="font-semibold text-white">Why add this app?</p>
               <ul className="list-disc list-inside space-y-1 text-gray-400">
                 <li>Creates an icon on your home screen for quick access</li>
@@ -127,16 +154,18 @@ export default function InstallBanner({ aboveBottomNav }) {
                       <svg className="inline-block w-4 h-4 text-white align-text-bottom" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v12m0-12l-4 4m4-4l4 4" />
                       </svg>
+                      {' '}at the bottom of Safari
                     </li>
                     <li>Scroll down and tap <strong className="text-white">Add to Home Screen</strong></li>
                     <li>Tap <strong className="text-white">Add</strong> in the top right</li>
                   </ol>
+                  <p className="text-yellow-400/80 text-xs mt-1">Note: Must use Safari. Chrome/Firefox on iOS don&apos;t support Add to Home Screen.</p>
                 </>
               ) : (
                 <>
                   <p className="font-semibold text-white">How to install (Android):</p>
                   <ol className="list-decimal list-inside space-y-1 text-gray-400">
-                    <li>Tap the <strong className="text-white">menu</strong> (three dots) in Chrome</li>
+                    <li>Tap the <strong className="text-white">menu</strong> (three dots) in your browser</li>
                     <li>Tap <strong className="text-white">Add to Home screen</strong> or <strong className="text-white">Install app</strong></li>
                     <li>Tap <strong className="text-white">Install</strong></li>
                   </ol>
@@ -146,7 +175,7 @@ export default function InstallBanner({ aboveBottomNav }) {
 
             <button
               onClick={() => setShowInfo(false)}
-              className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-lg"
+              className="w-full mt-4 bg-navy-700 hover:bg-navy-600 text-gray-300 font-bold py-2 rounded-lg"
             >
               Got it
             </button>
