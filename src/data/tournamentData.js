@@ -286,6 +286,22 @@ export function saveGameResult(gameId, score1, score2, winner) {
   localStorage.setItem(RESULTS_KEY, JSON.stringify(results));
 }
 
+export function clearAllResults() {
+  localStorage.removeItem(RESULTS_KEY);
+}
+
+export function clearDivisionResults(division) {
+  const results = getGameResults();
+  const bracket = brackets[division];
+  if (!bracket) return;
+  const gameIds = new Set();
+  bracket.quarterFinals.forEach((g) => gameIds.add(g.gameId));
+  bracket.semiFinals.forEach((g) => gameIds.add(g.gameId));
+  bracket.final.forEach((g) => gameIds.add(g.gameId));
+  gameIds.forEach((id) => delete results[id]);
+  localStorage.setItem(RESULTS_KEY, JSON.stringify(results));
+}
+
 // Multi-child support
 export function getSelectedChildren() {
   try {

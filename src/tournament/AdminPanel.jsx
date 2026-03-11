@@ -1,15 +1,35 @@
-import { useState } from 'react';
-import { ADMIN_PIN, schedule, getGameResults, saveGameResult, brackets } from '../data/tournamentData';
+import { useState, useEffect } from 'react';
+import { ADMIN_PIN, divisions, getBracket, getGameResults, saveGameResult, clearAllResults, clearDivisionResults, brackets } from '../data/tournamentData';
+import BracketDisplay from './BracketDisplay';
+import ScoreEntryModal from './components/ScoreEntryModal';
+
+function countGames(division) {
+  const bracket = brackets[division];
+  if (!bracket) return { scored: 0, total: 0 };
+  const allIds = [
+    ...bracket.quarterFinals.map((g) => g.gameId),
+    ...bracket.semiFinals.map((g) => g.gameId),
+    ...bracket.final.map((g) => g.gameId),
+  ];
+  const results = getGameResults();
+  const scored = allIds.filter((id) => results[id] && results[id].winner != null).length;
+  return { scored, total: allIds.length };
+}
 
 export default function AdminPanel({ onBack }) {
   const [pin, setPin] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
   const [pinError, setPinError] = useState(false);
   const [gameResults, setGameResults] = useState(getGameResults());
-  const [selectedGame, setSelectedGame] = useState('');
-  const [score1, setScore1] = useState('');
-  const [score2, setScore2] = useState('');
-  const [saveMessage, setSaveMessage] = useState('');
+  const [activeDivision, setActiveDivision] = useState(divisions[0]);
+  const [scoreGame, setScoreGame] = useState(null);
+  const [showClearConfirm, setShowClearConfirm] = useState(null);
+
+  useEffect(() => {
+    function handleFocus() { setGameResults(getGameResults()); }
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
 
   function handlePinSubmit(e) {
     e.preventDefault();
@@ -21,56 +41,20 @@ export default function AdminPanel({ onBack }) {
     }
   }
 
-  // Build complete game list from brackets (includes all rounds)
-  const allGames = [];
-  Object.entries(brackets).forEach(([division, bracket]) => {
-    bracket.quarterFinals.forEach((g) => allGames.push({ ...g, division, round: 'Quarter-Final' }));
-    bracket.semiFinals.forEach((g) => allGames.push({ ...g, division, round: 'Semi-Final' }));
-    bracket.final.forEach((g) => allGames.push({ ...g, division, round: 'Final' }));
-  });
-
-  // Also add schedule-only games not in brackets
-  schedule.forEach((g) => {
-    if (!allGames.find((ag) => ag.gameId === g.gameId)) {
-      allGames.push({ ...g, round: g.round });
-    }
-  });
-
-  const currentGame = allGames.find((g) => g.gameId === selectedGame);
-
-  // Resolve team names for semi-finals and finals
-  function resolveTeamName(game) {
-    if (game.team1 && game.team2) return { team1: game.team1, team2: game.team2 };
-    // Check if source games have results
-    const results = getGameResults();
-    let t1 = game.team1, t2 = game.team2;
-    if (game.source) {
-      const r1 = results[game.source[0]];
-      const r2 = results[game.source[1]];
-      if (r1?.winner) t1 = r1.winner;
-      if (r2?.winner) t2 = r2.winner;
-    }
-    return { team1: t1, team2: t2 };
+  function handleScoreSave(gameId, s1, s2, winner) {
+    saveGameResult(gameId, s1, s2, winner);
+    setGameResults(getGameResults());
+    setScoreGame(null);
   }
 
-  function handleSave(e) {
-    e.preventDefault();
-    if (!currentGame || score1 === '' || score2 === '') return;
-
-    const s1 = parseInt(score1, 10);
-    const s2 = parseInt(score2, 10);
-    if (isNaN(s1) || isNaN(s2)) return;
-
-    const { team1, team2 } = resolveTeamName(currentGame);
-    const winner = s1 > s2 ? team1 : s2 > s1 ? team2 : null;
-
-    saveGameResult(selectedGame, s1, s2, winner);
+  function handleClear() {
+    if (showClearConfirm === 'all') {
+      clearAllResults();
+    } else {
+      clearDivisionResults(activeDivision);
+    }
     setGameResults(getGameResults());
-    setSaveMessage(`Score saved: ${team1 || 'TBD'} ${s1} - ${s2} ${team2 || 'TBD'}`);
-    setScore1('');
-    setScore2('');
-    setSelectedGame('');
-    setTimeout(() => setSaveMessage(''), 3000);
+    setShowClearConfirm(null);
   }
 
   if (!authenticated) {
@@ -108,111 +92,113 @@ export default function AdminPanel({ onBack }) {
   }
 
   return (
-    <div className="min-h-screen bg-navy-900 text-white">
-      <div className="bg-navy-800 border-b border-navy-700 px-4 py-3">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <button
-            onClick={onBack}
-            className="text-gray-400 hover:text-white text-sm flex items-center gap-1"
-          >
-            &larr; Back
-          </button>
-          <h1 className="text-xl font-bold text-green-400">Score Entry</h1>
-          <div className="w-16" />
+    <div className="min-h-screen bg-navy-900 text-white flex flex-col">
+      <div className="sticky top-0 z-20 bg-navy-900">
+        <div className="bg-navy-800 border-b border-navy-700 px-4 py-3">
+          <div className="max-w-5xl mx-auto flex items-center justify-between">
+            <button
+              onClick={onBack}
+              className="text-gray-400 hover:text-white text-sm flex items-center gap-1"
+            >
+              &larr; Back
+            </button>
+            <h1 className="text-xl font-bold text-green-400">Score Entry</h1>
+            <div className="w-16" />
+          </div>
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto p-4">
-        {saveMessage && (
-          <div className="bg-green-900/40 border border-green-700 text-green-300 rounded-lg p-3 mb-4">
-            {saveMessage}
-          </div>
-        )}
-
-        <form onSubmit={handleSave} className="bg-navy-800 rounded-lg p-4 border border-navy-700 mb-6">
-          <label className="block text-sm text-gray-400 mb-2">Select Game</label>
-          <select
-            value={selectedGame}
-            onChange={(e) => { setSelectedGame(e.target.value); setScore1(''); setScore2(''); }}
-            className="w-full bg-navy-700 text-white border border-navy-600 rounded-lg px-3 py-2 mb-4 focus:border-green-500 focus:outline-none"
-          >
-            <option value="">-- Choose a game --</option>
-            {allGames.map((game) => {
-              const { team1, team2 } = resolveTeamName(game);
-              const result = gameResults[game.gameId];
-              return (
-                <option key={game.gameId} value={game.gameId}>
-                  {game.division} {game.round}: {team1 || 'TBD'} vs {team2 || 'TBD'}
-                  {result ? ` (${result.score1}-${result.score2})` : ''}
-                </option>
-              );
-            })}
-          </select>
-
-          {currentGame && (() => {
-            const { team1, team2 } = resolveTeamName(currentGame);
+      <div className="max-w-5xl mx-auto p-4 flex-1 w-full">
+        {/* Division filter buttons */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {divisions.map((div) => {
+            const { scored, total } = countGames(div);
             return (
-              <div className="space-y-3">
-                <div className="flex items-center gap-4">
-                  <div className="flex-1">
-                    <label className="block text-sm text-gray-400 mb-1">{team1 || 'TBD'}</label>
-                    <input
-                      type="number"
-                      min="0"
-                      value={score1}
-                      onChange={(e) => setScore1(e.target.value)}
-                      className="w-full bg-navy-700 text-white border border-navy-600 rounded-lg px-3 py-2 text-center text-xl focus:border-green-500 focus:outline-none"
-                      placeholder="0"
-                    />
-                  </div>
-                  <span className="text-gray-500 text-xl font-bold mt-5">-</span>
-                  <div className="flex-1">
-                    <label className="block text-sm text-gray-400 mb-1">{team2 || 'TBD'}</label>
-                    <input
-                      type="number"
-                      min="0"
-                      value={score2}
-                      onChange={(e) => setScore2(e.target.value)}
-                      className="w-full bg-navy-700 text-white border border-navy-600 rounded-lg px-3 py-2 text-center text-xl focus:border-green-500 focus:outline-none"
-                      placeholder="0"
-                    />
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  disabled={score1 === '' || score2 === ''}
-                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-navy-600 disabled:cursor-not-allowed text-white font-bold py-2 rounded-lg transition-colors"
-                >
-                  Save Score
-                </button>
-              </div>
-            );
-          })()}
-        </form>
-
-        {/* Recent results */}
-        <h3 className="text-lg font-bold text-white mb-3">Saved Results</h3>
-        <div className="space-y-2">
-          {Object.entries(gameResults).length === 0 && (
-            <p className="text-gray-500 italic">No results entered yet</p>
-          )}
-          {Object.entries(gameResults).map(([gameId, result]) => {
-            const game = allGames.find((g) => g.gameId === gameId);
-            const { team1, team2 } = game ? resolveTeamName(game) : { team1: '?', team2: '?' };
-            return (
-              <div key={gameId} className="bg-navy-800 rounded-lg p-3 border border-navy-700 flex items-center justify-between">
-                <div>
-                  <span className="text-white font-medium">{team1 || 'TBD'}</span>
-                  <span className="text-gray-400 mx-2">vs</span>
-                  <span className="text-white font-medium">{team2 || 'TBD'}</span>
-                  {game && <span className="text-gray-500 text-sm ml-2">({game.division} {game.round})</span>}
-                </div>
-                <div className="text-green-400 font-bold">{result.score1} - {result.score2}</div>
-              </div>
+              <button
+                key={div}
+                onClick={() => setActiveDivision(div)}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  activeDivision === div
+                    ? 'bg-green-600 text-white'
+                    : 'bg-navy-700 text-gray-300 hover:bg-navy-600'
+                }`}
+              >
+                {div}
+                <span className="ml-1.5 text-xs opacity-75">({scored}/{total})</span>
+              </button>
             );
           })}
         </div>
+
+        <h3 className="text-xl font-bold text-white mb-2">{activeDivision} Bracket</h3>
+        <p className="text-gray-400 text-sm mb-3">Tap a game to enter or edit the score</p>
+
+        <BracketDisplay
+          bracket={getBracket(activeDivision)}
+          gameResults={gameResults}
+          onGameClick={(game) => setScoreGame(game)}
+        />
+
+        {/* Clear buttons */}
+        <div className="mt-6 flex flex-wrap gap-3">
+          <button
+            onClick={() => setShowClearConfirm('division')}
+            className="bg-red-900/30 hover:bg-red-900/50 text-red-400 border border-red-800 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            Clear {activeDivision}
+          </button>
+          <button
+            onClick={() => setShowClearConfirm('all')}
+            className="bg-red-900/30 hover:bg-red-900/50 text-red-400 border border-red-800 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            Clear All Results
+          </button>
+        </div>
       </div>
+
+      {/* Score entry modal */}
+      {scoreGame && (
+        <ScoreEntryModal
+          game={scoreGame}
+          gameResults={gameResults}
+          onSave={handleScoreSave}
+          onClose={() => setScoreGame(null)}
+        />
+      )}
+
+      {/* Clear confirmation dialog */}
+      {showClearConfirm && (
+        <div
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowClearConfirm(null)}
+        >
+          <div
+            className="bg-navy-900 rounded-xl border border-red-800 w-full max-w-sm p-6 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-bold text-red-400 mb-2">
+              {showClearConfirm === 'all' ? 'Clear All Results?' : `Clear ${activeDivision} Results?`}
+            </h3>
+            <p className="text-gray-400 text-sm mb-4">
+              This will permanently remove {showClearConfirm === 'all' ? 'all saved scores' : `all scores for ${activeDivision}`}. This cannot be undone.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowClearConfirm(null)}
+                className="flex-1 bg-navy-700 hover:bg-navy-600 text-gray-300 py-2 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleClear}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-lg transition-colors"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

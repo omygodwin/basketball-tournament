@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BracketsView from './BracketsView';
 import ScheduleView from './ScheduleView';
 import TeamsView from './TeamsView';
 import TeamPage from './TeamPage';
+import ResultsView from './ResultsView';
 import ChildSwitcher from './components/ChildSwitcher';
 import MatchupModal from './components/MatchupModal';
 import InstallBanner from './components/InstallBanner';
+import { divisions, getBracket, getGameResults } from '../data/tournamentData';
 
 const logoUrl = import.meta.env.BASE_URL + 'covenant-logo.png';
 
@@ -21,12 +23,30 @@ export default function TournamentCentral({
   const [activeTab, setActiveTab] = useState('brackets');
   const [matchupGame, setMatchupGame] = useState(null);
   const [focusTeam, setFocusTeam] = useState(null);
+  const [gameResults, setGameResults] = useState(getGameResults());
+
+  useEffect(() => {
+    function handleFocus() { setGameResults(getGameResults()); }
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
+
+  const hasAnyChampion = divisions.some((div) => {
+    const bracket = getBracket(div);
+    if (!bracket || !bracket.final[0]) return false;
+    const result = gameResults[bracket.final[0].gameId];
+    return result && result.winner;
+  });
 
   const tabs = [
     { id: 'brackets', label: 'Brackets' },
     { id: 'schedule', label: 'Schedule' },
     { id: 'teams', label: 'Teams' },
   ];
+
+  if (hasAnyChampion) {
+    tabs.push({ id: 'results', label: 'Results' });
+  }
 
   if (selectedChild) {
     tabs.push({ id: 'myteam', label: selectedChild.teamName });
@@ -140,6 +160,9 @@ export default function TournamentCentral({
             onFocusHandled={() => setFocusTeam(null)}
             onGameClick={handleGameClick}
           />
+        )}
+        {activeTab === 'results' && (
+          <ResultsView gameResults={gameResults} />
         )}
         {activeTab === 'myteam' && selectedChild && (
           <TeamPage
