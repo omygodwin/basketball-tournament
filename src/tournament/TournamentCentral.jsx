@@ -43,44 +43,48 @@ export default function TournamentCentral({
   }
 
   return (
-    <div className="min-h-screen bg-navy-900 text-white">
+    <div className="min-h-screen bg-navy-900 text-white flex flex-col">
       {/* Sticky header + tabs */}
       <div className="sticky top-0 z-20 bg-navy-900">
         {/* Header */}
-        <div className="bg-navy-800 border-b border-navy-700 px-4 py-3">
+        <div className="bg-navy-800 border-b border-navy-700 px-4 py-2">
           <div className="max-w-5xl mx-auto">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
               <button
                 onClick={onBack}
-                className="text-gray-400 hover:text-white text-sm flex items-center gap-1"
+                className="text-gray-400 hover:text-white text-sm shrink-0"
               >
                 &larr; Home
               </button>
-              <div className="flex items-center gap-2">
-                <img src={logoUrl} alt="" className="h-7" />
-                <h1 className="text-xl font-bold text-green-400">Tournament Central</h1>
-              </div>
-              <div className="w-16" />
+              <h1 className="text-lg font-bold text-green-400">Tournament Central</h1>
             </div>
-            {allChildren && allChildren.length > 0 && (
-              <div className="flex items-center gap-2">
-                <div className="flex-1">
+            {allChildren && allChildren.length > 0 ? (
+              <div className="flex items-center gap-2 mt-1.5">
+                <div className="flex-1 min-w-0">
                   <ChildSwitcher
                     children={allChildren}
                     activeIndex={activeChildIndex}
                     onSwitch={onChildSwitch}
                     onClear={onClearChild}
+                    compact
                   />
                 </div>
                 {allChildren.length < 2 && (
                   <button
                     onClick={onAddChild}
-                    className="text-green-400 hover:text-green-300 text-xs border border-green-600 rounded-lg px-2 py-1 shrink-0"
+                    className="text-green-400 hover:text-green-300 text-xs border border-green-600 rounded px-2 py-0.5 shrink-0"
                   >
-                    + Add Child
+                    + Add
                   </button>
                 )}
               </div>
+            ) : (
+              <button
+                onClick={onAddChild}
+                className="text-green-400 hover:text-green-300 text-xs mt-1"
+              >
+                Search for your child for quick access to their team &rarr;
+              </button>
             )}
           </div>
         </div>
@@ -114,7 +118,7 @@ export default function TournamentCentral({
       </div>
 
       {/* Tab content */}
-      <div className="max-w-5xl mx-auto p-4">
+      <div className="max-w-5xl mx-auto p-4 flex-1 w-full">
         {activeTab === 'brackets' && (
           <BracketsView
             selectedChild={selectedChild}
@@ -145,6 +149,11 @@ export default function TournamentCentral({
             onGameClick={handleGameClick}
           />
         )}
+      </div>
+
+      {/* Footer with school logo */}
+      <div className="border-t border-navy-700 py-4 px-4 text-center">
+        <img src={logoUrl} alt="The Covenant School" className="h-10 mx-auto opacity-40" />
       </div>
 
       {/* Matchup modal */}

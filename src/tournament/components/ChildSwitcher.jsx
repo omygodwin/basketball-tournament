@@ -1,6 +1,6 @@
 import { getSelectedChildren, getActiveChildIndex, setActiveChildIndex, removeChild, clearSelectedChild } from '../../data/tournamentData';
 
-export default function ChildSwitcher({ children, activeIndex, onSwitch, onClear }) {
+export default function ChildSwitcher({ children, activeIndex, onSwitch, onClear, compact }) {
   if (!children || children.length === 0) return null;
 
   function handleSwitch(idx) {
@@ -20,6 +20,27 @@ export default function ChildSwitcher({ children, activeIndex, onSwitch, onClear
 
   if (children.length === 1) {
     const child = children[0];
+
+    if (compact) {
+      return (
+        <div className="flex items-center gap-2 text-xs text-gray-300">
+          <span>
+            <strong className="text-white">{child.playerName}</strong>
+            {' \u2014 '}
+            <span className="text-green-400">{child.teamName}</span>
+            {' '}
+            <span className="text-gray-400">({child.division})</span>
+          </span>
+          <button
+            onClick={() => { clearSelectedChild(); onClear(); }}
+            className="text-gray-400 hover:text-green-300 underline"
+          >
+            Change
+          </button>
+        </div>
+      );
+    }
+
     return (
       <div className="bg-green-900/40 border border-green-700 rounded-lg px-4 py-2 flex items-center justify-between text-sm">
         <span className="text-green-200">
@@ -39,7 +60,34 @@ export default function ChildSwitcher({ children, activeIndex, onSwitch, onClear
     );
   }
 
-  // Multiple children
+  // Multiple children - compact
+  if (compact) {
+    return (
+      <div className="flex items-center gap-2 text-xs text-gray-300 flex-wrap">
+        {children.map((child, idx) => (
+          <button
+            key={`${child.playerName}-${idx}`}
+            onClick={() => handleSwitch(idx)}
+            className={`rounded px-2 py-0.5 transition-colors ${
+              idx === activeIndex
+                ? 'bg-green-800/50 text-white font-bold'
+                : 'bg-navy-700 text-gray-300 hover:bg-navy-600'
+            }`}
+          >
+            {child.playerName}
+          </button>
+        ))}
+        <button
+          onClick={() => { clearSelectedChild(); onClear(); }}
+          className="text-gray-400 hover:text-green-300 underline"
+        >
+          Change
+        </button>
+      </div>
+    );
+  }
+
+  // Multiple children - full
   return (
     <div className="bg-green-900/40 border border-green-700 rounded-lg px-3 py-2 space-y-1.5">
       <div className="text-green-400 text-xs font-semibold uppercase tracking-wide">Your Children</div>

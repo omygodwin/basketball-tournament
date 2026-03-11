@@ -54,7 +54,7 @@ export default function InstallBanner() {
         <div className="max-w-lg mx-auto flex items-center gap-3">
           <div className="flex-1">
             <p className="text-white font-semibold text-sm">Add to Home Screen</p>
-            <p className="text-gray-400 text-xs">Get quick access and game notifications</p>
+            <p className="text-gray-400 text-xs">Quick access to scores &amp; brackets</p>
           </div>
           <button
             onClick={() => setShowInfo(true)}
@@ -102,7 +102,7 @@ export default function InstallBanner() {
               <ul className="list-disc list-inside space-y-1 text-gray-400">
                 <li>Creates an icon on your home screen for quick access</li>
                 <li>Opens in full screen like a real app</li>
-                <li>Enable notifications to get live game results and score updates</li>
+                <li>Check back after each game for updated scores and bracket results</li>
               </ul>
 
               <hr className="border-navy-700" />
@@ -111,16 +111,14 @@ export default function InstallBanner() {
                 <>
                   <p className="font-semibold text-white">How to install (iPhone/iPad):</p>
                   <ol className="list-decimal list-inside space-y-1 text-gray-400">
-                    <li>Tap the <strong className="text-white">Share</strong> button at the bottom of Safari (the square with arrow)</li>
+                    <li>
+                      Tap the <strong className="text-white">Share</strong> button{' '}
+                      <svg className="inline-block w-4 h-4 text-white align-text-bottom" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v12m0-12l-4 4m4-4l4 4" />
+                      </svg>
+                    </li>
                     <li>Scroll down and tap <strong className="text-white">Add to Home Screen</strong></li>
                     <li>Tap <strong className="text-white">Add</strong> in the top right</li>
-                  </ol>
-                  <hr className="border-navy-700" />
-                  <p className="font-semibold text-white">Enable notifications:</p>
-                  <ol className="list-decimal list-inside space-y-1 text-gray-400">
-                    <li>Open the app from your home screen</li>
-                    <li>When prompted, tap <strong className="text-white">Allow Notifications</strong></li>
-                    <li>If you missed the prompt, go to <strong className="text-white">Settings &gt; Notifications</strong> and find the app</li>
                   </ol>
                 </>
               ) : (
@@ -130,13 +128,6 @@ export default function InstallBanner() {
                     <li>Tap the <strong className="text-white">menu</strong> (three dots) in Chrome</li>
                     <li>Tap <strong className="text-white">Add to Home screen</strong> or <strong className="text-white">Install app</strong></li>
                     <li>Tap <strong className="text-white">Install</strong></li>
-                  </ol>
-                  <hr className="border-navy-700" />
-                  <p className="font-semibold text-white">Enable notifications:</p>
-                  <ol className="list-decimal list-inside space-y-1 text-gray-400">
-                    <li>Open the app from your home screen</li>
-                    <li>When prompted, tap <strong className="text-white">Allow</strong> for notifications</li>
-                    <li>You'll receive live score updates during games</li>
                   </ol>
                 </>
               )}

@@ -1,5 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { divisions, getTeamsByDivision, isTeamEliminated, getTeamNextGame, getGameResults, courts } from '../data/tournamentData';
+import { divisions, getTeamsByDivision, isTeamEliminated, getTeamNextGame, getGameResults, courts, teams } from '../data/tournamentData';
+
+// Build flat list of all players
+const allPlayers = [];
+teams.forEach((team) => {
+  team.roster.forEach((player) => {
+    allPlayers.push({ name: player, teamName: team.name, division: team.division });
+  });
+});
 
 export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, onGameClick }) {
   const [expandedTeams, setExpandedTeams] = useState(() => {
@@ -10,6 +18,11 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
   const [gameResults, setGameResults] = useState(getGameResults());
   const focusRef = useRef(null);
   const prevFocusTeam = useRef(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchDrop, setShowSearchDrop] = useState(false);
+  const searchInputRef = useRef(null);
+  const searchDropRef = useRef(null);
 
   useEffect(() => {
     function handleFocus() { setGameResults(getGameResults()); }
@@ -29,6 +42,41 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
       }, 100);
     }
   }, [focusTeam, onFocusHandled]);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (searchDropRef.current && !searchDropRef.current.contains(e.target) &&
+          searchInputRef.current && !searchInputRef.current.contains(e.target)) {
+        setShowSearchDrop(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  function handleSearchChange(e) {
+    const val = e.target.value;
+    setSearchQuery(val);
+    if (val.trim().length < 2) {
+      setSearchResults([]);
+      setShowSearchDrop(false);
+      return;
+    }
+    const lower = val.toLowerCase();
+    const matches = allPlayers.filter((p) => p.name.toLowerCase().includes(lower));
+    setSearchResults(matches);
+    setShowSearchDrop(matches.length > 0);
+  }
+
+  function handleSearchSelect(player) {
+    setSearchQuery('');
+    setShowSearchDrop(false);
+    setExpandedTeams((prev) => new Set([...prev, player.teamName]));
+    setTimeout(() => {
+      const el = document.getElementById(`team-card-${player.teamName}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  }
 
   function toggleTeam(name) {
     setExpandedTeams((prev) => {
@@ -62,6 +110,40 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
 
   return (
     <div>
+      {/* Player search */}
+      <div className="relative mb-4">
+        <input
+          ref={searchInputRef}
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          onFocus={() => { if (searchResults.length > 0) setShowSearchDrop(true); }}
+          placeholder="Search for a player to find their team..."
+          className="w-full px-3 py-2 rounded-lg bg-navy-700 text-white placeholder-gray-400 border border-navy-600 focus:border-green-500 focus:ring-1 focus:ring-green-500 focus:outline-none text-sm"
+        />
+        {showSearchDrop && (
+          <div
+            ref={searchDropRef}
+            className="absolute z-50 w-full mt-1 bg-navy-800 border border-navy-600 rounded-lg shadow-lg max-h-48 overflow-y-auto"
+          >
+            {searchResults.map((player, i) => (
+              <button
+                key={`${player.name}-${player.teamName}`}
+                onClick={() => handleSearchSelect(player)}
+                className={`w-full text-left px-3 py-2 hover:bg-navy-700 transition-colors text-sm ${
+                  i < searchResults.length - 1 ? 'border-b border-navy-700' : ''
+                }`}
+              >
+                <span className="text-white font-medium">{player.name}</span>
+                <span className="text-gray-400 text-xs ml-2">
+                  — {player.teamName} ({player.division})
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-bold text-white">All Teams</h3>
         <button
@@ -89,6 +171,7 @@ export default function TeamsView({ selectedChild, focusTeam, onFocusHandled, on
 
                 return (
                   <div
+                    id={`team-card-${team.name}`}
                     key={`${team.name}-${team.division}`}
                     ref={isFocused ? focusRef : null}
                     className={`bg-navy-800 border rounded-lg overflow-hidden transition-all ${

@@ -76,31 +76,14 @@ export default function TournamentApp() {
           </div>
         </div>
 
-        {/* Scripture */}
-        <div className="bg-navy-800 border border-navy-700 rounded-lg px-4 py-3 text-sm">
-          <p className="text-gray-300 italic leading-relaxed">
-            &ldquo;Two are better than one, because they have a good reward for their toil.
-            For if they fall, one will lift up his fellow.&rdquo;
-          </p>
-          <p className="text-green-400 text-xs mt-1.5 font-medium">Ecclesiastes 4:9-10</p>
-        </div>
-
         {/* Child banner if already selected */}
         {allChildren.length > 0 && (
-          <div className="space-y-3">
-            <ChildSwitcher
-              children={allChildren}
-              activeIndex={activeChildIdx}
-              onSwitch={handleChildSwitch}
-              onClear={handleClearChild}
-            />
-            <button
-              onClick={() => setView('central')}
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
-            >
-              Go to Tournament Central
-            </button>
-          </div>
+          <ChildSwitcher
+            children={allChildren}
+            activeIndex={activeChildIdx}
+            onSwitch={handleChildSwitch}
+            onClear={handleClearChild}
+          />
         )}
 
         {/* Search */}
@@ -111,15 +94,22 @@ export default function TournamentApp() {
           <PlayerSearch onSelect={handlePlayerSelect} />
         </div>
 
-        {/* Tournament Central button (when no child selected) */}
-        {allChildren.length === 0 && (
-          <button
-            onClick={() => setView('central')}
-            className="w-full bg-navy-700 hover:bg-navy-600 text-white font-bold py-3 px-6 rounded-lg transition-colors border border-navy-600"
-          >
-            Browse Tournament Central
-          </button>
-        )}
+        {/* Tournament Central button - always green */}
+        <button
+          onClick={() => setView('central')}
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+        >
+          Tournament Central
+        </button>
+
+        {/* Scripture */}
+        <div className="bg-navy-800 border border-navy-700 rounded-lg px-4 py-3 text-sm">
+          <p className="text-gray-300 italic leading-relaxed">
+            &ldquo;Two are better than one, because they have a good reward for their toil.
+            For if they fall, one will lift up his fellow.&rdquo;
+          </p>
+          <p className="text-green-400 text-xs mt-1.5 font-medium">Ecclesiastes 4:9-10</p>
+        </div>
 
         {/* Tournament info from email */}
         <div className="bg-navy-800 border border-navy-700 rounded-lg p-4 text-left space-y-3">
@@ -127,15 +117,15 @@ export default function TournamentApp() {
           <ul className="text-gray-300 text-sm space-y-2">
             <li className="flex items-start gap-2">
               <span className="text-green-400 shrink-0 mt-0.5">&#9679;</span>
-              Friends &amp; families are welcome to attend and cheer!
+              <span>Friends &amp; families are welcome to attend and cheer!</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-400 shrink-0 mt-0.5">&#9679;</span>
-              Games played both indoors and outdoors
+              <span>Games played both indoors and outdoors</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-400 shrink-0 mt-0.5">&#9679;</span>
-              Visit the <strong className="text-white">Tournament Central</strong> tent for rosters, game info &amp; live bracket updates
+              <span>Visit the <strong className="text-white">Tournament Central</strong> tent for rosters, game info &amp; live bracket updates</span>
             </li>
           </ul>
           <hr className="border-navy-700" />

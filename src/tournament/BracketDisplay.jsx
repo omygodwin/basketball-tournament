@@ -49,7 +49,7 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
 
   return (
     <div
-      className="bg-navy-800 border border-navy-600 rounded w-56 overflow-hidden shadow-md cursor-pointer hover:border-navy-600 transition-colors"
+      className="bg-navy-800 border border-navy-600 rounded w-48 overflow-hidden shadow-md cursor-pointer hover:border-navy-600 transition-colors shrink-0"
       onClick={() => onGameClick && onGameClick(game)}
       title="Click for matchup details"
     >
@@ -66,6 +66,25 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
         hasResult ? result.score2 : null,
         game.team2 && game.team2 !== 'TBD' && game.team2 !== 'BYE'
       )}
+    </div>
+  );
+}
+
+/* Connector draws lines from two source boxes to one target box */
+function Connector() {
+  return (
+    <div className="flex flex-col w-6 shrink-0 self-stretch">
+      <div className="flex-1 border-b-2 border-r-2 border-navy-600 rounded-br" />
+      <div className="flex-1 border-t-2 border-r-2 border-navy-600 rounded-tr" />
+    </div>
+  );
+}
+
+/* Horizontal line from connector to next round box */
+function HLine() {
+  return (
+    <div className="w-4 shrink-0 flex items-center">
+      <div className="w-full border-t-2 border-navy-600" />
     </div>
   );
 }
@@ -126,73 +145,53 @@ export default function BracketDisplay({ bracket, highlightTeam, gameResults, on
   const finalResult = results[final[0]?.gameId];
   const champion = finalResult?.winner || null;
 
+  const boxProps = { highlightTeam, onTeamClick, onGameClick };
+
   return (
     <div className="w-full overflow-x-auto">
-      <div className="min-w-[750px] flex items-stretch gap-0 py-4 px-2">
-        {/* Quarter-Finals */}
-        <div className="flex flex-col justify-around flex-shrink-0 gap-6" style={{ minHeight: '400px' }}>
-          <div className="text-xs text-gray-500 uppercase tracking-wide text-center mb-1">Quarter-Finals</div>
-          {qf.map((game) => (
-            <MatchupBox
-              key={game.gameId}
-              game={game}
-              result={results[game.gameId]}
-              highlightTeam={highlightTeam}
-              onTeamClick={onTeamClick}
-              onGameClick={onGameClick}
-            />
-          ))}
-        </div>
-
-        {/* Connector lines QF -> SF */}
-        <div className="flex flex-col justify-around flex-shrink-0 w-8">
-          <div className="flex-1" />
-          {[0, 1].map((i) => (
-            <div key={i} className="flex-1 flex flex-col justify-center">
-              <div className="border-t-2 border-r-2 border-navy-600 h-16 rounded-tr-lg" />
-              <div className="border-b-2 border-r-2 border-navy-600 h-16 rounded-br-lg" />
+      <div className="inline-flex items-center py-4 px-2">
+        {/* Labels row */}
+        <div className="flex items-center">
+          {/* QF + Connector + SF pairs */}
+          <div className="flex flex-col gap-8">
+            <div className="text-xs text-gray-500 uppercase tracking-wide text-center">Quarter-Finals</div>
+            {/* Top half: QF1+QF2 → SF1 */}
+            <div className="flex items-center">
+              <div className="flex flex-col gap-3">
+                <MatchupBox game={qf[0]} result={results[qf[0]?.gameId]} {...boxProps} />
+                <MatchupBox game={qf[1]} result={results[qf[1]?.gameId]} {...boxProps} />
+              </div>
+              <Connector />
+              <HLine />
+              <MatchupBox game={sf[0]} result={results[sf[0]?.gameId]} {...boxProps} />
             </div>
-          ))}
-          <div className="flex-1" />
-        </div>
-
-        {/* Semi-Finals */}
-        <div className="flex flex-col justify-around flex-shrink-0 gap-24" style={{ minHeight: '400px' }}>
-          <div className="text-xs text-gray-500 uppercase tracking-wide text-center mb-1">Semi-Finals</div>
-          {sf.map((game) => (
-            <MatchupBox
-              key={game.gameId}
-              game={game}
-              result={results[game.gameId]}
-              highlightTeam={highlightTeam}
-              onTeamClick={onTeamClick}
-              onGameClick={onGameClick}
-            />
-          ))}
-        </div>
-
-        {/* Connector lines SF -> F */}
-        <div className="flex flex-col justify-center flex-shrink-0 w-8">
-          <div className="border-t-2 border-r-2 border-navy-600 h-20 rounded-tr-lg" />
-          <div className="border-b-2 border-r-2 border-navy-600 h-20 rounded-br-lg" />
-        </div>
-
-        {/* Final */}
-        <div className="flex flex-col justify-center flex-shrink-0" style={{ minHeight: '400px' }}>
-          <div className="text-xs text-gray-500 uppercase tracking-wide text-center mb-1">Final</div>
-          <MatchupBox
-            game={final[0]}
-            result={results[final[0]?.gameId]}
-            highlightTeam={highlightTeam}
-            onTeamClick={onTeamClick}
-            onGameClick={onGameClick}
-          />
-          {champion && (
-            <div className="mt-3 text-center">
-              <div className="text-xs text-gray-500 uppercase tracking-wide">Champion</div>
-              <div className="text-green-400 font-bold text-lg mt-1">{champion}</div>
+            {/* Bottom half: QF3+QF4 → SF2 */}
+            <div className="flex items-center">
+              <div className="flex flex-col gap-3">
+                <MatchupBox game={qf[2]} result={results[qf[2]?.gameId]} {...boxProps} />
+                <MatchupBox game={qf[3]} result={results[qf[3]?.gameId]} {...boxProps} />
+              </div>
+              <Connector />
+              <HLine />
+              <MatchupBox game={sf[1]} result={results[sf[1]?.gameId]} {...boxProps} />
             </div>
-          )}
+          </div>
+
+          {/* SF → Final connector */}
+          <Connector />
+          <HLine />
+
+          {/* Final */}
+          <div className="flex flex-col items-center">
+            <div className="text-xs text-gray-500 uppercase tracking-wide text-center mb-2">Final</div>
+            <MatchupBox game={final[0]} result={results[final[0]?.gameId]} {...boxProps} />
+            {champion && (
+              <div className="mt-3 text-center">
+                <div className="text-xs text-gray-500 uppercase tracking-wide">Champion</div>
+                <div className="text-green-400 font-bold text-lg mt-1">{champion}</div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
