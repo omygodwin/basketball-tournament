@@ -148,7 +148,7 @@ export default function InstallBanner({ aboveBottomNav }) {
 
               {isIOS ? (
                 <>
-                  <p className="font-semibold text-white">How to install (iPhone/iPad):</p>
+                  <p className="font-semibold text-white">How to install:</p>
                   <ol className="list-decimal list-inside space-y-1 text-gray-400">
                     <li>
                       Tap the <strong className="text-white">Share</strong> button{' '}
@@ -162,7 +162,7 @@ export default function InstallBanner({ aboveBottomNav }) {
                 </>
               ) : isAndroid ? (
                 <>
-                  <p className="font-semibold text-white">How to install (Android):</p>
+                  <p className="font-semibold text-white">How to install:</p>
                   <ol className="list-decimal list-inside space-y-1 text-gray-400">
                     <li>Tap the <strong className="text-white">menu</strong> (three dots) in your browser</li>
                     <li>Tap <strong className="text-white">Add to Home screen</strong> or <strong className="text-white">Install app</strong></li>
