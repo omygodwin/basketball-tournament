@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { teams } from '../../data/tournamentData';
+import { teams, removeChild, getSelectedChildren, getActiveChildIndex } from '../../data/tournamentData';
 
 const allPlayers = [];
 teams.forEach((team) => {
@@ -37,7 +37,6 @@ export default function ChildSheet({
   if (!isOpen) return null;
 
   const hasChildren = allChildren && allChildren.length > 0;
-  const canAdd = !allChildren || allChildren.length < 2;
 
   const lower = query.toLowerCase();
   const results = query.trim().length >= 2
@@ -108,44 +107,51 @@ export default function ChildSheet({
           {hasChildren && !showSearch && (
             <>
               {allChildren.map((child, idx) => (
-                <button
+                <div
                   key={`${child.playerName}-${idx}`}
-                  onClick={() => {
-                    onSwitch(idx);
-                    onClose();
-                  }}
-                  className={`w-full text-left p-3 rounded-lg border transition-colors ${
+                  className={`flex items-center gap-2 p-3 rounded-lg border transition-colors ${
                     idx === activeIndex
                       ? 'bg-green-900/30 border-green-600 text-green-400'
                       : 'bg-navy-700 border-navy-600 text-white hover:bg-navy-600'
                   }`}
                 >
-                  <div className="font-medium">{child.playerName}</div>
-                  <div className="text-sm text-gray-400">
-                    {child.teamName} &middot; {child.division}
-                  </div>
-                </button>
+                  <button
+                    className="flex-1 text-left"
+                    onClick={() => {
+                      onSwitch(idx);
+                      onClose();
+                    }}
+                  >
+                    <div className="font-medium">{child.playerName}</div>
+                    <div className="text-sm text-gray-400">
+                      {child.teamName} &middot; {child.division}
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => {
+                      removeChild(idx);
+                      const updated = getSelectedChildren();
+                      if (updated.length === 0) {
+                        onClear();
+                        onClose();
+                      } else {
+                        onSwitch(getActiveChildIndex());
+                      }
+                    }}
+                    className="text-gray-500 hover:text-red-400 text-lg leading-none px-1 shrink-0"
+                    title="Remove"
+                  >
+                    &times;
+                  </button>
+                </div>
               ))}
 
-              <div className="flex gap-2 pt-2">
-                {canAdd && (
-                  <button
-                    onClick={() => setShowSearch(true)}
-                    className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 rounded-lg transition-colors text-sm"
-                  >
-                    + Add Another Child
-                  </button>
-                )}
-                <button
-                  onClick={() => {
-                    onClear();
-                    onClose();
-                  }}
-                  className="flex-1 bg-navy-700 hover:bg-navy-600 text-gray-300 font-medium py-2.5 rounded-lg transition-colors text-sm"
-                >
-                  Clear Selection
-                </button>
-              </div>
+              <button
+                onClick={() => setShowSearch(true)}
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 rounded-lg transition-colors text-sm mt-2"
+              >
+                + Add Another Child
+              </button>
             </>
           )}
         </div>
