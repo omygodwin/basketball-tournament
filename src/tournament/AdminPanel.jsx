@@ -93,7 +93,7 @@ export default function AdminPanel({ onBack }) {
 
   return (
     <div className="min-h-screen bg-navy-900 text-white flex flex-col">
-      <div className="sticky top-0 z-20 bg-navy-900">
+      <div className="sticky top-0 z-20 bg-navy-900" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="bg-navy-800 border-b border-navy-700 px-4 py-3">
           <div className="max-w-5xl mx-auto flex items-center justify-between">
             <button

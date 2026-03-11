@@ -104,7 +104,7 @@ export default function TournamentCentral({
         onBack={onBack}
         onSearchOpen={() => setShowSearch(true)}
         onChildOpen={() => setShowChildSheet(true)}
-        onCourtKeyOpen={activeTab === 'schedule' ? () => setShowCourtKey(true) : undefined}
+        onCourtKeyOpen={() => setShowCourtKey(true)}
         selectedChild={selectedChild}
       />
 
