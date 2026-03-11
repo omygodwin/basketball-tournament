@@ -187,7 +187,7 @@ export default function TournamentCentral({
         />
       )}
 
-      <InstallBanner />
+      <InstallBanner aboveBottomNav />
     </div>
   );
 }

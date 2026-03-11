@@ -11,7 +11,7 @@ function isStandalone() {
 
 const DISMISSED_KEY = 'tournament-install-dismissed';
 
-export default function InstallBanner() {
+export default function InstallBanner({ aboveBottomNav }) {
   const [show, setShow] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -50,7 +50,10 @@ export default function InstallBanner() {
 
   return (
     <>
-      <div className="fixed bottom-16 left-0 right-0 z-50 bg-navy-800 border-t border-navy-600 p-4">
+      <div
+        className="fixed left-0 right-0 z-50 bg-navy-800 border-t border-navy-600 p-4"
+        style={{ bottom: aboveBottomNav ? 'calc(3.5rem + env(safe-area-inset-bottom, 0px))' : 0, paddingBottom: aboveBottomNav ? undefined : 'env(safe-area-inset-bottom, 0px)' }}
+      >
         <div className="max-w-lg mx-auto flex items-center gap-3">
           <div className="flex-1">
             <p className="text-white font-semibold text-sm">Add to Home Screen</p>
