@@ -21,8 +21,10 @@ export default function TournamentCentral({
   onClearChild,
   onAddChild,
   onBack,
+  initialTab,
+  onInitialTabConsumed,
 }) {
-  const [activeTab, setActiveTab] = useState('brackets');
+  const [activeTab, setActiveTab] = useState(initialTab || 'brackets');
   const [matchupGame, setMatchupGame] = useState(null);
   const [focusTeam, setFocusTeam] = useState(null);
   const gameResults = useGameResults();
@@ -40,6 +42,14 @@ export default function TournamentCentral({
       setSubFilter((prev) => ({ ...prev, brackets: selectedChild.division }));
     }
   }, [selectedChild]);
+
+  // Navigate to a specific tab when triggered by notification deep-link
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+      if (onInitialTabConsumed) onInitialTabConsumed();
+    }
+  }, [initialTab]);
 
   const hasAnyChampion = divisions.some((div) => {
     const bracket = getBracket(div);

@@ -10,11 +10,41 @@ import { checkAndNotifyNewResults, saveNotifiedResults } from './utils/notificat
 
 const logoUrl = import.meta.env.BASE_URL + 'covenant-logo.png';
 
+// Read #tab hash from URL (used when notification opens a new window)
+function getNavParam() {
+  try {
+    return window.location.hash.replace('#', '') || '';
+  } catch {
+    return '';
+  }
+}
+
 export default function TournamentApp() {
-  const [view, setView] = useState(() => getSelectedChild() ? 'central' : 'home');
+  const navParam = getNavParam();
+  const [view, setView] = useState(() => navParam ? 'central' : getSelectedChild() ? 'central' : 'home');
   const [selectedChild, setSelectedChild] = useState(getSelectedChild());
   const [allChildren, setAllChildren] = useState(getSelectedChildren());
   const [activeChildIdx, setActiveChildIdx] = useState(getActiveChildIndex());
+  const [navTab, setNavTab] = useState(navParam);
+
+  // Clean URL param after reading it
+  useEffect(() => {
+    if (navParam) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }, []);
+
+  // Listen for NAVIGATE messages from service worker (when app is already open)
+  useEffect(() => {
+    function handleSWMessage(event) {
+      if (event.data && event.data.type === 'NAVIGATE' && event.data.tab) {
+        setView('central');
+        setNavTab(event.data.tab);
+      }
+    }
+    navigator.serviceWorker?.addEventListener('message', handleSWMessage);
+    return () => navigator.serviceWorker?.removeEventListener('message', handleSWMessage);
+  }, []);
 
   function refreshChildState() {
     setAllChildren(getSelectedChildren());
@@ -61,6 +91,8 @@ export default function TournamentApp() {
         onClearChild={handleClearChild}
         onAddChild={handlePlayerSelect}
         onBack={() => setView('home')}
+        initialTab={navTab}
+        onInitialTabConsumed={() => setNavTab('')}
       />
     );
   }

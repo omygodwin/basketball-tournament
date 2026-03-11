@@ -115,7 +115,7 @@ export function checkAndNotifyNewResults() {
         }
       }
 
-      showNotification(title, body);
+      showNotification(title, body, { tab: 'myteam' });
     }
   }
 
@@ -123,13 +123,14 @@ export function checkAndNotifyNewResults() {
   saveNotifiedResults();
 }
 
-function showNotification(title, body) {
+function showNotification(title, body, data) {
   try {
     if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
       navigator.serviceWorker.controller.postMessage({
         type: 'SHOW_NOTIFICATION',
         title,
         body,
+        data,
       });
     } else {
       new Notification(title, {

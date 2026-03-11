@@ -37,17 +37,32 @@ Conditional tabs: "Results" appears when any division has a champion. "MyTeam" a
 
 ### Notifications (PWA)
 - Service worker (`public/sw.js`): network-first caching, cache name `tournament-v1`
-- Notification flow: AdminPanel saves results → checks for changes → sends push via `postMessage` to SW
+- Notification flow: Firebase `onValue` fires → `subscribeToResults` callback → diff detection → push via `postMessage` to SW
 - `src/tournament/utils/notifications.js` — Permission checks, result diff detection, team-specific alerts
 - Only prompts for notification permission in standalone (installed) mode
 
 ### Data Layer
-All game results are stored in **localStorage** (no backend):
+Game results use **Firebase Realtime Database** with localStorage as offline cache/fallback (dual-write pattern).
+
+#### Firebase
+- **Project**: `roseruthclinic` (config in `src/data/firebase.js`)
+- **Database path**: `tournament/results`
+- **Pattern**: `onValue` listener syncs Firebase → in-memory cache → localStorage. Writes go to both Firebase and localStorage.
+- **`initResultsSync()`** in `main.jsx` must be called before `createRoot()` — seeds cache from localStorage, attaches Firebase listener.
+
+#### Reactive State
+- **`useGameResults()`** — React hook for live game results (re-renders on any change). Use this in all view components.
+- **`subscribeToResults(cb)`** — Low-level subscription for non-React code (e.g., notifications).
+- Do NOT use `getGameResults()` in React components — it returns a snapshot that won't update.
+
+#### localStorage Keys
 - `tournament-results` — Game scores/winners (JSON object keyed by gameId)
 - `tournament-selected-children` — Array of selected children `[{playerName, teamName, division}]`
 - `tournament-active-child-index` — Index of active child (integer string)
 - `tournament-notif-last-results` — Last notified results snapshot
 - `tournament-notif-prompted` — Whether notification prompt was shown
+- `tournament-install-dismissed` — Install banner dismissed by user
+- `tournament-app-installed` — App was installed (prevents banner re-show)
 
 ### Bracket Structure
 Each division has `quarterFinals[]`, `semiFinals[]`, `final[]`. Later rounds use `source: [gameId1, gameId2]` to reference feeder games. Use `resolveFullBracket(bracket, results)` to populate team names from results.

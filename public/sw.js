@@ -40,21 +40,26 @@ self.addEventListener('message', (event) => {
       badge: '/basketball-tournament/covenant-icon-192.png',
       tag: 'tournament-result',
       renotify: true,
+      data: event.data.data || {},
     });
   }
 });
 
-// Handle notification click: open/focus the app
+// Handle notification click: navigate to the relevant tab
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
+  const navTab = (event.notification.data && event.notification.data.tab) || '';
+  const navHash = navTab ? '#' + navTab : '';
+
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
       for (const client of clients) {
         if (client.url.includes('/basketball-tournament') && 'focus' in client) {
+          client.postMessage({ type: 'NAVIGATE', tab: navTab });
           return client.focus();
         }
       }
-      return self.clients.openWindow('/basketball-tournament/');
+      return self.clients.openWindow('/basketball-tournament/' + navHash);
     })
   );
 });
