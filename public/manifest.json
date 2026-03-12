@@ -1,19 +1,19 @@
 {
   "name": "Covenant School March Madness",
   "short_name": "March Madness",
-  "start_url": "/basketball-tournament/",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0c1524",
   "theme_color": "#0c1524",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/basketball-tournament/covenant-icon-192.png",
+      "src": "/covenant-icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/basketball-tournament/covenant-icon-512.png",
+      "src": "/covenant-icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

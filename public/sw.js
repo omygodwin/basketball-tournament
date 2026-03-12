@@ -36,8 +36,8 @@ self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
     self.registration.showNotification(event.data.title, {
       body: event.data.body,
-      icon: '/basketball-tournament/covenant-icon-192.png',
-      badge: '/basketball-tournament/covenant-icon-192.png',
+      icon: '/covenant-icon-192.png',
+      badge: '/covenant-icon-192.png',
       tag: 'tournament-result',
       renotify: true,
       data: event.data.data || {},
@@ -54,12 +54,12 @@ self.addEventListener('notificationclick', (event) => {
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
       for (const client of clients) {
-        if (client.url.includes('/basketball-tournament') && 'focus' in client) {
+        if (client.url.includes('tcs-march-madness.com') && 'focus' in client) {
           client.postMessage({ type: 'NAVIGATE', tab: navTab });
           return client.focus();
         }
       }
-      return self.clients.openWindow('/basketball-tournament/' + navHash);
+      return self.clients.openWindow('/' + navHash);
     })
   );
 });

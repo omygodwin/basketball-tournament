@@ -81,8 +81,8 @@ Format: `{grade}{gender}-{round}` e.g. `3B-QF1` (3rd Boys Quarter-Final 1), `5G-
 - Inputs must use `text-base` (16px) to prevent iOS zoom
 
 ## Deployment
-Push to `main` triggers GitHub Actions → builds → deploys to GitHub Pages at `/basketball-tournament/`.
-Base path is `/basketball-tournament/` (configured in `vite.config.js`).
+Push to `main` triggers Cloudflare Pages auto-deploy → builds → deploys to `tcs-march-madness.com`.
+Base path is `/` (configured in `vite.config.js`).
 
 ## Git Workflow
 - Work on feature branches or worktree branches
