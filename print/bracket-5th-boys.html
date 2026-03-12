@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>5th Grade Boys Bracket - March Madness 2025</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: white;
+    color: #0f172a;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @media print {
+    @page { size: 24in 18in; margin: 0.5in; }
+  }
+  @media screen {
+    body { padding: 20px; background: #e2e8f0; }
+  }
+
+  .page {
+    width: 24in;
+    height: 18in;
+    padding: 0.4in 0.5in;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    overflow: hidden;
+  }
+
+  .header {
+    text-align: center;
+    padding-bottom: 0.12in;
+    border-bottom: 5px solid #166534;
+    flex-shrink: 0;
+  }
+  .header h1 {
+    font-size: 72px;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -1px;
+  }
+  .header h1 span { color: #166534; }
+  .header p {
+    font-size: 22px;
+    color: #64748b;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  .round-labels {
+    display: flex;
+    padding: 0.12in 0 0.06in;
+    flex-shrink: 0;
+  }
+  .round-labels span {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    flex-shrink: 0;
+  }
+
+  .bracket-body {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+  }
+
+  .round-col {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+  .qf-col { width: 5.5in; }
+  .sf-col { width: 4.5in; }
+  .final-col { width: 4.5in; }
+  .champ-col { width: 5in; }
+
+  .match-slot {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 4px 0;
+  }
+  .match-slot > .matchup,
+  .match-slot > .champ-box {
+    width: 100%;
+  }
+
+  .connector { flex-shrink: 0; display: flex; flex-direction: column; }
+  .conn-qf { width: 1.2in; }
+  .conn-sf { width: 1.2in; }
+  .conn-f  { width: 1.1in; }
+
+  .conn-half {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .conn-half .c-spacer { flex: 1; }
+  .conn-half .c-arm-top {
+    flex: 1;
+    margin-right: 50%;
+    border-top: 4px solid #94a3b8;
+    border-right: 4px solid #94a3b8;
+    border-top-right-radius: 14px;
+  }
+  .conn-half .c-arm-bot {
+    flex: 1;
+    margin-right: 50%;
+    border-bottom: 4px solid #94a3b8;
+    border-right: 4px solid #94a3b8;
+    border-bottom-right-radius: 14px;
+  }
+  .conn-half .c-arm-out {
+    position: absolute;
+    top: calc(50% - 2px);
+    left: calc(50% - 4px);
+    right: 0;
+    border-top: 4px solid #94a3b8;
+  }
+
+  .conn-line {
+    flex: 1;
+    position: relative;
+  }
+  .conn-line::after {
+    content: '';
+    position: absolute;
+    top: calc(50% - 2px);
+    left: 0;
+    right: 0;
+    border-top: 4px solid #94a3b8;
+  }
+
+  .matchup {
+    border: 3px solid #cbd5e1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #f8fafc;
+  }
+  .team-row {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px;
+    min-height: 80px;
+  }
+  .team-row + .team-row {
+    border-top: 3px solid #e2e8f0;
+  }
+  .name {
+    flex: 1;
+    font-size: 36px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.15;
+  }
+  .name.bye {
+    color: #94a3b8;
+    font-style: italic;
+  }
+  .write-in {
+    flex: 1;
+    min-height: 32px;
+    margin-right: 12px;
+  }
+  .score-box {
+    width: 80px;
+    height: 56px;
+    border: 3px solid #94a3b8;
+    border-radius: 8px;
+    background: white;
+    flex-shrink: 0;
+    margin-left: 14px;
+  }
+  .game-info {
+    font-size: 16px;
+    font-weight: 700;
+    color: #64748b;
+    text-align: center;
+    padding: 6px 0 4px;
+    border-bottom: 2px solid #e2e8f0;
+    letter-spacing: 0.5px;
+  }
+
+  .champ-box {
+    text-align: center;
+    border: 5px solid #166534;
+    border-radius: 18px;
+    padding: 40px 24px;
+    background: #f0fdf4;
+  }
+  .champ-label {
+    font-size: 26px;
+    font-weight: 800;
+    color: #166534;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+  }
+  .trophy { font-size: 72px; margin: 14px 0 10px; }
+  .champ-write {
+    min-height: 56px;
+    margin: 8px 16px 0;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="header">
+    <h1>March Madness &middot; <span>5th Grade Boys</span></h1>
+    <p>The Covenant School &middot; 3rd Annual 3v3 Basketball Tournament &middot; Friday, March 13th</p>
+  </div>
+
+  <div class="round-labels">
+    <span style="width:5.5in">Quarter-Finals</span>
+    <span style="width:1.2in"></span>
+    <span style="width:4.5in">Semi-Finals</span>
+    <span style="width:1.2in"></span>
+    <span style="width:4.5in">Final</span>
+    <span style="width:1.1in"></span>
+    <span style="width:5in; text-align:center">Champion</span>
+  </div>
+
+  <div class="bracket-body">
+    <div class="round-col qf-col">
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="team-row"><span class="name">Gnarly Dudes</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name bye">BYE</span></div>
+        </div>
+      </div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 1 &middot; Gm 2</div>
+          <div class="team-row"><span class="name">Bucks</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">BKTSCWOD</span><div class="score-box"></div></div>
+        </div>
+      </div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 1 &middot; Gm 4</div>
+          <div class="team-row"><span class="name">Cliffbars Arent Healthy</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">The Goats</span><div class="score-box"></div></div>
+        </div>
+      </div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 3 &middot; Gm 4</div>
+          <div class="team-row"><span class="name">Knee Walkers</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">The Bucket Boys</span><div class="score-box"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector conn-qf">
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
+    </div>
+
+    <div class="round-col sf-col">
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 3 &middot; Gm 6</div>
+          <div class="team-row"><span class="name">Gnarly Dudes</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
+      </div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 4 &middot; Gm 6</div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector conn-sf">
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
+    </div>
+
+    <div class="round-col final-col">
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 1 &middot; Gm 9</div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector conn-f">
+      <div class="conn-line"></div>
+    </div>
+
+    <div class="round-col champ-col">
+      <div class="match-slot">
+        <div class="champ-box">
+          <div class="champ-label">Champion</div>
+          <div class="trophy">&#127942;</div>
+          <div class="champ-write"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
