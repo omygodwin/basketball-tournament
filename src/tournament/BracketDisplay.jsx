@@ -132,53 +132,68 @@ export default function BracketDisplay({ bracket, highlightTeam, gameResults, on
 
   const boxProps = { highlightTeam, onTeamClick, onGameClick };
 
+  /* Bracket connector: merges two feeder games into one output line.
+     Uses the same technique as the print brackets — vertical bar with
+     curved elbows and a horizontal output line from the midpoint. */
+  function Connector({ pairs }) {
+    return (
+      <div className="w-10 shrink-0 flex flex-col">
+        {Array.from({ length: pairs }, (_, i) => (
+          <div key={i} className="flex-1 flex flex-col relative">
+            <div className="flex-1" />
+            <div
+              className="flex-1 border-t-2 border-r-2 border-gray-600 rounded-tr-lg"
+              style={{ marginRight: '50%' }}
+            />
+            <div
+              className="flex-1 border-b-2 border-r-2 border-gray-600 rounded-br-lg"
+              style={{ marginRight: '50%' }}
+            />
+            <div className="flex-1" />
+            {/* Horizontal output line from vertical bar midpoint to next column */}
+            <div
+              className="absolute border-t-2 border-gray-600"
+              style={{ top: 'calc(50% - 1px)', left: 'calc(50% - 2px)', right: 0 }}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="w-full overflow-x-auto">
       <div style={{ minWidth: '700px' }} className="px-2 py-4">
-        {/* Round labels - separate row so they don't affect alignment */}
+        {/* Round labels */}
         <div className="flex mb-2">
           <div className="w-44 shrink-0 text-xs text-gray-500 uppercase tracking-wide text-center">Quarter-Finals</div>
-          <div className="w-8 shrink-0" />
+          <div className="w-10 shrink-0" />
           <div className="w-44 shrink-0 text-xs text-gray-500 uppercase tracking-wide text-center">Semi-Finals</div>
-          <div className="w-8 shrink-0" />
+          <div className="w-10 shrink-0" />
           <div className="w-44 shrink-0 text-xs text-gray-500 uppercase tracking-wide text-center">Final</div>
         </div>
 
-        {/* Bracket body - fixed height, justify-around aligns boxes perfectly */}
+        {/* Bracket body */}
         <div className="flex" style={{ height: '340px' }}>
-          {/* QF Column: 4 matchups distributed evenly */}
+          {/* QF Column */}
           <div className="w-44 shrink-0 flex flex-col justify-around">
             {qf.map((game) => (
               <MatchupBox key={game.gameId} game={game} result={results[game.gameId]} {...boxProps} />
             ))}
           </div>
 
-          {/* QF→SF connectors: two bracket shapes, one per QF pair */}
-          <div className="w-8 shrink-0 flex flex-col">
-            {[0, 1].map((i) => (
-              <div key={i} className="flex-1 flex flex-col">
-                <div className="flex-1" />
-                <div className="flex-1 border-b-2 border-r-2 border-navy-600 rounded-br" />
-                <div className="flex-1 border-t-2 border-r-2 border-navy-600 rounded-tr" />
-                <div className="flex-1" />
-              </div>
-            ))}
-          </div>
+          {/* QF→SF connectors: 2 pairs (each merges 2 QF games → 1 SF game) */}
+          <Connector pairs={2} />
 
-          {/* SF Column: 2 matchups distributed evenly */}
+          {/* SF Column */}
           <div className="w-44 shrink-0 flex flex-col justify-around">
             {sf.map((game) => (
               <MatchupBox key={game.gameId} game={game} result={results[game.gameId]} {...boxProps} />
             ))}
           </div>
 
-          {/* SF→Final connector: single bracket shape */}
-          <div className="w-8 shrink-0 flex flex-col">
-            <div className="flex-1" />
-            <div className="flex-1 border-b-2 border-r-2 border-navy-600 rounded-br" />
-            <div className="flex-1 border-t-2 border-r-2 border-navy-600 rounded-tr" />
-            <div className="flex-1" />
-          </div>
+          {/* SF→Final connector: 1 pair (merges 2 SF games → 1 Final game) */}
+          <Connector pairs={1} />
 
           {/* Final Column */}
           <div className="w-44 shrink-0 flex flex-col justify-center">
