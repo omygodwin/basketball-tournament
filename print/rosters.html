@@ -20,14 +20,29 @@
   }
 
   .header {
-    text-align: center;
+    display: flex;
+    align-items: center;
     padding-bottom: 10px;
     border-bottom: 3px solid #166534;
     margin-bottom: 14px;
   }
+  .header-text {
+    flex: 1;
+    text-align: center;
+  }
   .header h1 { font-size: 24px; font-weight: 800; color: #0f172a; }
   .header h1 span { color: #166534; }
   .header p { font-size: 12px; color: #64748b; margin-top: 2px; }
+  .header-qr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+  .header-qr img { width: 76px; height: 76px; display: block; border: 1.5px solid #e2e8f0; border-radius: 4px; }
+  .header-qr span { font-size: 8px; color: #166534; font-weight: 700; text-align: center; line-height: 1.2; }
 
   .division-section {
     margin-bottom: 16px;
@@ -72,27 +87,6 @@
     line-height: 1.4;
   }
 
-  .footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    margin-top: 14px;
-    padding-top: 8px;
-    border-top: 2px solid #e2e8f0;
-    font-size: 10px;
-    color: #94a3b8;
-  }
-  .qr-block {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 3px 8px 3px 3px;
-  }
-  .qr-block img { width: 44px; height: 44px; display: block; }
-  .qr-block span { color: #166534; font-size: 9px; font-weight: 700; line-height: 1.3; }
 </style>
 </head>
 <body>
@@ -100,8 +94,14 @@
 <!-- ==================== PAGE 1: BOYS ROSTERS ==================== -->
 
 <div class="header">
-  <h1>March Madness &middot; <span>Boys Team Rosters</span></h1>
-  <p>The Covenant School &middot; 3rd Annual 3v3 Basketball Tournament &middot; Friday, March 13th</p>
+  <div class="header-text">
+    <h1>March Madness &middot; <span>Boys Team Rosters</span></h1>
+    <p>The Covenant School &middot; 3rd Annual 3v3 Basketball Tournament &middot; Friday, March 13th</p>
+  </div>
+  <div class="header-qr">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://omygodwin.github.io/basketball-tournament/" alt="QR Code">
+    <span>Scan for<br>Tournament App</span>
+  </div>
 </div>
 
 <!-- 3RD BOYS -->
@@ -217,20 +217,18 @@
   </div>
 </div>
 
-<div class="footer">
-  <div class="qr-block">
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://omygodwin.github.io/basketball-tournament/" alt="QR Code">
-    <span>Scan for App to view<br>Tournament Info</span>
-  </div>
-  <span>The Covenant School &middot; March Madness 3v3 Basketball Tournament &middot; Friday, March 13th</span>
-</div>
-
 <!-- ==================== PAGE 2: GIRLS ROSTERS ==================== -->
 <div class="page-break"></div>
 
 <div class="header">
-  <h1>March Madness &middot; <span>Girls Team Rosters</span></h1>
-  <p>The Covenant School &middot; 3rd Annual 3v3 Basketball Tournament &middot; Friday, March 13th</p>
+  <div class="header-text">
+    <h1>March Madness &middot; <span>Girls Team Rosters</span></h1>
+    <p>The Covenant School &middot; 3rd Annual 3v3 Basketball Tournament &middot; Friday, March 13th</p>
+  </div>
+  <div class="header-qr">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://omygodwin.github.io/basketball-tournament/" alt="QR Code">
+    <span>Scan for<br>Tournament App</span>
+  </div>
 </div>
 
 <!-- 3RD GIRLS -->
@@ -350,13 +348,6 @@
   </div>
 </div>
 
-<div class="footer">
-  <div class="qr-block">
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://omygodwin.github.io/basketball-tournament/" alt="QR Code">
-    <span>Scan for App to view<br>Tournament Info</span>
-  </div>
-  <span>The Covenant School &middot; March Madness 3v3 Basketball Tournament &middot; Friday, March 13th</span>
-</div>
 
 </body>
 </html>
