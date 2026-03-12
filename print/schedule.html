@@ -102,15 +102,15 @@
     padding: 5px 10px;
     font-size: 11px;
     border-bottom: 1px solid #f1f5f9;
-    border-left: 4px solid transparent;
   }
   .game-row:last-child { border-bottom: none; }
-  .game-row.div-3b { border-left-color: #3b82f6; background: #eff6ff; }
-  .game-row.div-3g { border-left-color: #ec4899; background: #fdf2f8; }
-  .game-row.div-4b { border-left-color: #f97316; background: #fff7ed; }
-  .game-row.div-4g { border-left-color: #8b5cf6; background: #f5f3ff; }
-  .game-row.div-5b { border-left-color: #22c55e; background: #f0fdf4; }
-  .game-row.div-5g { border-left-color: #ef4444; background: #fef2f2; }
+  /* Division colors applied only to the division text to minimize ink */
+  .game-row.div-3b .game-div { color: #2563eb; }
+  .game-row.div-3g .game-div { color: #db2777; }
+  .game-row.div-4b .game-div { color: #ea580c; }
+  .game-row.div-4g .game-div { color: #7c3aed; }
+  .game-row.div-5b .game-div { color: #16a34a; }
+  .game-row.div-5g .game-div { color: #dc2626; }
 
   .game-num {
     font-weight: 700;
@@ -127,7 +127,7 @@
   .game-matchup .vs { color: #94a3b8; font-weight: 400; }
   .game-div {
     font-size: 9px;
-    color: #64748b;
+    font-weight: 700;
     width: 65px;
     text-align: right;
     flex-shrink: 0;
@@ -149,18 +149,7 @@
     justify-content: center;
     margin-top: 12px;
     font-size: 10px;
-    color: #64748b;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .legend-swatch {
-    width: 12px;
-    height: 12px;
-    border-radius: 2px;
-    border: 1px solid #e2e8f0;
+    font-weight: 700;
   }
 
   .footer {
@@ -272,12 +261,12 @@
 </div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-swatch" style="background:#3b82f6"></div> 3rd Boys</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#ec4899"></div> 3rd Girls</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#f97316"></div> 4th Boys</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#8b5cf6"></div> 4th Girls</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#22c55e"></div> 5th Boys</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#ef4444"></div> 5th Girls</div>
+  <span style="color:#2563eb">3rd Boys</span>
+  <span style="color:#db2777">3rd Girls</span>
+  <span style="color:#ea580c">4th Boys</span>
+  <span style="color:#7c3aed">4th Girls</span>
+  <span style="color:#16a34a">5th Boys</span>
+  <span style="color:#dc2626">5th Girls</span>
 </div>
 
 <div class="footer">

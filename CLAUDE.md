@@ -22,6 +22,7 @@ React 19 PWA for The Covenant School's 3rd Annual 3v3 March Madness basketball t
 - `src/tournament/components/` — Reusable UI components
 - `src/tournament/utils/` — Utility modules (notifications)
 - `public/` — Static assets (icons, manifest.json, sw.js)
+- `print/` — Standalone HTML print files (brackets, rosters, schedule) — NOT part of Vite build
 
 ### UI Architecture
 ESPN-style mobile-first layout with fixed bottom navigation:
@@ -94,3 +95,12 @@ Base path is `/basketball-tournament/` (configured in `vite.config.js`).
 - Admin PIN is `1234` (in tournamentData.js)
 - 5th Boys division has 7 teams (Gnarly Dudes gets a first-round bye)
 - The `schedule` array has null team names for later rounds — always use bracket resolution for team lookups
+- `4B-SF1` and `5G-SF1` are missing from the `schedule` array in tournamentData.js
+
+### Print Files (`print/`)
+- Standalone HTML with inline CSS — edit directly, no build step
+- Bracket posters: 24×18in landscape (`@page { size: 24in 18in; }`) for Staples printing
+- Rosters/schedule: standard letter size (`@page { size: letter; }`)
+- Use `match-slot` wrappers with `flex: 1` for bracket alignment — round labels must be outside flex columns
+- QR codes via `api.qrserver.com/v1/create-qr-code/`
+- Preview tip: use CSS `zoom: 0.4–0.6` at 1440×1080 viewport — large viewports (2400+) crash the preview

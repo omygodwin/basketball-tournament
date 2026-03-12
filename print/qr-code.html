@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QR Code - March Madness App</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @media print {
+    @page { size: letter; margin: 0.75in; }
+  }
+
+  .card {
+    text-align: center;
+    max-width: 6in;
+  }
+
+  h1 {
+    font-size: 42px;
+    font-weight: 900;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+  h1 span { color: #166534; }
+
+  .subtitle {
+    font-size: 18px;
+    color: #64748b;
+    font-weight: 500;
+    margin-bottom: 40px;
+  }
+
+  .qr-wrapper {
+    display: inline-block;
+    border: 6px solid #166534;
+    border-radius: 24px;
+    padding: 24px;
+    background: white;
+    margin-bottom: 32px;
+  }
+  .qr-wrapper img {
+    width: 4in;
+    height: 4in;
+    display: block;
+  }
+
+  .cta {
+    font-size: 28px;
+    font-weight: 800;
+    color: #166534;
+    margin-bottom: 10px;
+  }
+
+  .description {
+    font-size: 18px;
+    color: #475569;
+    line-height: 1.5;
+    max-width: 5in;
+    margin: 0 auto;
+  }
+
+  .url {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>March Madness <span>3v3</span></h1>
+  <p class="subtitle">The Covenant School &middot; Friday, March 13th</p>
+
+  <div class="qr-wrapper">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https://omygodwin.github.io/basketball-tournament/" alt="QR Code">
+  </div>
+
+  <p class="cta">Scan for App to view Tournament Info</p>
+  <p class="description">Updated brackets, game schedule, team rosters &mdash; and you can set it to follow your child's team! &mdash; All on your phone!</p>
+  <p class="url">omygodwin.github.io/basketball-tournament</p>
+</div>
+
+</body>
+</html>

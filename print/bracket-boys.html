@@ -25,7 +25,7 @@
   .page {
     width: 24in;
     height: 18in;
-    padding: 0.45in 0.5in;
+    padding: 0.4in 0.5in;
     margin: 0 auto 30px;
     display: flex;
     flex-direction: column;
@@ -37,13 +37,12 @@
   /* Header */
   .header {
     text-align: center;
-    padding-bottom: 0.18in;
+    padding-bottom: 0.12in;
     border-bottom: 5px solid #166534;
-    margin-bottom: 0.12in;
     flex-shrink: 0;
   }
   .header h1 {
-    font-size: 64px;
+    font-size: 72px;
     font-weight: 900;
     color: #0f172a;
     letter-spacing: -1px;
@@ -52,17 +51,30 @@
   .header p {
     font-size: 22px;
     color: #64748b;
-    margin-top: 6px;
+    margin-top: 4px;
     font-weight: 500;
   }
 
-  /* Bracket body */
+  /* Round labels row - separate from bracket so they don't affect flex alignment */
+  .round-labels {
+    display: flex;
+    padding: 0.12in 0 0.06in;
+    flex-shrink: 0;
+  }
+  .round-labels span {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    flex-shrink: 0;
+  }
+
+  /* Bracket body - all the flex magic happens here */
   .bracket-body {
     flex: 1;
     display: flex;
-    align-items: stretch;
-    gap: 0;
-    padding: 0.1in 0;
     min-height: 0;
   }
 
@@ -70,82 +82,101 @@
   .round-col {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-  }
-  .qf-col { width: 5.2in; flex-shrink: 0; }
-  .sf-col { width: 4.6in; flex-shrink: 0; }
-  .final-col { width: 4.6in; flex-shrink: 0; }
-  .champ-col {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 3.2in;
     flex-shrink: 0;
+  }
+  .qf-col { width: 5.5in; }
+  .sf-col { width: 4.5in; }
+  .final-col { width: 4.5in; }
+  .champ-col { width: 5in; }
+
+  /* Match slots - equal distribution is the key to alignment */
+  .match-slot {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 4px 0;
+  }
+  .match-slot > .matchup,
+  .match-slot > .champ-box {
+    width: 100%;
   }
 
-  /* Connector columns */
-  .connector {
-    width: 0.9in;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .conn-pair {
+  /* ============ CONNECTORS ============ */
+  .connector { flex-shrink: 0; display: flex; flex-direction: column; }
+  .conn-qf { width: 1.2in; }
+  .conn-sf { width: 1.2in; }
+  .conn-f  { width: 1.1in; }
+
+  /*
+   * conn-half: merges two matchups into one.
+   * 4 equal flex children: spacer | arm-top | arm-bot | spacer
+   * The arms are at 25% and 75% of the conn-half, which align
+   * with the centers of the two feeder matchups.
+   * margin-right: 50% keeps the vertical bar at the column midpoint.
+   */
+  .conn-half {
     flex: 1;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
-  .conn-pair .spacer { flex: 1; }
-  .conn-pair .arm-bottom {
+  .conn-half .c-spacer { flex: 1; }
+  .conn-half .c-arm-top {
     flex: 1;
-    border-bottom: 4px solid #94a3b8;
-    border-right: 4px solid #94a3b8;
-    border-bottom-right-radius: 12px;
-  }
-  .conn-pair .arm-top {
-    flex: 1;
+    margin-right: 50%;
     border-top: 4px solid #94a3b8;
     border-right: 4px solid #94a3b8;
-    border-top-right-radius: 12px;
+    border-top-right-radius: 14px;
   }
+  .conn-half .c-arm-bot {
+    flex: 1;
+    margin-right: 50%;
+    border-bottom: 4px solid #94a3b8;
+    border-right: 4px solid #94a3b8;
+    border-bottom-right-radius: 14px;
+  }
+  /* Output arm from vertical bar midpoint to the next round */
+  .conn-half .c-arm-out {
+    position: absolute;
+    top: calc(50% - 2px);
+    left: calc(50% - 4px);
+    right: 0;
+    border-top: 4px solid #94a3b8;
+  }
+
+  /* Single horizontal line connector (Final → Champion) */
   .conn-line {
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    position: relative;
   }
-  .conn-line .spacer { flex: 1; }
-  .conn-line .line { border-top: 4px solid #94a3b8; }
-
-  /* Round labels */
-  .round-label {
-    text-align: center;
-    font-size: 18px;
-    font-weight: 800;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    padding-bottom: 12px;
+  .conn-line::after {
+    content: '';
+    position: absolute;
+    top: calc(50% - 2px);
+    left: 0;
+    right: 0;
+    border-top: 4px solid #94a3b8;
   }
 
-  /* Matchup cards */
+  /* ============ MATCHUP CARDS ============ */
   .matchup {
     border: 3px solid #cbd5e1;
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
     background: #f8fafc;
   }
   .team-row {
     display: flex;
     align-items: center;
-    padding: 10px 18px;
-    min-height: 62px;
+    padding: 14px 20px;
+    min-height: 80px;
   }
   .team-row + .team-row {
     border-top: 3px solid #e2e8f0;
   }
   .name {
     flex: 1;
-    font-size: 28px;
+    font-size: 36px;
     font-weight: 700;
     color: #0f172a;
     line-height: 1.15;
@@ -157,74 +188,50 @@
   .write-in {
     flex: 1;
     border-bottom: 3px dotted #cbd5e1;
-    min-height: 28px;
-    margin-right: 8px;
+    min-height: 32px;
+    margin-right: 12px;
   }
   .score-box {
-    width: 62px;
-    height: 44px;
+    width: 80px;
+    height: 56px;
     border: 3px solid #94a3b8;
-    border-radius: 6px;
+    border-radius: 8px;
     background: white;
     flex-shrink: 0;
-    margin-left: 12px;
+    margin-left: 14px;
   }
-
-  /* Champion */
-  .champ-box {
-    text-align: center;
-    border: 4px solid #166534;
-    border-radius: 14px;
-    padding: 24px 16px;
-    background: #f0fdf4;
-  }
-  .champ-label {
-    font-size: 18px;
-    font-weight: 800;
-    color: #166534;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-  }
-  .trophy { font-size: 52px; margin: 10px 0 8px; }
-  .champ-write {
-    min-height: 44px;
-    border-bottom: 4px dotted #166534;
-    margin: 6px 12px 0;
-  }
-
-  /* Footer */
-  .footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    padding-top: 0.12in;
-    border-top: 4px solid #e2e8f0;
-    font-size: 18px;
-    color: #64748b;
-    font-weight: 500;
-    flex-shrink: 0;
-  }
-  .qr-block {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border: 3px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 6px 16px 6px 6px;
-  }
-  .qr-block img { width: 80px; height: 80px; display: block; }
-  .qr-block span { color: #166534; font-size: 16px; font-weight: 700; line-height: 1.3; }
-
   .game-info {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
     color: #64748b;
     text-align: center;
-    padding: 4px 0 2px;
+    padding: 6px 0 4px;
     border-bottom: 2px solid #e2e8f0;
     letter-spacing: 0.5px;
   }
+
+  /* ============ CHAMPION ============ */
+  .champ-box {
+    text-align: center;
+    border: 5px solid #166534;
+    border-radius: 18px;
+    padding: 40px 24px;
+    background: #f0fdf4;
+  }
+  .champ-label {
+    font-size: 26px;
+    font-weight: 800;
+    color: #166534;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+  }
+  .trophy { font-size: 72px; margin: 14px 0 10px; }
+  .champ-write {
+    min-height: 56px;
+    border-bottom: 5px dotted #166534;
+    margin: 8px 16px 0;
+  }
+
 </style>
 </head>
 <body>
@@ -236,83 +243,124 @@
     <p>The Covenant School &middot; 3rd Annual 3v3 Basketball Tournament &middot; Friday, March 13th</p>
   </div>
 
+  <div class="round-labels">
+    <span style="width:5.5in">Quarter-Finals</span>
+    <span style="width:1.2in"></span>
+    <span style="width:4.5in">Semi-Finals</span>
+    <span style="width:1.2in"></span>
+    <span style="width:4.5in">Final</span>
+    <span style="width:1.1in"></span>
+    <span style="width:5in; text-align:center">Champion</span>
+  </div>
+
   <div class="bracket-body">
+    <!-- QF Column: 4 match-slots, each flex:1 = 25% height -->
     <div class="round-col qf-col">
-      <div class="round-label">Quarter-Finals</div>
-      <div class="matchup">
-        <div class="game-info">Ct 4 &middot; Gm 1</div>
-        <div class="team-row"><span class="name">Camo Cranberries</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">Bucket Corgis</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 4 &middot; Gm 1</div>
+          <div class="team-row"><span class="name">Camo Cranberries</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">Bucket Corgis</span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 4 &middot; Gm 2</div>
-        <div class="team-row"><span class="name">Net Swishers</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">Grizzly Bears</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 4 &middot; Gm 2</div>
+          <div class="team-row"><span class="name">Net Swishers</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">Grizzly Bears</span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 4 &middot; Gm 3</div>
-        <div class="team-row"><span class="name">Hersheys</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">Burnt Chicken Nuggets</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 4 &middot; Gm 3</div>
+          <div class="team-row"><span class="name">Hersheys</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">Burnt Chicken Nuggets</span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 4 &middot; Gm 4</div>
-        <div class="team-row"><span class="name">The Hoops</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">Tropical Boys</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 4 &middot; Gm 4</div>
+          <div class="team-row"><span class="name">The Hoops</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">Tropical Boys</span><div class="score-box"></div></div>
+        </div>
       </div>
     </div>
 
-    <div class="connector">
-      <div class="conn-pair"><div class="spacer"></div><div class="arm-bottom"></div><div class="arm-top"></div><div class="spacer"></div></div>
-      <div class="conn-pair"><div class="spacer"></div><div class="arm-bottom"></div><div class="arm-top"></div><div class="spacer"></div></div>
+    <!-- QF → SF Connector -->
+    <div class="connector conn-qf">
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
     </div>
 
+    <!-- SF Column: 2 match-slots, each flex:1 = 50% height -->
     <div class="round-col sf-col">
-      <div class="round-label">Semi-Finals</div>
-      <div class="matchup">
-        <div class="game-info">Ct 1 &middot; Gm 6</div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 1 &middot; Gm 6</div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 1 &middot; Gm 7</div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 1 &middot; Gm 7</div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
       </div>
     </div>
 
-    <div class="connector">
-      <div class="conn-pair"><div class="spacer"></div><div class="arm-bottom"></div><div class="arm-top"></div><div class="spacer"></div></div>
+    <!-- SF → Final Connector -->
+    <div class="connector conn-sf">
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
     </div>
 
+    <!-- Final Column: 1 match-slot = 100% height -->
     <div class="round-col final-col">
-      <div class="round-label">Final</div>
-      <div class="matchup">
-        <div class="game-info">Ct 3 &middot; Gm 8</div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 3 &middot; Gm 8</div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
       </div>
     </div>
 
-    <div class="connector">
-      <div class="conn-line"><div class="spacer"></div><div class="line"></div><div class="spacer"></div></div>
+    <!-- Final → Champion Connector -->
+    <div class="connector conn-f">
+      <div class="conn-line"></div>
     </div>
 
-    <div class="champ-col">
-      <div class="champ-box">
-        <div class="champ-label">Champion</div>
-        <div class="trophy">&#127942;</div>
-        <div class="champ-write"></div>
+    <!-- Champion Column -->
+    <div class="round-col champ-col">
+      <div class="match-slot">
+        <div class="champ-box">
+          <div class="champ-label">Champion</div>
+          <div class="trophy">&#127942;</div>
+          <div class="champ-write"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="footer">
-    <div class="qr-block">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://omygodwin.github.io/basketball-tournament/" alt="QR Code">
-      <span>Scan for App to view<br>Tournament Info</span>
-    </div>
-    <span>The Covenant School &middot; March Madness 3v3 Tournament &middot; Friday, March 13th</span>
-  </div>
 </div>
 
 <!-- ==================== 4TH GRADE BOYS ==================== -->
@@ -322,82 +370,116 @@
     <p>The Covenant School &middot; 3rd Annual 3v3 Basketball Tournament &middot; Friday, March 13th</p>
   </div>
 
+  <div class="round-labels">
+    <span style="width:5.5in">Quarter-Finals</span>
+    <span style="width:1.2in"></span>
+    <span style="width:4.5in">Semi-Finals</span>
+    <span style="width:1.2in"></span>
+    <span style="width:4.5in">Final</span>
+    <span style="width:1.1in"></span>
+    <span style="width:5in; text-align:center">Champion</span>
+  </div>
+
   <div class="bracket-body">
     <div class="round-col qf-col">
-      <div class="round-label">Quarter-Finals</div>
-      <div class="matchup">
-        <div class="game-info">Ct 2 &middot; Gm 1</div>
-        <div class="team-row"><span class="name">BUNZ</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">CC&amp;G</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 2 &middot; Gm 1</div>
+          <div class="team-row"><span class="name">BUNZ</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">CC&amp;G</span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 2 &middot; Gm 3</div>
-        <div class="team-row"><span class="name">Scammer Bananers</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">NC Tarheels</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 2 &middot; Gm 3</div>
+          <div class="team-row"><span class="name">Scammer Bananers</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">NC Tarheels</span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 2 &middot; Gm 5</div>
-        <div class="team-row"><span class="name">The Kobes</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">Hoopers</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 2 &middot; Gm 5</div>
+          <div class="team-row"><span class="name">The Kobes</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">Hoopers</span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 3 &middot; Gm 2</div>
-        <div class="team-row"><span class="name">GOATS</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">Peppa Pig Biggies</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 3 &middot; Gm 2</div>
+          <div class="team-row"><span class="name">GOATS</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">Peppa Pig Biggies</span><div class="score-box"></div></div>
+        </div>
       </div>
     </div>
 
-    <div class="connector">
-      <div class="conn-pair"><div class="spacer"></div><div class="arm-bottom"></div><div class="arm-top"></div><div class="spacer"></div></div>
-      <div class="conn-pair"><div class="spacer"></div><div class="arm-bottom"></div><div class="arm-top"></div><div class="spacer"></div></div>
+    <div class="connector conn-qf">
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
     </div>
 
     <div class="round-col sf-col">
-      <div class="round-label">Semi-Finals</div>
-      <div class="matchup">
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 4 &middot; Gm 5</div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 4 &middot; Gm 5</div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
       </div>
     </div>
 
-    <div class="connector">
-      <div class="conn-pair"><div class="spacer"></div><div class="arm-bottom"></div><div class="arm-top"></div><div class="spacer"></div></div>
+    <div class="connector conn-sf">
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
     </div>
 
     <div class="round-col final-col">
-      <div class="round-label">Final</div>
-      <div class="matchup">
-        <div class="game-info">Ct 1 &middot; Gm 8</div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 1 &middot; Gm 8</div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
       </div>
     </div>
 
-    <div class="connector">
-      <div class="conn-line"><div class="spacer"></div><div class="line"></div><div class="spacer"></div></div>
+    <div class="connector conn-f">
+      <div class="conn-line"></div>
     </div>
 
-    <div class="champ-col">
-      <div class="champ-box">
-        <div class="champ-label">Champion</div>
-        <div class="trophy">&#127942;</div>
-        <div class="champ-write"></div>
+    <div class="round-col champ-col">
+      <div class="match-slot">
+        <div class="champ-box">
+          <div class="champ-label">Champion</div>
+          <div class="trophy">&#127942;</div>
+          <div class="champ-write"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="footer">
-    <div class="qr-block">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://omygodwin.github.io/basketball-tournament/" alt="QR Code">
-      <span>Scan for App to view<br>Tournament Info</span>
-    </div>
-    <span>The Covenant School &middot; March Madness 3v3 Tournament &middot; Friday, March 13th</span>
-  </div>
 </div>
 
 <!-- ==================== 5TH GRADE BOYS ==================== -->
@@ -407,82 +489,116 @@
     <p>The Covenant School &middot; 3rd Annual 3v3 Basketball Tournament &middot; Friday, March 13th</p>
   </div>
 
+  <div class="round-labels">
+    <span style="width:5.5in">Quarter-Finals</span>
+    <span style="width:1.2in"></span>
+    <span style="width:4.5in">Semi-Finals</span>
+    <span style="width:1.2in"></span>
+    <span style="width:4.5in">Final</span>
+    <span style="width:1.1in"></span>
+    <span style="width:5in; text-align:center">Champion</span>
+  </div>
+
   <div class="bracket-body">
     <div class="round-col qf-col">
-      <div class="round-label">Quarter-Finals</div>
-      <div class="matchup">
-        <div class="team-row"><span class="name">Gnarly Dudes</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name bye">BYE</span></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="team-row"><span class="name">Gnarly Dudes</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name bye">BYE</span></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 1 &middot; Gm 2</div>
-        <div class="team-row"><span class="name">Bucks</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">BKTSCWOD</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 1 &middot; Gm 2</div>
+          <div class="team-row"><span class="name">Bucks</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">BKTSCWOD</span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 1 &middot; Gm 4</div>
-        <div class="team-row"><span class="name">Cliffbars Arent Healthy</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">The Goats</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 1 &middot; Gm 4</div>
+          <div class="team-row"><span class="name">Cliffbars Arent Healthy</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">The Goats</span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 3 &middot; Gm 4</div>
-        <div class="team-row"><span class="name">Knee Walkers</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name">The Bucket Boys</span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 3 &middot; Gm 4</div>
+          <div class="team-row"><span class="name">Knee Walkers</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="name">The Bucket Boys</span><div class="score-box"></div></div>
+        </div>
       </div>
     </div>
 
-    <div class="connector">
-      <div class="conn-pair"><div class="spacer"></div><div class="arm-bottom"></div><div class="arm-top"></div><div class="spacer"></div></div>
-      <div class="conn-pair"><div class="spacer"></div><div class="arm-bottom"></div><div class="arm-top"></div><div class="spacer"></div></div>
+    <div class="connector conn-qf">
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
     </div>
 
     <div class="round-col sf-col">
-      <div class="round-label">Semi-Finals</div>
-      <div class="matchup">
-        <div class="game-info">Ct 3 &middot; Gm 6</div>
-        <div class="team-row"><span class="name">Gnarly Dudes</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 3 &middot; Gm 6</div>
+          <div class="team-row"><span class="name">Gnarly Dudes</span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
       </div>
-      <div class="matchup">
-        <div class="game-info">Ct 4 &middot; Gm 6</div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 4 &middot; Gm 6</div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
       </div>
     </div>
 
-    <div class="connector">
-      <div class="conn-pair"><div class="spacer"></div><div class="arm-bottom"></div><div class="arm-top"></div><div class="spacer"></div></div>
+    <div class="connector conn-sf">
+      <div class="conn-half">
+        <div class="c-spacer"></div>
+        <div class="c-arm-top"></div>
+        <div class="c-arm-bot"></div>
+        <div class="c-spacer"></div>
+        <div class="c-arm-out"></div>
+      </div>
     </div>
 
     <div class="round-col final-col">
-      <div class="round-label">Final</div>
-      <div class="matchup">
-        <div class="game-info">Ct 1 &middot; Gm 9</div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
-        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+      <div class="match-slot">
+        <div class="matchup">
+          <div class="game-info">Ct 1 &middot; Gm 9</div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+          <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        </div>
       </div>
     </div>
 
-    <div class="connector">
-      <div class="conn-line"><div class="spacer"></div><div class="line"></div><div class="spacer"></div></div>
+    <div class="connector conn-f">
+      <div class="conn-line"></div>
     </div>
 
-    <div class="champ-col">
-      <div class="champ-box">
-        <div class="champ-label">Champion</div>
-        <div class="trophy">&#127942;</div>
-        <div class="champ-write"></div>
+    <div class="round-col champ-col">
+      <div class="match-slot">
+        <div class="champ-box">
+          <div class="champ-label">Champion</div>
+          <div class="trophy">&#127942;</div>
+          <div class="champ-write"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="footer">
-    <div class="qr-block">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://omygodwin.github.io/basketball-tournament/" alt="QR Code">
-      <span>Scan for App to view<br>Tournament Info</span>
-    </div>
-    <span>The Covenant School &middot; March Madness 3v3 Tournament &middot; Friday, March 13th</span>
-  </div>
 </div>
 
 </body>
