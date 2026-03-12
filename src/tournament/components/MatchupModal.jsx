@@ -49,7 +49,7 @@ export default function MatchupModal({ game, onClose, onTeamClick, selectedChild
         {teamData && (
           <>
             <div className="text-xs text-gray-500 mb-2">
-              {teamData.division} &middot; Seed #{teamData.seed}
+              {teamData.division}
               {isChildTeam && <span className="ml-2 text-green-400">Your Team</span>}
             </div>
             <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Roster</div>

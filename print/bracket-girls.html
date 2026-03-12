@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Girls Brackets - March Madness 2025</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    padding: 24px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @media print {
+    @page { size: landscape; margin: 0.3in; }
+    body { padding: 0; }
+  }
+
+  .header {
+    text-align: center;
+    padding-bottom: 16px;
+    border-bottom: 3px solid #22c55e;
+    margin-bottom: 20px;
+  }
+  .header h1 { font-size: 32px; font-weight: 800; }
+  .header h1 span { color: #22c55e; }
+  .header p { font-size: 14px; color: #94a3b8; margin-top: 4px; }
+
+  .brackets-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  .bracket-box {
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .bracket-box h2 {
+    text-align: center;
+    font-size: 22px;
+    color: #22c55e;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #334155;
+    margin-bottom: 14px;
+  }
+
+  .bracket-flow {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    min-height: 340px;
+  }
+
+  .round {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 8px;
+    flex: 1;
+  }
+  .round-label {
+    text-align: center;
+    font-size: 9px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding-bottom: 6px;
+  }
+
+  .matchup {
+    background: #1e293b;
+    border: 1.5px solid #334155;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .team-row {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    min-height: 30px;
+  }
+  .team-row + .team-row { border-top: 1px solid #334155; }
+  .name {
+    flex: 1;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .name.tbd { color: #475569; font-style: italic; font-weight: 400; }
+  .score {
+    width: 32px;
+    height: 22px;
+    border: 1.5px solid #475569;
+    border-radius: 3px;
+    background: #0f172a;
+    flex-shrink: 0;
+  }
+
+  .champ-round {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 90px;
+  }
+  .champ-box {
+    text-align: center;
+    background: linear-gradient(135deg, #166534, #15803d);
+    border: 2px solid #22c55e;
+    border-radius: 8px;
+    padding: 10px 8px;
+  }
+  .champ-label {
+    font-size: 8px;
+    font-weight: 700;
+    color: #86efac;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .champ-write {
+    margin-top: 6px;
+    min-height: 24px;
+    border-bottom: 2px dotted rgba(255,255,255,0.4);
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 2px solid #334155;
+    font-size: 11px;
+    color: #64748b;
+  }
+  .footer .g { color: #22c55e; }
+  .qr-block {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border-radius: 6px;
+    padding: 4px 10px 4px 4px;
+  }
+  .qr-block img { width: 48px; height: 48px; display: block; }
+  .qr-block span { color: #0f172a; font-size: 10px; font-weight: 600; line-height: 1.3; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>March Madness <span>Girls Brackets</span></h1>
+  <p>The Covenant School &middot; 3rd Annual 3v3 Basketball Tournament &middot; Friday, March 13th</p>
+</div>
+
+<div class="brackets-row">
+
+  <!-- 3RD GIRLS -->
+  <div class="bracket-box">
+    <h2>3rd Grade Girls</h2>
+    <div class="bracket-flow">
+      <div class="round">
+        <div class="round-label">Quarter-Finals</div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">The Bananas</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">Dunkin' Donuts</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">Neon Fruits</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">Pink Superstars</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">Eagles</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">Sassy Fashion</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">Good Vibes</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">Crazy Coconuts</span><div class="score"></div></div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-label">Semi-Finals</div>
+        <div class="matchup">
+          <div class="team-row"><span class="name tbd">Winner QF1</span><div class="score"></div></div>
+          <div class="team-row"><span class="name tbd">Winner QF2</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name tbd">Winner QF3</span><div class="score"></div></div>
+          <div class="team-row"><span class="name tbd">Winner QF4</span><div class="score"></div></div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-label">Final</div>
+        <div class="matchup">
+          <div class="team-row"><span class="name tbd">Winner SF1</span><div class="score"></div></div>
+          <div class="team-row"><span class="name tbd">Winner SF2</span><div class="score"></div></div>
+        </div>
+      </div>
+      <div class="champ-round">
+        <div class="champ-box">
+          <div class="champ-label">Champion</div>
+          <div class="champ-write">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4TH GIRLS -->
+  <div class="bracket-box">
+    <h2>4th Grade Girls</h2>
+    <div class="bracket-flow">
+      <div class="round">
+        <div class="round-label">Quarter-Finals</div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">Nothing But Nets</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">Triple Basket Girls</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">The Sea Turtles</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">Pink Palm Trees</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">Super Stars</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">Crumble Cookies</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">The Howlers</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">Dream Team Champions</span><div class="score"></div></div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-label">Semi-Finals</div>
+        <div class="matchup">
+          <div class="team-row"><span class="name tbd">Winner QF1</span><div class="score"></div></div>
+          <div class="team-row"><span class="name tbd">Winner QF2</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name tbd">Winner QF3</span><div class="score"></div></div>
+          <div class="team-row"><span class="name tbd">Winner QF4</span><div class="score"></div></div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-label">Final</div>
+        <div class="matchup">
+          <div class="team-row"><span class="name tbd">Winner SF1</span><div class="score"></div></div>
+          <div class="team-row"><span class="name tbd">Winner SF2</span><div class="score"></div></div>
+        </div>
+      </div>
+      <div class="champ-round">
+        <div class="champ-box">
+          <div class="champ-label">Champion</div>
+          <div class="champ-write">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5TH GIRLS -->
+  <div class="bracket-box">
+    <h2>5th Grade Girls</h2>
+    <div class="bracket-flow">
+      <div class="round">
+        <div class="round-label">Quarter-Finals</div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">The Sawiches</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">B-Ball Blizzards</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">The Biggie Eagles</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">Ducky Dudes</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">The A.Q. (Attitude Queens)</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">Da Thunderbolts</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name">B-Ball Queens</span><div class="score"></div></div>
+          <div class="team-row"><span class="name">The Blue Stars</span><div class="score"></div></div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-label">Semi-Finals</div>
+        <div class="matchup">
+          <div class="team-row"><span class="name tbd">Winner QF1</span><div class="score"></div></div>
+          <div class="team-row"><span class="name tbd">Winner QF2</span><div class="score"></div></div>
+        </div>
+        <div class="matchup">
+          <div class="team-row"><span class="name tbd">Winner QF3</span><div class="score"></div></div>
+          <div class="team-row"><span class="name tbd">Winner QF4</span><div class="score"></div></div>
+        </div>
+      </div>
+      <div class="round">
+        <div class="round-label">Final</div>
+        <div class="matchup">
+          <div class="team-row"><span class="name tbd">Winner SF1</span><div class="score"></div></div>
+          <div class="team-row"><span class="name tbd">Winner SF2</span><div class="score"></div></div>
+        </div>
+      </div>
+      <div class="champ-round">
+        <div class="champ-box">
+          <div class="champ-label">Champion</div>
+          <div class="champ-write">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="qr-block">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://omygodwin.github.io/basketball-tournament/" alt="QR Code">
+    <span>Scan for live<br>brackets &amp; scores</span>
+  </div>
+  <span><span class="g">The Covenant School</span> &middot; March Madness 3v3 Tournament &middot; Write scores in the boxes as games finish!</span>
+</div>
+
+</body>
+</html>

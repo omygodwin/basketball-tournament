@@ -20,7 +20,7 @@ export default function TeamPage({ selectedChild, embedded, onTeamClick, onGameC
       <div>
         <h2 className="text-2xl font-bold text-green-400">{team.name}</h2>
         <p className="text-gray-400">
-          {team.division} &middot; Seed #{team.seed}
+          {team.division}
         </p>
       </div>
 
@@ -134,7 +134,7 @@ export default function TeamPage({ selectedChild, embedded, onTeamClick, onGameC
           </button>
           <h1 className="text-2xl font-bold text-green-400">{team.name}</h1>
           <p className="text-gray-400">
-            {team.division} &middot; Seed #{team.seed}
+            {team.division}
           </p>
         </div>
       </div>

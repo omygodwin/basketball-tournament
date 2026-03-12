@@ -82,7 +82,7 @@ export default function TeamsView({ filterDivision, selectedChild, focusTeam, on
               <h3 className="text-lg font-bold text-green-400 mb-3">{div}</h3>
             )}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {divTeams.sort((a, b) => a.seed - b.seed).map((team) => {
+              {divTeams.sort((a, b) => a.name.localeCompare(b.name)).map((team) => {
                 const isChildTeam = selectedChild && selectedChild.teamName === team.name && selectedChild.division === team.division;
                 const isExpanded = expandedTeams.has(team.name);
                 const isFocused = focusTeam === team.name;
@@ -105,7 +105,6 @@ export default function TeamsView({ filterDivision, selectedChild, focusTeam, on
                       className="w-full flex items-center justify-between p-3 text-left hover:bg-navy-750"
                     >
                       <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <span className="text-gray-500 text-xs font-mono shrink-0">#{team.seed}</span>
                         <span className={`font-medium truncate ${eliminated ? 'text-gray-500 line-through' : 'text-white'}`}>
                           {team.name}
                         </span>

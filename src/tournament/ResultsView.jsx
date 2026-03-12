@@ -47,9 +47,6 @@ export default function ResultsView({ gameResults }) {
                 <div className="text-4xl mb-2">&#127942;</div>
                 <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">{division}</div>
                 <div className="text-xl font-bold text-green-400 mb-1">{champion}</div>
-                {championTeam && (
-                  <div className="text-xs text-gray-500 mb-2">Seed #{championTeam.seed}</div>
-                )}
                 <div className="text-sm text-gray-300">
                   Final: <span className="text-white font-bold">{finalScore}</span>
                 </div>

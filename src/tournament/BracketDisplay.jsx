@@ -8,7 +8,7 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
   const team1Won = hasResult && result.winner === game.team1;
   const team2Won = hasResult && result.winner === game.team2;
 
-  function teamRow(name, seed, won, lost, isHighlighted, score, isReal) {
+  function teamRow(name, won, lost, isHighlighted, score, isReal) {
     return (
       <div
         className={`flex items-center justify-between px-2 py-1.5 ${
@@ -16,7 +16,6 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
         } ${isHighlighted ? 'bg-green-900/30 border-l-2 border-green-400' : ''}`}
       >
         <div className="flex items-center gap-1.5 min-w-0 flex-1">
-          {seed && <span className="text-gray-500 text-xs font-mono w-4 shrink-0">{seed}</span>}
           {isReal && onTeamClick ? (
             <button
               onClick={(e) => { e.stopPropagation(); onTeamClick(name); }}
@@ -54,14 +53,14 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
       title="Click for matchup details"
     >
       {teamRow(
-        team1, game.seed1, team1Won, hasResult && !team1Won,
+        team1, team1Won, hasResult && !team1Won,
         highlightTeam && game.team1 === highlightTeam,
         hasResult ? result.score1 : null,
         game.team1 && game.team1 !== 'TBD'
       )}
       <div className="border-t border-navy-600" />
       {teamRow(
-        team2, game.seed2, team2Won, hasResult && !team2Won,
+        team2, team2Won, hasResult && !team2Won,
         highlightTeam && game.team2 === highlightTeam,
         hasResult ? result.score2 : null,
         game.team2 && game.team2 !== 'TBD' && game.team2 !== 'BYE'
@@ -74,10 +73,9 @@ function resolveBracket(bracket, results) {
   const resolved = JSON.parse(JSON.stringify(bracket));
 
   function getQfWinner(qfGame, result) {
-    if (qfGame.bye) return { winner: qfGame.team1, seed: qfGame.seed1 };
+    if (qfGame.bye) return { winner: qfGame.team1 };
     if (result && result.winner) {
-      const seed = result.winner === qfGame.team1 ? qfGame.seed1 : qfGame.seed2;
-      return { winner: result.winner, seed };
+      return { winner: result.winner };
     }
     return null;
   }
@@ -89,8 +87,8 @@ function resolveBracket(bracket, results) {
       const src2 = resolved.quarterFinals.find((g) => g.gameId === src2Id);
       const w1 = getQfWinner(src1, results[src1Id]);
       const w2 = getQfWinner(src2, results[src2Id]);
-      if (w1) { sf.team1 = w1.winner; sf.seed1 = w1.seed; }
-      if (w2) { sf.team2 = w2.winner; sf.seed2 = w2.seed; }
+      if (w1) { sf.team1 = w1.winner; }
+      if (w2) { sf.team2 = w2.winner; }
     }
   });
 
@@ -99,15 +97,11 @@ function resolveBracket(bracket, results) {
       const [src1Id, src2Id] = f.source;
       const r1 = results[src1Id];
       const r2 = results[src2Id];
-      const src1 = resolved.semiFinals.find((g) => g.gameId === src1Id);
-      const src2 = resolved.semiFinals.find((g) => g.gameId === src2Id);
       if (r1 && r1.winner) {
         f.team1 = r1.winner;
-        f.seed1 = src1 && r1.winner === src1.team1 ? src1.seed1 : src1 ? src1.seed2 : null;
       }
       if (r2 && r2.winner) {
         f.team2 = r2.winner;
-        f.seed2 = src2 && r2.winner === src2.team1 ? src2.seed1 : src2 ? src2.seed2 : null;
       }
     }
   });
