@@ -72,7 +72,9 @@ export default function TeamsView({ filterDivision, selectedChild, focusTeam, on
         </button>
       </div>
 
-      {visibleDivisions.map((div) => {
+      {(() => {
+        let firstTeamCardTagged = false;
+        return visibleDivisions.map((div) => {
         const divTeams = getTeamsByDivision(div);
         if (divTeams.length === 0) return null;
 
@@ -88,12 +90,15 @@ export default function TeamsView({ filterDivision, selectedChild, focusTeam, on
                 const isFocused = focusTeam === team.name;
                 const eliminated = isTeamEliminated(team.name, team.division);
                 const nextGame = !eliminated ? getTeamNextGame(team.name, team.division) : null;
+                const isFirstTeamCard = !firstTeamCardTagged;
+                if (isFirstTeamCard) firstTeamCardTagged = true;
 
                 return (
                   <div
                     id={`team-card-${team.name}`}
                     key={`${team.name}-${team.division}`}
                     ref={isFocused ? focusRef : null}
+                    data-tutorial={isFirstTeamCard ? 'team-card' : undefined}
                     className={`bg-navy-800 border rounded-lg overflow-hidden transition-all ${
                       isChildTeam ? 'border-green-500 ring-2 ring-green-500/30' :
                       isFocused ? 'border-green-400 ring-1 ring-green-400/30' :
@@ -168,7 +173,8 @@ export default function TeamsView({ filterDivision, selectedChild, focusTeam, on
             </div>
           </div>
         );
-      })}
+      });
+      })()}
     </div>
   );
 }

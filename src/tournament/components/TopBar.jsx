@@ -19,20 +19,20 @@ export default function TopBar({ onBack, onSearchOpen, onChildOpen, onCourtKeyOp
 
         <div className="flex items-center gap-1">
           {onCourtKeyOpen && (
-            <button onClick={onCourtKeyOpen} className="text-gray-400 hover:text-white p-2">
+            <button data-tutorial="court-button" onClick={onCourtKeyOpen} className="text-gray-400 hover:text-white p-2">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <circle cx="12" cy="11" r="3" />
               </svg>
             </button>
           )}
-          <button onClick={onSearchOpen} className="text-gray-400 hover:text-white p-2">
+          <button data-tutorial="search-button" onClick={onSearchOpen} className="text-gray-400 hover:text-white p-2">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
               <circle cx="11" cy="11" r="8" />
               <path strokeLinecap="round" d="m21 21-4.35-4.35" />
             </svg>
           </button>
-          <button onClick={onChildOpen} className="text-gray-400 hover:text-white p-2 relative">
+          <button data-tutorial="child-button" onClick={onChildOpen} className="text-gray-400 hover:text-white p-2 relative">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5">
               <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
               <circle cx="12" cy="7" r="4" />

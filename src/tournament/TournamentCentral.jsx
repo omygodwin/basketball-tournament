@@ -11,7 +11,8 @@ import SearchOverlay from './components/SearchOverlay';
 import ChildSheet from './components/ChildSheet';
 import MatchupModal from './components/MatchupModal';
 import InstallBanner from './components/InstallBanner';
-import { divisions, getBracket, useGameResults, courts } from '../data/tournamentData';
+import TutorialOverlay from './components/TutorialOverlay';
+import { divisions, getBracket, useGameResults, courts, schedule } from '../data/tournamentData';
 
 export default function TournamentCentral({
   selectedChild,
@@ -102,6 +103,30 @@ export default function TournamentCentral({
     if (id !== 'teams') setFocusTeam(null);
   }
 
+  const [isTutorialPreview, setIsTutorialPreview] = useState(false);
+
+  function handleTutorialPreview(action) {
+    if (action === 'court-key') {
+      setIsTutorialPreview(true);
+      setShowCourtKey(true);
+    } else if (action === 'matchup') {
+      setIsTutorialPreview(true);
+      const previewGame = schedule.find((g) => g.team1 && g.team2);
+      if (previewGame) setMatchupGame(previewGame);
+    } else if (action === 'expand-team') {
+      // Programmatically expand the first team card's roster
+      const card = document.querySelector('[data-tutorial="team-card"]');
+      if (card) {
+        const btn = card.querySelector('button');
+        if (btn) btn.click();
+      }
+    } else {
+      setIsTutorialPreview(false);
+      setShowCourtKey(false);
+      setMatchupGame(null);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-navy-900 text-white flex flex-col">
       <TopBar
@@ -190,12 +215,13 @@ export default function TournamentCentral({
           onClose={() => setMatchupGame(null)}
           onTeamClick={handleTeamClick}
           selectedChild={selectedChild}
+          noBackdrop={isTutorialPreview}
         />
       )}
 
       {showCourtKey && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center p-4" onClick={() => setShowCourtKey(false)}>
-          <div className="bg-navy-900 rounded-xl border border-navy-700 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+        <div className={`fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 ${isTutorialPreview ? '' : 'bg-black/60'}`} onClick={() => setShowCourtKey(false)}>
+          <div data-tutorial-preview="court-key" className="bg-navy-900 rounded-xl border border-navy-700 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between px-4 pt-4 pb-2">
               <h3 className="text-lg font-bold text-green-400">Court Locations</h3>
               <button onClick={() => setShowCourtKey(false)} className="text-gray-400 hover:text-white text-xl leading-none">&times;</button>
@@ -215,6 +241,8 @@ export default function TournamentCentral({
       )}
 
       <InstallBanner aboveBottomNav />
+
+      <TutorialOverlay activeTab={activeTab} onTabChange={handleTabChange} onPreview={handleTutorialPreview} />
     </div>
   );
 }

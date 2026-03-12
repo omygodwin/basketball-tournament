@@ -68,31 +68,39 @@ export default function ScheduleView({ filterDivision, selectedChild, onTeamClic
         </select>
       </div>
 
-      {Object.keys(byCourt).sort((a, b) => Number(a) - Number(b)).map((courtId) => {
-        const court = courts.find((c) => c.id === Number(courtId));
-        return (
-          <div key={courtId} className="mb-6">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="bg-green-600 text-white font-bold px-2 py-0.5 rounded text-sm">
-                Court {courtId}
-              </span>
-              <span className="text-gray-400 text-sm">{court?.location}</span>
+      {(() => {
+        let firstCardTagged = false;
+        return Object.keys(byCourt).sort((a, b) => Number(a) - Number(b)).map((courtId) => {
+          const court = courts.find((c) => c.id === Number(courtId));
+          return (
+            <div key={courtId} className="mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="bg-green-600 text-white font-bold px-2 py-0.5 rounded text-sm">
+                  Court {courtId}
+                </span>
+                <span className="text-gray-400 text-sm">{court?.location}</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {byCourt[courtId].map((game) => {
+                  const isFirst = !firstCardTagged;
+                  if (isFirst) firstCardTagged = true;
+                  return (
+                    <div key={game.gameId} data-tutorial={isFirst ? 'game-card' : undefined}>
+                      <GameCard
+                        game={game}
+                        result={gameResults[game.gameId]}
+                        highlightTeam={selectedChild?.teamName}
+                        onTeamClick={onTeamClick}
+                        onClick={() => onGameClick && onGameClick(game)}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {byCourt[courtId].map((game) => (
-                <GameCard
-                  key={game.gameId}
-                  game={game}
-                  result={gameResults[game.gameId]}
-                  highlightTeam={selectedChild?.teamName}
-                  onTeamClick={onTeamClick}
-                  onClick={() => onGameClick && onGameClick(game)}
-                />
-              ))}
-            </div>
-          </div>
-        );
-      })}
+          );
+        });
+      })()}
 
     </div>
   );

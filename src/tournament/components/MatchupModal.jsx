@@ -1,6 +1,6 @@
 import { getTeamByName, getGameResults, courts, schedule } from '../../data/tournamentData';
 
-export default function MatchupModal({ game, onClose, onTeamClick, selectedChild }) {
+export default function MatchupModal({ game, onClose, onTeamClick, selectedChild, noBackdrop }) {
   if (!game) return null;
 
   const results = getGameResults();
@@ -78,8 +78,9 @@ export default function MatchupModal({ game, onClose, onTeamClick, selectedChild
   }
 
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4" onClick={onClose}>
+    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${noBackdrop ? '' : 'bg-black/70'}`} onClick={onClose}>
       <div
+        data-tutorial-preview="matchup"
         className="bg-navy-900 rounded-xl border border-navy-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >

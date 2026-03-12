@@ -42,6 +42,7 @@ const icons = {
 export default function BottomNav({ tabs, activeTab, onTabChange }) {
   return (
     <nav
+      data-tutorial="bottom-nav"
       className="fixed bottom-0 left-0 right-0 z-30 bg-navy-800 border-t border-navy-700"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
