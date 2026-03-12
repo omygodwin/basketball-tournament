@@ -7,72 +7,86 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: white;
+    background: #e2e8f0;
     color: #0f172a;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
   @media print {
-    @page { size: landscape; margin: 0.4in; }
-    .page { page-break-after: always; }
+    @page { size: 24in 18in; margin: 0.5in; }
+    body { background: white; }
+    .page { page-break-after: always; box-shadow: none; }
     .page:last-child { page-break-after: avoid; }
   }
   @media screen {
-    .page { max-width: 1100px; margin: 0 auto 40px; padding: 32px; border: 1px solid #e2e8f0; }
+    body { padding: 20px; }
   }
 
   .page {
-    min-height: 100vh;
+    width: 24in;
+    height: 18in;
+    padding: 0.45in 0.5in;
+    margin: 0 auto 30px;
     display: flex;
     flex-direction: column;
-    padding: 28px 36px;
+    background: white;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    overflow: hidden;
   }
 
+  /* Header */
   .header {
     text-align: center;
-    padding-bottom: 14px;
-    border-bottom: 4px solid #166534;
-    margin-bottom: 10px;
+    padding-bottom: 0.18in;
+    border-bottom: 5px solid #166534;
+    margin-bottom: 0.12in;
+    flex-shrink: 0;
   }
   .header h1 {
-    font-size: 36px;
+    font-size: 64px;
     font-weight: 900;
     color: #0f172a;
-    letter-spacing: -0.5px;
+    letter-spacing: -1px;
   }
   .header h1 span { color: #166534; }
   .header p {
-    font-size: 14px;
+    font-size: 22px;
     color: #64748b;
-    margin-top: 4px;
+    margin-top: 6px;
     font-weight: 500;
   }
 
+  /* Bracket body */
   .bracket-body {
     flex: 1;
     display: flex;
     align-items: stretch;
     gap: 0;
-    padding: 12px 0;
+    padding: 0.1in 0;
+    min-height: 0;
   }
 
+  /* Round columns */
   .round-col {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
   }
-  .qf-col { width: 260px; }
-  .sf-col { width: 200px; }
-  .final-col { width: 200px; }
+  .qf-col { width: 5.2in; flex-shrink: 0; }
+  .sf-col { width: 4.6in; flex-shrink: 0; }
+  .final-col { width: 4.6in; flex-shrink: 0; }
   .champ-col {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 140px;
+    width: 3.2in;
+    flex-shrink: 0;
   }
 
+  /* Connector columns */
   .connector {
-    width: 36px;
+    width: 0.9in;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
   }
@@ -84,15 +98,15 @@
   .conn-pair .spacer { flex: 1; }
   .conn-pair .arm-bottom {
     flex: 1;
-    border-bottom: 3px solid #94a3b8;
-    border-right: 3px solid #94a3b8;
-    border-bottom-right-radius: 8px;
+    border-bottom: 4px solid #94a3b8;
+    border-right: 4px solid #94a3b8;
+    border-bottom-right-radius: 12px;
   }
   .conn-pair .arm-top {
     flex: 1;
-    border-top: 3px solid #94a3b8;
-    border-right: 3px solid #94a3b8;
-    border-top-right-radius: 8px;
+    border-top: 4px solid #94a3b8;
+    border-right: 4px solid #94a3b8;
+    border-top-right-radius: 12px;
   }
   .conn-line {
     flex: 1;
@@ -100,107 +114,107 @@
     flex-direction: column;
   }
   .conn-line .spacer { flex: 1; }
-  .conn-line .line { border-top: 3px solid #94a3b8; }
+  .conn-line .line { border-top: 4px solid #94a3b8; }
 
+  /* Round labels */
   .round-label {
     text-align: center;
-    font-size: 11px;
+    font-size: 18px;
     font-weight: 800;
     color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    padding-bottom: 8px;
+    letter-spacing: 3px;
+    padding-bottom: 12px;
   }
 
+  /* Matchup cards */
   .matchup {
-    border: 2.5px solid #cbd5e1;
-    border-radius: 8px;
+    border: 3px solid #cbd5e1;
+    border-radius: 12px;
     overflow: hidden;
     background: #f8fafc;
   }
   .team-row {
     display: flex;
     align-items: center;
-    padding: 6px 12px;
-    min-height: 40px;
+    padding: 10px 18px;
+    min-height: 62px;
   }
   .team-row + .team-row {
-    border-top: 2px solid #e2e8f0;
+    border-top: 3px solid #e2e8f0;
   }
   .name {
     flex: 1;
-    font-size: 16px;
+    font-size: 28px;
     font-weight: 700;
     color: #0f172a;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .qf-col .name {
-    white-space: normal;
-    line-height: 1.2;
-  }
-  .name.tbd {
-    color: #94a3b8;
-    font-style: italic;
-    font-weight: 500;
+    line-height: 1.15;
   }
   .name.bye {
     color: #94a3b8;
     font-style: italic;
   }
+  .write-in {
+    flex: 1;
+    border-bottom: 3px dotted #cbd5e1;
+    min-height: 28px;
+    margin-right: 8px;
+  }
   .score-box {
-    width: 42px;
-    height: 30px;
-    border: 2.5px solid #94a3b8;
-    border-radius: 4px;
+    width: 62px;
+    height: 44px;
+    border: 3px solid #94a3b8;
+    border-radius: 6px;
     background: white;
     flex-shrink: 0;
-    margin-left: 8px;
+    margin-left: 12px;
   }
 
+  /* Champion */
   .champ-box {
     text-align: center;
-    border: 3px solid #166534;
-    border-radius: 10px;
-    padding: 14px 10px;
+    border: 4px solid #166534;
+    border-radius: 14px;
+    padding: 24px 16px;
     background: #f0fdf4;
   }
   .champ-label {
-    font-size: 10px;
+    font-size: 18px;
     font-weight: 800;
     color: #166534;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
   }
-  .trophy { font-size: 28px; margin: 6px 0 4px; }
+  .trophy { font-size: 52px; margin: 10px 0 8px; }
   .champ-write {
-    min-height: 30px;
-    border-bottom: 3px dotted #166534;
-    margin: 4px 8px 0;
+    min-height: 44px;
+    border-bottom: 4px dotted #166534;
+    margin: 6px 12px 0;
   }
 
+  /* Footer */
   .footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    padding-top: 10px;
-    border-top: 3px solid #e2e8f0;
-    font-size: 11px;
+    gap: 24px;
+    padding-top: 0.12in;
+    border-top: 4px solid #e2e8f0;
+    font-size: 18px;
     color: #64748b;
     font-weight: 500;
+    flex-shrink: 0;
   }
   .qr-block {
     display: flex;
     align-items: center;
-    gap: 8px;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 4px 10px 4px 4px;
+    gap: 12px;
+    border: 3px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 6px 16px 6px 6px;
   }
-  .qr-block img { width: 48px; height: 48px; display: block; }
-  .qr-block span { color: #166534; font-size: 10px; font-weight: 700; line-height: 1.3; }
+  .qr-block img { width: 80px; height: 80px; display: block; }
+  .qr-block span { color: #166534; font-size: 16px; font-weight: 700; line-height: 1.3; }
 </style>
 </head>
 <body>
@@ -241,12 +255,12 @@
     <div class="round-col sf-col">
       <div class="round-label">Semi-Finals</div>
       <div class="matchup">
-        <div class="team-row"><span class="name tbd">Winner QF1</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name tbd">Winner QF2</span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
       </div>
       <div class="matchup">
-        <div class="team-row"><span class="name tbd">Winner QF3</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name tbd">Winner QF4</span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
       </div>
     </div>
 
@@ -257,8 +271,8 @@
     <div class="round-col final-col">
       <div class="round-label">Final</div>
       <div class="matchup">
-        <div class="team-row"><span class="name tbd">Winner SF1</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name tbd">Winner SF2</span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
       </div>
     </div>
 
@@ -320,12 +334,12 @@
     <div class="round-col sf-col">
       <div class="round-label">Semi-Finals</div>
       <div class="matchup">
-        <div class="team-row"><span class="name tbd">Winner QF1</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name tbd">Winner QF2</span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
       </div>
       <div class="matchup">
-        <div class="team-row"><span class="name tbd">Winner QF3</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name tbd">Winner QF4</span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
       </div>
     </div>
 
@@ -336,8 +350,8 @@
     <div class="round-col final-col">
       <div class="round-label">Final</div>
       <div class="matchup">
-        <div class="team-row"><span class="name tbd">Winner SF1</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name tbd">Winner SF2</span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
       </div>
     </div>
 
@@ -400,11 +414,11 @@
       <div class="round-label">Semi-Finals</div>
       <div class="matchup">
         <div class="team-row"><span class="name">Gnarly Dudes</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name tbd">Winner QF2</span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
       </div>
       <div class="matchup">
-        <div class="team-row"><span class="name tbd">Winner QF3</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name tbd">Winner QF4</span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
       </div>
     </div>
 
@@ -415,8 +429,8 @@
     <div class="round-col final-col">
       <div class="round-label">Final</div>
       <div class="matchup">
-        <div class="team-row"><span class="name tbd">Winner SF1</span><div class="score-box"></div></div>
-        <div class="team-row"><span class="name tbd">Winner SF2</span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
+        <div class="team-row"><span class="write-in"></span><div class="score-box"></div></div>
       </div>
     </div>
 
