@@ -102,10 +102,15 @@
     padding: 5px 10px;
     font-size: 11px;
     border-bottom: 1px solid #f1f5f9;
+    border-left: 4px solid transparent;
   }
   .game-row:last-child { border-bottom: none; }
-  .game-row.later { background: #fefce8; }
-  .game-row.final { background: #f0fdf4; }
+  .game-row.div-3b { border-left-color: #3b82f6; background: #eff6ff; }
+  .game-row.div-3g { border-left-color: #ec4899; background: #fdf2f8; }
+  .game-row.div-4b { border-left-color: #f97316; background: #fff7ed; }
+  .game-row.div-4g { border-left-color: #8b5cf6; background: #f5f3ff; }
+  .game-row.div-5b { border-left-color: #22c55e; background: #f0fdf4; }
+  .game-row.div-5g { border-left-color: #ef4444; background: #fef2f2; }
 
   .game-num {
     font-weight: 700;
@@ -202,80 +207,83 @@
   <!-- COURT 1 -->
   <div class="court-section">
     <div class="court-header">Court 1 <small>Indoor &middot; Gym Lobby</small></div>
-    <div class="game-row"><span class="game-num">Game 1</span><span class="game-matchup">The Sawiches <span class="vs">vs</span> B-Ball Blizzards</span><span class="game-div">5th Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 2</span><span class="game-matchup">Bucks <span class="vs">vs</span> BKTSCWOD</span><span class="game-div">5th Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 3</span><span class="game-matchup">The Biggie Eagles <span class="vs">vs</span> Ducky Dudes</span><span class="game-div">5th Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 4</span><span class="game-matchup">Cliffbars Arent Healthy <span class="vs">vs</span> The Goats</span><span class="game-div">5th Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 5</span><span class="game-matchup">The A.Q. <span class="vs">vs</span> Da Thunderbolts</span><span class="game-div">5th Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row later"><span class="game-num">Game 6</span><span class="game-matchup">3rd Boys Semi-Final 1</span><span class="game-div">3rd Boys</span><span class="game-round semifinal">SF</span></div>
-    <div class="game-row later"><span class="game-num">Game 7</span><span class="game-matchup">3rd Boys Semi-Final 2</span><span class="game-div">3rd Boys</span><span class="game-round semifinal">SF</span></div>
-    <div class="game-row final"><span class="game-num">Game 8</span><span class="game-matchup">4th Boys FINAL</span><span class="game-div">4th Boys</span><span class="game-round final-r">FINAL</span></div>
-    <div class="game-row final"><span class="game-num">Game 9</span><span class="game-matchup">5th Boys FINAL</span><span class="game-div">5th Boys</span><span class="game-round final-r">FINAL</span></div>
+    <div class="game-row div-5g"><span class="game-num">Game 1</span><span class="game-matchup">The Sawiches <span class="vs">vs</span> B-Ball Blizzards</span><span class="game-div">5th Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-5b"><span class="game-num">Game 2</span><span class="game-matchup">Bucks <span class="vs">vs</span> BKTSCWOD</span><span class="game-div">5th Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-5g"><span class="game-num">Game 3</span><span class="game-matchup">The Biggie Eagles <span class="vs">vs</span> Ducky Dudes</span><span class="game-div">5th Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-5b"><span class="game-num">Game 4</span><span class="game-matchup">Cliffbars Arent Healthy <span class="vs">vs</span> The Goats</span><span class="game-div">5th Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-5g"><span class="game-num">Game 5</span><span class="game-matchup">The A.Q. <span class="vs">vs</span> Da Thunderbolts</span><span class="game-div">5th Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-3b"><span class="game-num">Game 6</span><span class="game-matchup">3rd Boys Semi-Final 1</span><span class="game-div">3rd Boys</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-3b"><span class="game-num">Game 7</span><span class="game-matchup">3rd Boys Semi-Final 2</span><span class="game-div">3rd Boys</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-4b"><span class="game-num">Game 8</span><span class="game-matchup">4th Boys FINAL</span><span class="game-div">4th Boys</span><span class="game-round final-r">FINAL</span></div>
+    <div class="game-row div-5b"><span class="game-num">Game 9</span><span class="game-matchup">5th Boys FINAL</span><span class="game-div">5th Boys</span><span class="game-round final-r">FINAL</span></div>
   </div>
 
   <!-- COURT 2 -->
   <div class="court-section">
     <div class="court-header">Court 2 <small>Indoor &middot; Near Stage</small></div>
-    <div class="game-row"><span class="game-num">Game 1</span><span class="game-matchup">BUNZ <span class="vs">vs</span> CC&amp;G</span><span class="game-div">4th Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 2</span><span class="game-matchup">Nothing But Nets <span class="vs">vs</span> Triple Basket Girls</span><span class="game-div">4th Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 3</span><span class="game-matchup">Scammer Bananers <span class="vs">vs</span> NC Tarheels</span><span class="game-div">4th Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 4</span><span class="game-matchup">The Sea Turtles <span class="vs">vs</span> Pink Palm Trees</span><span class="game-div">4th Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 5</span><span class="game-matchup">The Kobes <span class="vs">vs</span> Hoopers</span><span class="game-div">4th Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row later"><span class="game-num">Game 6</span><span class="game-matchup">5th Boys Semi-Final 1</span><span class="game-div">5th Boys</span><span class="game-round semifinal">SF</span></div>
-    <div class="game-row later"><span class="game-num">Game 7</span><span class="game-matchup">4th Girls Semi-Final 1</span><span class="game-div">4th Girls</span><span class="game-round semifinal">SF</span></div>
-    <div class="game-row final"><span class="game-num">Game 8</span><span class="game-matchup">3rd Girls FINAL</span><span class="game-div">3rd Girls</span><span class="game-round final-r">FINAL</span></div>
-    <div class="game-row final"><span class="game-num">Game 9</span><span class="game-matchup">5th Girls FINAL</span><span class="game-div">5th Girls</span><span class="game-round final-r">FINAL</span></div>
+    <div class="game-row div-4b"><span class="game-num">Game 1</span><span class="game-matchup">BUNZ <span class="vs">vs</span> CC&amp;G</span><span class="game-div">4th Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-4g"><span class="game-num">Game 2</span><span class="game-matchup">Nothing But Nets <span class="vs">vs</span> Triple Basket Girls</span><span class="game-div">4th Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-4b"><span class="game-num">Game 3</span><span class="game-matchup">Scammer Bananers <span class="vs">vs</span> NC Tarheels</span><span class="game-div">4th Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-4g"><span class="game-num">Game 4</span><span class="game-matchup">The Sea Turtles <span class="vs">vs</span> Pink Palm Trees</span><span class="game-div">4th Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-4b"><span class="game-num">Game 5</span><span class="game-matchup">The Kobes <span class="vs">vs</span> Hoopers</span><span class="game-div">4th Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-5b"><span class="game-num">Game 6</span><span class="game-matchup">5th Boys Semi-Final 1</span><span class="game-div">5th Boys</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-4g"><span class="game-num">Game 7</span><span class="game-matchup">4th Girls Semi-Final 1</span><span class="game-div">4th Girls</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-3g"><span class="game-num">Game 8</span><span class="game-matchup">3rd Girls FINAL</span><span class="game-div">3rd Girls</span><span class="game-round final-r">FINAL</span></div>
+    <div class="game-row div-5g"><span class="game-num">Game 9</span><span class="game-matchup">5th Girls FINAL</span><span class="game-div">5th Girls</span><span class="game-round final-r">FINAL</span></div>
   </div>
 
   <!-- COURT 3 -->
   <div class="court-section">
     <div class="court-header">Court 3 <small>Black Top &middot; Near Turf Field</small></div>
-    <div class="game-row"><span class="game-num">Game 1</span><span class="game-matchup">The Blue Stars <span class="vs">vs</span> B-Ball Queens</span><span class="game-div">5th Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 2</span><span class="game-matchup">Peppa Pig Biggies <span class="vs">vs</span> GOATS</span><span class="game-div">4th Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 3</span><span class="game-matchup">Super Stars <span class="vs">vs</span> Crumble Cookies</span><span class="game-div">4th Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 4</span><span class="game-matchup">The Bucket Boys <span class="vs">vs</span> Knee Walkers</span><span class="game-div">5th Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 5</span><span class="game-matchup">Dream Team Champions <span class="vs">vs</span> The Howlers</span><span class="game-div">4th Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row later"><span class="game-num">Game 6</span><span class="game-matchup">Gnarly Dudes <span class="vs">vs</span> Winner Ct1 Gm2</span><span class="game-div">5th Boys</span><span class="game-round semifinal">SF</span></div>
-    <div class="game-row later"><span class="game-num">Game 7</span><span class="game-matchup">5th Girls Semi-Final 2</span><span class="game-div">5th Girls</span><span class="game-round semifinal">SF</span></div>
-    <div class="game-row final"><span class="game-num">Game 8</span><span class="game-matchup">3rd Boys FINAL</span><span class="game-div">3rd Boys</span><span class="game-round final-r">FINAL</span></div>
+    <div class="game-row div-5g"><span class="game-num">Game 1</span><span class="game-matchup">The Blue Stars <span class="vs">vs</span> B-Ball Queens</span><span class="game-div">5th Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-4b"><span class="game-num">Game 2</span><span class="game-matchup">Peppa Pig Biggies <span class="vs">vs</span> GOATS</span><span class="game-div">4th Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-4g"><span class="game-num">Game 3</span><span class="game-matchup">Super Stars <span class="vs">vs</span> Crumble Cookies</span><span class="game-div">4th Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-5b"><span class="game-num">Game 4</span><span class="game-matchup">The Bucket Boys <span class="vs">vs</span> Knee Walkers</span><span class="game-div">5th Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-4g"><span class="game-num">Game 5</span><span class="game-matchup">Dream Team Champions <span class="vs">vs</span> The Howlers</span><span class="game-div">4th Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-5b"><span class="game-num">Game 6</span><span class="game-matchup">Gnarly Dudes <span class="vs">vs</span> Winner Ct1 Gm2</span><span class="game-div">5th Boys</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-5g"><span class="game-num">Game 7</span><span class="game-matchup">5th Girls Semi-Final 2</span><span class="game-div">5th Girls</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-3b"><span class="game-num">Game 8</span><span class="game-matchup">3rd Boys FINAL</span><span class="game-div">3rd Boys</span><span class="game-round final-r">FINAL</span></div>
   </div>
 
   <!-- COURT 4 -->
   <div class="court-section">
     <div class="court-header">Court 4 <small>Black Top &middot; Near Fence</small></div>
-    <div class="game-row"><span class="game-num">Game 1</span><span class="game-matchup">Camo Cranberries <span class="vs">vs</span> Bucket Corgis</span><span class="game-div">3rd Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 2</span><span class="game-matchup">Net Swishers <span class="vs">vs</span> Grizzly Bears</span><span class="game-div">3rd Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 3</span><span class="game-matchup">Hersheys <span class="vs">vs</span> Burnt Chicken Nuggets</span><span class="game-div">3rd Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 4</span><span class="game-matchup">Tropical Boys <span class="vs">vs</span> The Hoops</span><span class="game-div">3rd Boys</span><span class="game-round">QF</span></div>
-    <div class="game-row later"><span class="game-num">Game 5</span><span class="game-matchup">4th Boys Semi-Final 2</span><span class="game-div">4th Boys</span><span class="game-round semifinal">SF</span></div>
-    <div class="game-row later"><span class="game-num">Game 6</span><span class="game-matchup">5th Boys Semi-Final 2</span><span class="game-div">5th Boys</span><span class="game-round semifinal">SF</span></div>
-    <div class="game-row final"><span class="game-num">Game 7</span><span class="game-matchup">4th Girls FINAL</span><span class="game-div">4th Girls</span><span class="game-round final-r">FINAL</span></div>
+    <div class="game-row div-3b"><span class="game-num">Game 1</span><span class="game-matchup">Camo Cranberries <span class="vs">vs</span> Bucket Corgis</span><span class="game-div">3rd Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-3b"><span class="game-num">Game 2</span><span class="game-matchup">Net Swishers <span class="vs">vs</span> Grizzly Bears</span><span class="game-div">3rd Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-3b"><span class="game-num">Game 3</span><span class="game-matchup">Hersheys <span class="vs">vs</span> Burnt Chicken Nuggets</span><span class="game-div">3rd Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-3b"><span class="game-num">Game 4</span><span class="game-matchup">Tropical Boys <span class="vs">vs</span> The Hoops</span><span class="game-div">3rd Boys</span><span class="game-round">QF</span></div>
+    <div class="game-row div-4b"><span class="game-num">Game 5</span><span class="game-matchup">4th Boys Semi-Final 2</span><span class="game-div">4th Boys</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-5b"><span class="game-num">Game 6</span><span class="game-matchup">5th Boys Semi-Final 2</span><span class="game-div">5th Boys</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-4g"><span class="game-num">Game 7</span><span class="game-matchup">4th Girls FINAL</span><span class="game-div">4th Girls</span><span class="game-round final-r">FINAL</span></div>
   </div>
 
   <!-- COURT 5 -->
   <div class="court-section">
     <div class="court-header">Court 5 <small>Turf Field &middot; Portable Hoop</small></div>
-    <div class="game-row"><span class="game-num">Game 1</span><span class="game-matchup">The Bananas <span class="vs">vs</span> Dunkin' Donuts</span><span class="game-div">3rd Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 2</span><span class="game-matchup">Neon Fruits <span class="vs">vs</span> Pink Superstars</span><span class="game-div">3rd Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 3</span><span class="game-matchup">Eagles <span class="vs">vs</span> Sassy Fashion</span><span class="game-div">3rd Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row"><span class="game-num">Game 4</span><span class="game-matchup">Crazy Coconuts <span class="vs">vs</span> Good Vibes</span><span class="game-div">3rd Girls</span><span class="game-round">QF</span></div>
-    <div class="game-row later"><span class="game-num">Game 5</span><span class="game-matchup">3rd Girls Semi-Final 1</span><span class="game-div">3rd Girls</span><span class="game-round semifinal">SF</span></div>
-    <div class="game-row later"><span class="game-num">Game 6</span><span class="game-matchup">3rd Girls Semi-Final 2</span><span class="game-div">3rd Girls</span><span class="game-round semifinal">SF</span></div>
-    <div class="game-row later"><span class="game-num">Game 7</span><span class="game-matchup">4th Girls Semi-Final 2</span><span class="game-div">4th Girls</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-3g"><span class="game-num">Game 1</span><span class="game-matchup">The Bananas <span class="vs">vs</span> Dunkin' Donuts</span><span class="game-div">3rd Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-3g"><span class="game-num">Game 2</span><span class="game-matchup">Neon Fruits <span class="vs">vs</span> Pink Superstars</span><span class="game-div">3rd Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-3g"><span class="game-num">Game 3</span><span class="game-matchup">Eagles <span class="vs">vs</span> Sassy Fashion</span><span class="game-div">3rd Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-3g"><span class="game-num">Game 4</span><span class="game-matchup">Crazy Coconuts <span class="vs">vs</span> Good Vibes</span><span class="game-div">3rd Girls</span><span class="game-round">QF</span></div>
+    <div class="game-row div-3g"><span class="game-num">Game 5</span><span class="game-matchup">3rd Girls Semi-Final 1</span><span class="game-div">3rd Girls</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-3g"><span class="game-num">Game 6</span><span class="game-matchup">3rd Girls Semi-Final 2</span><span class="game-div">3rd Girls</span><span class="game-round semifinal">SF</span></div>
+    <div class="game-row div-4g"><span class="game-num">Game 7</span><span class="game-matchup">4th Girls Semi-Final 2</span><span class="game-div">4th Girls</span><span class="game-round semifinal">SF</span></div>
   </div>
 
 </div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-swatch" style="background:white"></div> Quarter-Final</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#fefce8"></div> Semi-Final</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#f0fdf4"></div> Final</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#3b82f6"></div> 3rd Boys</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#ec4899"></div> 3rd Girls</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#f97316"></div> 4th Boys</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#8b5cf6"></div> 4th Girls</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#22c55e"></div> 5th Boys</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#ef4444"></div> 5th Girls</div>
 </div>
 
 <div class="footer">
   <div class="qr-block">
     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://omygodwin.github.io/basketball-tournament/" alt="QR Code">
-    <span>Scan for live<br>brackets &amp; scores</span>
+    <span>Scan for App to view<br>Tournament Info</span>
   </div>
   <span>The Covenant School &middot; March Madness 3v3 Basketball Tournament &middot; Games are sequential &mdash; next game starts after current game ends</span>
 </div>
