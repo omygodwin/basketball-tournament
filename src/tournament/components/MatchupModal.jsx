@@ -1,4 +1,4 @@
-import { getTeamByName, getGameResults, courts } from '../../data/tournamentData';
+import { getTeamByName, getGameResults, courts, schedule } from '../../data/tournamentData';
 
 export default function MatchupModal({ game, onClose, onTeamClick, selectedChild }) {
   if (!game) return null;
@@ -10,7 +10,8 @@ export default function MatchupModal({ game, onClose, onTeamClick, selectedChild
   const team1Data = game.team1 ? getTeamByName(game.team1) : null;
   const team2Data = game.team2 ? getTeamByName(game.team2) : null;
 
-  const scheduleInfo = game.court ? game : null;
+  // Look up schedule entry by gameId if court info isn't directly on the game object
+  const scheduleInfo = game.court ? game : schedule.find((s) => s.gameId === game.gameId) || null;
   const court = scheduleInfo ? courts.find((c) => c.id === scheduleInfo.court) : null;
 
   const team1Won = hasResult && result.winner === game.team1;
@@ -88,9 +89,12 @@ export default function MatchupModal({ game, onClose, onTeamClick, selectedChild
             <h2 className="text-lg font-bold text-green-400">Game Matchup</h2>
             <div className="text-sm text-gray-400">
               {game.round || ''}
-              {court && <span> &middot; {court.name} ({court.location})</span>}
+              {court && <span> &middot; {court.name}, Game {scheduleInfo.slot}</span>}
               {game.division && <span> &middot; {game.division}</span>}
             </div>
+            {court && (
+              <div className="text-xs text-gray-500">{court.location}</div>
+            )}
           </div>
           <button
             onClick={onClose}

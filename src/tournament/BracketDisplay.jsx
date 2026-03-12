@@ -1,6 +1,11 @@
-import { getGameResults } from '../data/tournamentData';
+import { getGameResults, schedule } from '../data/tournamentData';
+
+// Lookup map: gameId -> schedule entry (for court/slot info)
+const scheduleByGameId = {};
+schedule.forEach((s) => { scheduleByGameId[s.gameId] = s; });
 
 function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
+  const sched = scheduleByGameId[game.gameId];
   const hasResult = result && result.score1 != null;
   const isBye = game.bye && !game.team2;
   const team1 = game.team1 || 'TBD';
@@ -52,6 +57,11 @@ function MatchupBox({ game, result, highlightTeam, onTeamClick, onGameClick }) {
       onClick={() => onGameClick && onGameClick(game)}
       title="Click for matchup details"
     >
+      {sched && (
+        <div className="flex items-center justify-between px-2 py-0.5 bg-navy-900/60 border-b border-navy-600">
+          <span className="text-[10px] text-gray-500 font-medium">Ct {sched.court}, Gm {sched.slot}</span>
+        </div>
+      )}
       {teamRow(
         team1, team1Won, hasResult && !team1Won,
         highlightTeam && game.team1 === highlightTeam,
