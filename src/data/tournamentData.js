@@ -189,10 +189,11 @@ export const schedule = [
   { gameId: "5B-QF3", court: 1, slot: 4, round: "Quarter-Final", division: "5th Boys", team1: "Cliffbars Arent Healthy", team2: "The Goats" },
   { gameId: "5G-QF3", court: 1, slot: 5, round: "Quarter-Final", division: "5th Girls", team1: "The A.Q. (Attitude Queens)", team2: "Da Thunderbolts" },
   // Court 1 - Later rounds
-  { gameId: "3B-SF1", court: 1, slot: 6, round: "Semi-Final", division: "3rd Boys", team1: null, team2: null, label: "3rd Grade Boys Semi-Final Game 1" },
-  { gameId: "3B-SF2", court: 1, slot: 7, round: "Semi-Final", division: "3rd Boys", team1: null, team2: null, label: "3rd Grade Boys Semi-Final Game 2" },
-  { gameId: "4B-F", court: 1, slot: 8, round: "Final", division: "4th Boys", team1: null, team2: null, label: "4th Grade Boys FINAL" },
-  { gameId: "5B-F", court: 1, slot: 9, round: "Final", division: "5th Boys", team1: null, team2: null, label: "5th Grade Boys FINAL" },
+  { gameId: "5G-SF1", court: 1, slot: 6, round: "Semi-Final", division: "5th Girls", team1: null, team2: null, label: "5th Grade Girls Semi-Final Game 1" },
+  { gameId: "3B-SF1", court: 1, slot: 7, round: "Semi-Final", division: "3rd Boys", team1: null, team2: null, label: "3rd Grade Boys Semi-Final Game 1" },
+  { gameId: "3B-SF2", court: 1, slot: 8, round: "Semi-Final", division: "3rd Boys", team1: null, team2: null, label: "3rd Grade Boys Semi-Final Game 2" },
+  { gameId: "4B-F", court: 1, slot: 9, round: "Final", division: "4th Boys", team1: null, team2: null, label: "4th Grade Boys FINAL" },
+  { gameId: "5B-F", court: 1, slot: 10, round: "Final", division: "5th Boys", team1: null, team2: null, label: "5th Grade Boys FINAL" },
 
   // Court 2 - Round 1
   { gameId: "4B-QF1", court: 2, slot: 1, round: "Quarter-Final", division: "4th Boys", team1: "BUNZ", team2: "CC&G" },
