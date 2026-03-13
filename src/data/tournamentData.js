@@ -184,9 +184,9 @@ export const brackets = {
 export const schedule = [
   // Court 1 - Round 1
   { gameId: "5G-QF1", court: 1, slot: 1, round: "Quarter-Final", division: "5th Girls", team1: "The Sawiches", team2: "B-Ball Blizzards" },
-  { gameId: "5B-QF1", court: 1, slot: 2, round: "Quarter-Final", division: "5th Boys", team1: "Bucks", team2: "BKTSCWOD" },
+  { gameId: "5B-QF2", court: 1, slot: 2, round: "Quarter-Final", division: "5th Boys", team1: "Bucks", team2: "BKTSCWOD" },
   { gameId: "5G-QF2", court: 1, slot: 3, round: "Quarter-Final", division: "5th Girls", team1: "The Biggie Eagles", team2: "Ducky Dudes" },
-  { gameId: "5B-QF2", court: 1, slot: 4, round: "Quarter-Final", division: "5th Boys", team1: "Cliffbars Arent Healthy", team2: "The Goats" },
+  { gameId: "5B-QF3", court: 1, slot: 4, round: "Quarter-Final", division: "5th Boys", team1: "Cliffbars Arent Healthy", team2: "The Goats" },
   { gameId: "5G-QF3", court: 1, slot: 5, round: "Quarter-Final", division: "5th Girls", team1: "The A.Q. (Attitude Queens)", team2: "Da Thunderbolts" },
   // Court 1 - Later rounds
   { gameId: "3B-SF1", court: 1, slot: 6, round: "Semi-Final", division: "3rd Boys", team1: null, team2: null, label: "3rd Grade Boys Semi-Final Game 1" },
@@ -195,11 +195,11 @@ export const schedule = [
   { gameId: "5B-F", court: 1, slot: 9, round: "Final", division: "5th Boys", team1: null, team2: null, label: "5th Grade Boys FINAL" },
 
   // Court 2 - Round 1
-  { gameId: "5G-QF1-C2", court: 2, slot: 1, round: "Quarter-Final", division: "5th Girls", team1: "BUNZ", team2: "CC&G", crossDivision: true, label: "5th Girls vs 4th Boys" },
-  { gameId: "5B-QF1-C2", court: 2, slot: 2, round: "Quarter-Final", division: "5th Boys", team1: "Nothing But Nets", team2: "Triple Basket Girls", crossDivision: true, label: "5th Boys vs 4th Girls" },
-  { gameId: "5G-QF3-C2", court: 2, slot: 3, round: "Quarter-Final", division: "5th Girls", team1: "Scammer Bananers", team2: "NC Tarheels", crossDivision: true, label: "5th Girls vs 4th Boys" },
-  { gameId: "5B-QF3-C2", court: 2, slot: 4, round: "Quarter-Final", division: "5th Boys", team1: "The Sea Turtles", team2: "Pink Palm Trees", crossDivision: true, label: "5th Boys vs 4th Girls" },
-  { gameId: "5G-QF4-C2", court: 2, slot: 5, round: "Quarter-Final", division: "5th Girls", team1: "The Kobes", team2: "Hoopers", crossDivision: true, label: "5th Girls vs 4th Boys" },
+  { gameId: "4B-QF1", court: 2, slot: 1, round: "Quarter-Final", division: "4th Boys", team1: "BUNZ", team2: "CC&G" },
+  { gameId: "4G-QF1", court: 2, slot: 2, round: "Quarter-Final", division: "4th Girls", team1: "Nothing But Nets", team2: "Triple Basket Girls" },
+  { gameId: "4B-QF2", court: 2, slot: 3, round: "Quarter-Final", division: "4th Boys", team1: "Scammer Bananers", team2: "NC Tarheels" },
+  { gameId: "4G-QF2", court: 2, slot: 4, round: "Quarter-Final", division: "4th Girls", team1: "The Sea Turtles", team2: "Pink Palm Trees" },
+  { gameId: "4B-QF3", court: 2, slot: 5, round: "Quarter-Final", division: "4th Boys", team1: "The Kobes", team2: "Hoopers" },
   // Court 2 - Later rounds
   { gameId: "5B-SF1", court: 2, slot: 6, round: "Semi-Final", division: "5th Boys", team1: null, team2: null, label: "5th Grade Boys Semi-Final Game 1" },
   { gameId: "4G-SF1", court: 2, slot: 7, round: "Semi-Final", division: "4th Girls", team1: null, team2: null, label: "4th Grade Girls Semi-Final Game 1" },
@@ -207,11 +207,11 @@ export const schedule = [
   { gameId: "5G-F", court: 2, slot: 9, round: "Final", division: "5th Girls", team1: null, team2: null, label: "5th Grade Girls FINAL" },
 
   // Court 3 - Round 1
-  { gameId: "4B-QF1-C3", court: 3, slot: 1, round: "Quarter-Final", division: "4th Boys", team1: "The Blue Stars", team2: "B-Ball Queens", crossDivision: true, label: "4th Boys vs 5th Girls" },
-  { gameId: "4G-QF1", court: 3, slot: 2, round: "Quarter-Final", division: "4th Girls", team1: "Peppa Pig Biggies", team2: "GOATS", crossDivision: true, label: "4th Girls vs 4th Boys" },
-  { gameId: "4B-QF2-C3", court: 3, slot: 3, round: "Quarter-Final", division: "4th Boys", team1: "Super Stars", team2: "Crumble Cookies", crossDivision: true, label: "4th Boys vs 4th Girls" },
-  { gameId: "4G-QF2", court: 3, slot: 4, round: "Quarter-Final", division: "4th Girls", team1: "The Bucket Boys", team2: "Knee Walkers", crossDivision: true, label: "4th Girls vs 5th Boys" },
-  { gameId: "4B-QF3-C3", court: 3, slot: 5, round: "Quarter-Final", division: "4th Boys", team1: "Dream Team Champions", team2: "The Howlers", crossDivision: true, label: "4th Boys vs 4th Girls" },
+  { gameId: "5G-QF4", court: 3, slot: 1, round: "Quarter-Final", division: "5th Girls", team1: "The Blue Stars", team2: "B-Ball Queens" },
+  { gameId: "4B-QF4", court: 3, slot: 2, round: "Quarter-Final", division: "4th Boys", team1: "Peppa Pig Biggies", team2: "GOATS" },
+  { gameId: "4G-QF3", court: 3, slot: 3, round: "Quarter-Final", division: "4th Girls", team1: "Super Stars", team2: "Crumble Cookies" },
+  { gameId: "5B-QF4", court: 3, slot: 4, round: "Quarter-Final", division: "5th Boys", team1: "The Bucket Boys", team2: "Knee Walkers" },
+  { gameId: "4G-QF4", court: 3, slot: 5, round: "Quarter-Final", division: "4th Girls", team1: "Dream Team Champions", team2: "The Howlers" },
   // Court 3 - Later rounds
   { gameId: "5B-QF-PLAY", court: 3, slot: 6, round: "Quarter-Final", division: "5th Boys", team1: "Gnarly Dudes", team2: null, label: "Gnarly Dudes vs. Winner Game 1 (Court 1) (5B)" },
   { gameId: "5G-SF2", court: 3, slot: 7, round: "Semi-Final", division: "5th Girls", team1: null, team2: null, label: "5th Grade Girls Semi-Final Game 2" },
