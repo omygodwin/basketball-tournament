@@ -1,6 +1,28 @@
-import { useState } from 'react';
-import { schedule, courts, teams, useGameResults } from '../data/tournamentData';
+import { useState, useMemo } from 'react';
+import { schedule, courts, teams, brackets, divisions, resolveFullBracket, useGameResults } from '../data/tournamentData';
 import GameCard from './components/GameCard';
+
+function resolveSchedule(gameResults) {
+  // Build a lookup of gameId -> resolved team names from brackets
+  const resolved = {};
+  for (const division of divisions) {
+    const bracket = brackets[division];
+    if (!bracket) continue;
+    const rb = resolveFullBracket(bracket, gameResults);
+    const allGames = [...rb.quarterFinals, ...rb.semiFinals, ...rb.final];
+    for (const g of allGames) {
+      resolved[g.gameId] = { team1: g.team1, team2: g.team2 };
+    }
+  }
+  // Overlay resolved names onto schedule entries
+  return schedule.map((entry) => {
+    const r = resolved[entry.gameId];
+    if (r) {
+      return { ...entry, team1: r.team1 || entry.team1, team2: r.team2 || entry.team2 };
+    }
+    return entry;
+  });
+}
 
 export default function ScheduleView({ filterDivision, selectedChild, onTeamClick, onGameClick }) {
   const [filterTeam, setFilterTeam] = useState('');
@@ -8,13 +30,15 @@ export default function ScheduleView({ filterDivision, selectedChild, onTeamClic
 
   const teamNames = [...new Set(teams.map((t) => t.name))].sort();
 
+  const resolvedSchedule = useMemo(() => resolveSchedule(gameResults), [gameResults]);
+
   const childGames = selectedChild
-    ? schedule.filter(
+    ? resolvedSchedule.filter(
         (g) => g.team1 === selectedChild.teamName || g.team2 === selectedChild.teamName
       )
     : [];
 
-  let filteredSchedule = schedule;
+  let filteredSchedule = resolvedSchedule;
   if (filterTeam) {
     filteredSchedule = filteredSchedule.filter((g) => g.team1 === filterTeam || g.team2 === filterTeam);
   }
